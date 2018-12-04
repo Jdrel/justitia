@@ -2,9 +2,6 @@ class CreateLawyers < ActiveRecord::Migration[5.2]
   def change
     create_table :lawyers do |t|
       t.references :user, foreign_key: true
-      t.string :first_name
-      t.string :last_name
-      t.string :address
       t.text :description
       t.integer :years_of_experience
       t.integer :hourly_rate
