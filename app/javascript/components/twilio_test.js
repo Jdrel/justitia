@@ -4,12 +4,12 @@ function initVideoCall(){
 
   if (button) {
 
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzg0ZGU5OGEwZmMzNzk0NTA2MThlNTdlMzVlODdlY2NkLTE1NDM5MzQ5NjciLCJpc3MiOiJTSzg0ZGU5OGEwZmMzNzk0NTA2MThlNTdlMzVlODdlY2NkIiwic3ViIjoiQUNjYWY4MDcxZDBmYmRmNTc5OTFlMTk4Y2ExN2YyYzhiNSIsImV4cCI6MTU0MzkzODU2NywiZ3JhbnRzIjp7ImlkZW50aXR5IjoiZGFuIiwidmlkZW8iOnt9fX0.8opEKZZrv9AMyiFNZ1SZI4haA1xBWKMYKlJAMMT3KeQ';
     const { connect, createLocalVideoTrack } = require('twilio-video');
 
 
     button.addEventListener('click', (event) => {
       console.log("hello video");
+      const token = document.getElementById('token').value;
 
       connect(token, {
         audio: true,
