@@ -4,70 +4,71 @@
       <h2 style="color: white;">Get professional legal advice</h2>
       <br>
       <p stlye="color: white; font-weight: lighter;">100,000 experienced lawyers ready to videochat confidentially</p>
-      <input type="text" placeholder="Choose legal field">
-      <br>
-      <%#= submit_tag("Search", :class=>"btn btn-light", :name=>"Search") %>
-      <%= link_to "Search", lawyers_path, class: "btn btn-light", style: "margin-top: 15px;" %>
+
+      <%= form_tag lawyers_path, method: :get do %>
+      <%= text_field_tag :category, params[:category], placeholder: "Type a law field...", class: "form-homepage" %>
+      <% end %>
+        <%= link_to "Search", lawyers_path, class: "btn btn-light", style: "margin-top: 15px;" %>
+      </div>
     </div>
+  </div>
+
+  <div class="cards-container">
+    <div class="icon-card">
+     <div class="icon">
+      <i class="fas fa-car fa-5x"></i>
+    </div>
+    <div class="icon-description">
+      <p class="text-center">Car Accident</p>
+    </div>
+  </div>
+
+  <div class="icon-card">
+    <div class="icon">
+      <i class="fas fa-home fa-5x"></i>
+    </div>
+    <div class="icon-description">
+      <p class="text-center">Real Estate</p>
+    </div>
+  </div>
+
+
+  <div class="icon-card">
+   <div class="icon">
+    <i class="fas fa-users fa-5x"></i>
+  </div>
+  <div class="icon-description">
+    <p class="text-center">Family</p>
   </div>
 </div>
 
-<div class="cards-container">
-        <div class="icon-card">
-           <div class="icon">
-          <i class="fas fa-car fa-5x"></i>
-          </div>
-          <div class="icon-description">
-          <p class="text-center">Car Accident</p>
-          </div>
-        </div>
-
-        <div class="icon-card">
-          <div class="icon">
-          <i class="fas fa-home fa-5x"></i>
-          </div>
-          <div class="icon-description">
-          <p class="text-center">Real Estate</p>
-          </div>
-        </div>
 
 
-        <div class="icon-card">
-           <div class="icon">
-          <i class="fas fa-users fa-5x"></i>
-          </div>
-           <div class="icon-description">
-          <p class="text-center">Family</p>
-          </div>
-        </div>
+<div class="icon-card">
+ <div class="icon">
+  <i class="fas fa-gavel fa-5x"></i>
+</div>
+<div class="icon-description">
+  <p class="text-center">Civil Rights</p>
+</div>
+</div>
 
 
+<div class="icon-card">
+ <div class="icon">
+  <i class="fas fa-id-card-alt fa-5x"></i>
+</div>
+<div class="icon-description">
+  <p class="text-center">Immigration</p>
+</div>
+</div>
 
-        <div class="icon-card">
-           <div class="icon">
-          <i class="fas fa-gavel fa-5x"></i>
-          </div>
-           <div class="icon-description">
-          <p class="text-center">Civil Rights</p>
-          </div>
-        </div>
-
-
-        <div class="icon-card">
-           <div class="icon">
-              <i class="fas fa-id-card-alt fa-5x"></i>
-          </div>
-           <div class="icon-description">
-          <p class="text-center">Immigration</p>
-          </div>
-        </div>
-
-        <div class="icon-card">
-           <div class="icon">
-         <i class="fas fa-dollar-sign fa-5x"></i>
-          </div>
-           <div class="icon-description">
-          <p class="text-center">Bankruptcy</p>
-          </div>
-        </div>
+<div class="icon-card">
+ <div class="icon">
+   <i class="fas fa-dollar-sign fa-5x"></i>
+ </div>
+ <div class="icon-description">
+  <p class="text-center">Bankruptcy</p>
+</div>
+</div>
 </div>
