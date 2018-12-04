@@ -10,10 +10,53 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_03_175122) do
+ActiveRecord::Schema.define(version: 2018_12_04_152156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+
+  create_table "clients", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "stripe_token"
+    t.integer "stripe_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_clients_on_user_id"
+  end
+
+  create_table "consultations", force: :cascade do |t|
+    t.bigint "client_id"
+    t.bigint "lawyer_id"
+    t.integer "duration"
+    t.integer "lawyer_amount_cents", default: 0, null: false
+    t.string "lawyer_amount_currency", default: "USD", null: false
+    t.jsonb "lawyer_payment"
+    t.integer "client_amount_cents", default: 0, null: false
+    t.string "client_amount_currency", default: "USD", null: false
+    t.jsonb "client_payment"
+    t.string "status"
+    t.string "string"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_consultations_on_client_id"
+    t.index ["lawyer_id"], name: "index_consultations_on_lawyer_id"
+  end
+
+  create_table "lawyers", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "description"
+    t.integer "years_of_experience"
+    t.integer "hourly_rate"
+    t.boolean "is_first_consultation_free"
+    t.boolean "is_online"
+    t.string "stripe_token"
+    t.integer "stripe_id"
+    t.string "photo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_lawyers_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -23,8 +66,15 @@ ActiveRecord::Schema.define(version: 2018_12_03_175122) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "address"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "clients", "users"
+  add_foreign_key "consultations", "clients"
+  add_foreign_key "consultations", "lawyers"
+  add_foreign_key "lawyers", "users"
 end
