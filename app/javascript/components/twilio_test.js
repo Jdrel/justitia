@@ -4,7 +4,7 @@ function initVideoCall(){
 
   if (button) {
 
-    const { connect, createLocalVideoTrack } = require('twilio-video');
+    const { connect, createLocalTracks, createLocalVideoTrack } = require('twilio-video');
 
 
     button.addEventListener('click', (event) => {
