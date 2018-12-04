@@ -6,37 +6,68 @@
       <p stlye="color: white; font-weight: lighter;">100,000 experienced lawyers ready to videochat confidentially</p>
       <input type="text" placeholder="Choose legal field">
       <br>
-      <button class="btn btn-light" style="margin-top: 15px;">Search</button>
+      <%#= submit_tag("Search", :class=>"btn btn-light", :name=>"Search") %>
+      <%= link_to "Search", lawyers_path, class: "btn btn-light", style: "margin-top: 15px;" %>
     </div>
   </div>
 </div>
 
 <div class="cards-container">
         <div class="icon-card">
+           <div class="icon">
           <i class="fas fa-car fa-5x"></i>
+          </div>
+          <div class="icon-description">
+          <p class="text-center">Car Accident</p>
+          </div>
         </div>
 
         <div class="icon-card">
+          <div class="icon">
           <i class="fas fa-home fa-5x"></i>
+          </div>
+          <div class="icon-description">
+          <p class="text-center">Real Estate</p>
+          </div>
         </div>
 
 
         <div class="icon-card">
+           <div class="icon">
           <i class="fas fa-users fa-5x"></i>
+          </div>
+           <div class="icon-description">
+          <p class="text-center">Family</p>
+          </div>
         </div>
 
 
 
         <div class="icon-card">
+           <div class="icon">
           <i class="fas fa-gavel fa-5x"></i>
+          </div>
+           <div class="icon-description">
+          <p class="text-center">Civil Rights</p>
+          </div>
         </div>
 
 
         <div class="icon-card">
-          <i class="fas fa-id fa-5x"></i>
+           <div class="icon">
+              <i class="fas fa-id-card-alt fa-5x"></i>
+          </div>
+           <div class="icon-description">
+          <p class="text-center">Immigration</p>
+          </div>
         </div>
 
         <div class="icon-card">
-          <i class="fas fa-passport fa-5x"></i>
+           <div class="icon">
+         <i class="fas fa-dollar-sign fa-5x"></i>
+          </div>
+           <div class="icon-description">
+          <p class="text-center">Bankruptcy</p>
+          </div>
         </div>
 </div>
