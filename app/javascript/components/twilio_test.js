@@ -24,16 +24,6 @@ function initVideoCall(){
         // Log any Participants already connected to the Room
         room.participants.forEach(participant => {
           console.log(`Participant "${participant.identity}" is already connected to the Room`);
-
-          participant.tracks.forEach(track => {
-            document.getElementById('remote-media').appendChild(track.attach());
-          });
-
-          participant.on('trackAdded', track => {
-            document.getElementById('remote-media').appendChild(track.attach());
-          });
-
-
         });
 
         // Log new Participants as they connect to the Room
