@@ -1,0 +1,12 @@
+<p>You are about to start a videochat with Annie Gilchrist. Your lawyer will charge your credit card based on the duration of this videochat at the rate of 12.50€ per 5 minutes block.
+<br>
+Annie Gilchrist hourly rate: 150€.</p>
+
+<%= simple_form_for([@lawyer, @consultation]) do |f| %>
+<script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+    data-name="Justitia.today"
+    data-email="<%= current_user.email %>"
+    data-description="Justitia videochat"></script>
+<% end %>

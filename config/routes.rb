@@ -3,5 +3,7 @@ Rails.application.routes.draw do
   root to: 'pages#home'
   get '/video', to:'pages#video'
 
-  resources :lawyers, only: [:index, :show]
+  resources :lawyers, only: [:index, :show] do
+    resources :consultations, only: [:new, :create, :show]
+  end
 end

@@ -9,7 +9,7 @@
 
   <div class="lawyer-card">
     <div class="lawyer-avatar">
-      <%=  image_tag("https://picsum.photos/100/100/?random") %>
+      <%=  image_tag(lawyer.photo) %>
     </div>
     <div class="lawyer-decription">
       <h5><%= lawyer.user.first_name.capitalize + " " + lawyer.user.last_name.capitalize %></h5>
