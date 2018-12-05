@@ -1,12 +1,35 @@
-<div class="profile-container">
-  <div class="avatar-large">
-  <div class="profile-text">
-     <h4>Jascha Drel</h4>
+<div class="container">
+  <div class="row">
+    <div class="col-10 offset-col-2">
+
+      <div class="profile-position">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe9u0NfM4ThDoyBwTD_NruageVLtn6UENOIihH_cLhBw-bYNjp" class="avatar-large" alt="">
+          <h4 class="profile-text"> Harvey Spector </h4>
+      </div>
+    </div>
   </div>
-  <div class="profile-location">
-    <i class="fas fa-map-marker"></i>  <p>London</p>
+
+  <div class="basic-info">
+    <p class="text-position"><i class="fas fa-map-marker-alt"></i>  New York</p>
+    <p class="text-position"><i class="fas fa-gavel"></i>  Legal fields: corporate law</p>
+    <p class="text-position"><i class="fas fa-euro-sign"></i>  Price per 5 minutes: 25 €</p>
+    <p class="text-position"><i class="fas fa-check"></i> Book first videochat for free</p>
   </div>
+
+  <div class="button-position">
+    <%= link_to "Book Videochat", "#", class: "btn btn-light"%>
+    <%= link_to "Videochat now", video_path, class: "btn btn-primary"%>
+  </div>
+
+  <div id="description-position">
+    <h5>About Harvey</h5>
+    <p>Harvey Specter is a senior partner at the prestigious corporate law firm Pearson Hardman in New York, and is known as one of the city's top litigators. My favorite quote: "When you are backed against the wall, break the goddamn thing down."</p>
+  </div>
+
+  <div class="review-position">
+    <%= image_tag 'reviews', id: "review-size" %>
+  </div>
+
 </div>
 
-<div class="profile-details-container">
-</div>
+
