@@ -5,7 +5,7 @@
       <br>
       <p>100,000 experienced lawyers ready to videochat confidentially</p>
       <%= form_tag lawyers_path, method: :get do %>
-      <%= text_field_tag :category, params[:name], placeholder: "Type a law field...", class: "form-homepage", 'data-categories' => @categories_names_json  %>
+      <%= text_field_tag :category, params[:name], placeholder: "Type a law field...", class: "form-homepage", 'data-categories' => @categories_names_json, id: "categories_search_home"  %>
       <%= submit_tag("Search", :class=>"btn btn-light", :name=>"submit", style: "margin-top: 15px;") %>
       <% end %>
     </div>
