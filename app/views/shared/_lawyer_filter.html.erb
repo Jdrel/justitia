@@ -1,9 +1,13 @@
-<div class="filter-lawyers">
+<div class="filter-lawyers-container">
+  <div class="filter-form">
   <%= form_tag lawyers_path, method: :get, class: "input-form" do %>
-  <%= select_tag :is_online, options_for_select([["online",true],["offline",false]]), prompt: "Online/Offline" %>
-  <%= text_field_tag :min_price, params[:min_price], class: "form-center", placeholder: "min price" %>
-  <%= text_field_tag :max_price, params[:max_price], class: "form-center", placeholder: "max price" %>
-  <%= select_tag :category, options_for_select(@categories_names), prompt: "Category" %>
-  <%= submit_tag("filter", :id=>"button-resize", :class=>"btn-medium", :name=>"submit") %>
+  <%= select_tag :is_online, options_for_select([["online",true],["offline",false]]), class: "dropdown-item", prompt: "Online/Offline" %>
+  <%= text_field_tag :min_price, params[:min_price], class: "form-control", placeholder: "min price" %>
+  <%= text_field_tag :max_price, params[:max_price], class: "form-control", placeholder: "max price" %>
+  <%= select_tag :category, options_for_select(@categories_names), class: "dropdown-item", prompt: "Category" %>
+  </div>
+  <div class="filter-button">
+  <%= submit_tag("filter", :class=>"btn btn-success", :name=>"submit") %>
   <% end %>
+  </div>
 </div>
