@@ -3,6 +3,7 @@ class ConsultationsController < ApplicationController
   def new
     @consultation = Consultation.new
     @lawyer = Lawyer.find(params[:lawyer_id])
+    @client = current_user.client
   end
 
   def create
