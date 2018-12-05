@@ -16,8 +16,8 @@
   <%= link_to lawyer_path(lawyer), :action => 'go' do %>
 
   <div class="lawyer-card">
-    <div class="lawyer-avatar">
-      <%=  image_tag("https://picsum.photos/100/100/?random") %>
+    <div>
+      <%=  image_tag(lawyer.photo, class: 'lawyer-avatar') %>
     </div>
     <div class="lawyer-decription">
       <h5><%= lawyer.user.first_name.capitalize + " " + lawyer.user.last_name.capitalize %></h5>

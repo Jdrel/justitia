@@ -12,6 +12,17 @@ Lawyer.destroy_all
 Category.destroy_all
 Specialty.destroy_all
 
+require 'nokogiri'
+require 'open-uri'
+
+photos = []
+url = 'https://www.gettyimages.in/photos/lawyer-portraits?mediatype=photography&phrase=lawyer%20portraits&sort=mostpopular'
+html_file = open(url).read
+html_doc = Nokogiri::HTML(html_file)
+html_doc.search('.srp-asset-image').first(20).each do |element|
+  photos << element.attribute('src').value
+end
+
 Category::CATEGORIES.each do |category|
   Category.create(
     name: category
@@ -20,27 +31,25 @@ end
 
 seed_categories = Category.all
 
-response = RestClient.get "https://randomuser.me/api/"
-url = JSON.parse(response)
+puts 'Creating 10 fake lawyer...'
 
-puts 'Creating 20 fake lawyers...'
-
-20.times do
+10.times do
+  full_name = Faker::GameOfThrones.character
   user = User.create(
-    first_name: Faker::Friends.character.split.first,
-    last_name: Faker::Friends.character.split.last,
-    address: Faker::WorldCup.city,
+    first_name: full_name.split.first,
+    last_name: full_name.split.last,
+    address: Faker::GameOfThrones.city,
     email: Faker::Internet.email,
     password: 'secret'
   )
   lawyer = Lawyer.create(
     user: user,
-    description: Faker::Friends.quote,
+    description: Faker::GameOfThrones.quote,
     years_of_experience: rand(0..45),
     hourly_rate: rand(30..500),
     is_first_consultation_free: Faker::Boolean.boolean,
     is_online: Faker::Boolean.boolean,
-    photo: url['results'][0]['picture']['large'],
+    photo: photos.sample,
     stripe_token: Faker::String.random(12),
     stripe_id: rand(0..999)
   )
