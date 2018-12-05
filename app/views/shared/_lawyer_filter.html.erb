@@ -5,8 +5,6 @@
   <%= text_field_tag :min_price, params[:min_price], class: "form-control", placeholder: "min price" %>
   <%= text_field_tag :max_price, params[:max_price], class: "form-control", placeholder: "max price" %>
   <%= select_tag :category, options_for_select(@categories_names), class: "dropdown-item", prompt: "Category" %>
-  </div>
-  <div class="filter-button">
   <%= submit_tag("filter", :class=>"btn btn-success", :name=>"submit") %>
   <% end %>
   </div>

@@ -47,32 +47,32 @@
   padding: 15px;
 
   .filter-form {
-    width: 80%;
+    width: 100%;
     form {
       display: flex;
       justify-content: space-around;
-      text-align: center;
       align-items: center;
       font-size: 10px;
 
       ::placeholder {
-        text-align: center;
         font-size: 10px;
+        appearance: none;
+        padding: 5px;
       }
-
+      input {
+        margin-left:10px;
+      }
     }
     select {
+      margin-left:10px;
       font-size: 10px;
       height: calc(2.25rem + 2px);
       width: 100%;
-      text-align: center;
       border: 1px solid #ced4da;
-
+      appearance: none;
+      padding: 5px;
     }
 
-  }
-  .form-button {
-    width: 20%;
   }
 }
 
