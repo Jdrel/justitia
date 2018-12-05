@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "3.5",
-    "twilio-video": "^2.0.0-beta4"
+    "twilio-video": "^1.14.1"
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"
