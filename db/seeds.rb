@@ -19,7 +19,7 @@ photos = []
 url = 'https://www.gettyimages.in/photos/lawyer-portraits?mediatype=photography&phrase=lawyer%20portraits&sort=mostpopular'
 html_file = open(url).read
 html_doc = Nokogiri::HTML(html_file)
-html_doc.search('.srp-asset-image').first(20).each do |element|
+html_doc.search('.srp-asset-image').each do |element|
   photos << element.attribute('src').value
 end
 
@@ -33,7 +33,7 @@ seed_categories = Category.all
 
 puts 'Creating 10 fake lawyer...'
 
-10.times do
+15.times do
   full_name = Faker::GameOfThrones.character
   user = User.create(
     first_name: full_name.split.first,
