@@ -8,5 +8,6 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import { initVideoCall } from '../components/twilio_test';
+import "../components/categories_autocomplete";
 
 initVideoCall();
