@@ -38,10 +38,10 @@
   resolved "https://registry.yarnpkg.com/@twilio/sip.js/-/sip.js-0.7.7.tgz#cff50f66f9b295d46f219737b72780c7d0e6df52"
   integrity sha1-z/UPZvmyldRvIZc3tyeAx9Dm31I=
 
-"@twilio/webrtc@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@twilio/webrtc/-/webrtc-3.1.1.tgz#b70e20eecbd39a32de5f9e9b91adf54af9c719be"
-  integrity sha512-IVRfsusbwyXWm+EYA+L2sw/8/RJoZph1qEVx0TJBUl5mqcyd0RdnJFu9Zm63tuWHyb567krKBQyGWlU7q1YFfQ==
+"@twilio/webrtc@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@twilio/webrtc/-/webrtc-2.1.3.tgz#3920a5aea6ebe1ac434b4dfe17430d3c1035dcc2"
+  integrity sha512-K3/Ttlj2alDW8jw41Qpc0LPkK4w36DplXA2uTs+mjIyY9cFkn2OdavMo0mZ7iuzau0clmj28fc8l50nGSD0KCQ==
 
 abbrev@1:
   version "1.1.1"
@@ -6324,13 +6324,13 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
-twilio-video@^2.0.0-beta4:
-  version "2.0.0-beta4"
-  resolved "https://registry.yarnpkg.com/twilio-video/-/twilio-video-2.0.0-beta4.tgz#938695e4b704c94023589695778121c8dd1068f1"
-  integrity sha512-ugtFTBvqIjV8Rq04g2Oqt5AGYnVegnH6CcXK5gKDjkjQMTgVgZi/zCGn24XpuPK6YnImaSY1cGsFsiUDQO40ug==
+twilio-video@^1.14.1:
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/twilio-video/-/twilio-video-1.14.1.tgz#ecbcf39df5fec7d5c148479ca457297f3d88e2db"
+  integrity sha512-DkVvv6fMTQnkf16KRJjlBPpgg2H3psKr1gT6yNHFIbe+r1vVAbo50FS74LQzVgMvnkgbmhuMebmGPXlpsm35FQ==
   dependencies:
     "@twilio/sip.js" "^0.7.7"
-    "@twilio/webrtc" "^3.1.1"
+    "@twilio/webrtc" "^2.1.3"
     ws "^3.3.1"
     xmlhttprequest "^1.8.0"
 
