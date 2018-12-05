@@ -23,9 +23,9 @@ seed_categories = Category.all
 response = RestClient.get "https://randomuser.me/api/"
 url = JSON.parse(response)
 
-puts 'Creating 1 fake lawyers...'
+puts 'Creating 20 fake lawyers...'
 
-1.times do
+20.times do
   user = User.create(
     first_name: Faker::Friends.character.split.first,
     last_name: Faker::Friends.character.split.last,
