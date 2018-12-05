@@ -17,6 +17,7 @@ gem 'money-rails'
 gem 'stripe'
 gem 'faker'
 gem 'rest-client'
+gem 'jquery-ui-rails'
 
 
 gem 'jbuilder', '~> 2.0'

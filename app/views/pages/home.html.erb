@@ -1,45 +1,44 @@
 <div class="home-container">
   <div class="hero-image">
     <div class="hero-text">
-      <h2 style="color: white;">Get professional legal advice</h2>
+      <h2>Get professional legal advice</h2>
       <br>
-      <p stlye="color: white; font-weight: lighter;">100,000 experienced lawyers ready to videochat confidentially</p>
-
+      <p>100,000 experienced lawyers ready to videochat confidentially</p>
       <%= form_tag lawyers_path, method: :get do %>
-      <%= text_field_tag :category, params[:category], placeholder: "Type a law field...", class: "form-homepage" %>
+      <%= text_field_tag :category, params[:name], placeholder: "Type a law field...", class: "form-homepage", 'data-categories' => @categories_names_json  %>
+      <%= submit_tag("Search", :class=>"btn btn-light", :name=>"submit", style: "margin-top: 15px;") %>
       <% end %>
-        <%= link_to "Search", lawyers_path, class: "btn btn-light", style: "margin-top: 15px;" %>
-      </div>
     </div>
   </div>
+</div>
 
-  <div class="cards-container">
-    <div class="icon-card">
-     <div class="icon">
-      <i class="fas fa-car fa-5x"></i>
-    </div>
-    <div class="icon-description">
-      <p class="text-center">Car Accident</p>
-    </div>
-  </div>
-
-  <div class="icon-card">
-    <div class="icon">
-      <i class="fas fa-home fa-5x"></i>
-    </div>
-    <div class="icon-description">
-      <p class="text-center">Real Estate</p>
-    </div>
-  </div>
-
-
+<div class="cards-container">
   <div class="icon-card">
    <div class="icon">
-    <i class="fas fa-users fa-5x"></i>
+    <i class="fas fa-car fa-5x"></i>
   </div>
   <div class="icon-description">
-    <p class="text-center">Family</p>
+    <p class="text-center">Car Accident</p>
   </div>
+</div>
+
+<div class="icon-card">
+  <div class="icon">
+    <i class="fas fa-home fa-5x"></i>
+  </div>
+  <div class="icon-description">
+    <p class="text-center">Real Estate</p>
+  </div>
+</div>
+
+
+<div class="icon-card">
+ <div class="icon">
+  <i class="fas fa-users fa-5x"></i>
+</div>
+<div class="icon-description">
+  <p class="text-center">Family</p>
+</div>
 </div>
 
 
