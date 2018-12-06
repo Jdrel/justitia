@@ -7,13 +7,15 @@ class ConsultationsController < ApplicationController
   end
 
   def create
-    customer = Stripe::Customer.create({
-    source: params[:stripeToken],
-    email:  params[:stripeEmail]
-    })
     client = current_user.client
-    client.stripe_id = customer.id
-    client.save
+    if client.stripe_id.nil?
+      customer = Stripe::Customer.create({
+      source: params[:stripeToken],
+      email:  params[:stripeEmail]
+      })
+      client.stripe_id = customer.id
+      client.save
+    end
     lawyer = Lawyer.find(params[:lawyer_id])
     consultation = Consultation.new
     consultation.lawyer = lawyer
@@ -50,5 +52,29 @@ class ConsultationsController < ApplicationController
   def start_consultation
     @consultation.start_time = Time.new if @consultation.start_time.nil?
     @consultation.save
+  end
+
+  def end_videocall
+    @consultation = Consultation.find(params[:id])
+    @consultation.duration = Time.now - @consultation.start_time
+    @consultation.client_amount_cents = calculate_client_amount
+
+    charge = Stripe::Charge.create(
+    customer: @consultation.client.stripe_id,
+    amount: @consultation.client_amount_cents,
+    currency: @consultation.client_amount_currency,
+    description: "Consultation: #{@consultation.id}"
+  )
+
+    @consultation.payment_status = 'paid'
+    @consultation.client_payment = charge.to_json
+    @consultation.save
+  end
+
+  def calculate_client_amount
+    rate = @consultation.lawyer.calculate_5mins_rate
+    minutes = (@consultation.duration/60)
+    five_minutes_block = (minutes/5).abs
+    (rate * five_minutes_block + rate) * 100
   end
 end

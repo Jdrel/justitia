@@ -1,7 +1,7 @@
 <h1>Consultations-<%= @consultation.id %></h1>
 
 <div class="position-button">
-<button id="disconnect" class="btn btn-danger">End videochat</button>
+<%= link_to "End videochat", end_videocall_path(@consultation), id: "disconnect", class: "btn btn-danger" %>
 </div>
 
 <div class="video">
