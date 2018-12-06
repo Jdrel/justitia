@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   get '/video', to: 'pages#video'
 
   resources :lawyers, only: [:index, :show] do
-    resources :consultations, only: [:new, :create, :show]
+    resources :consultations, only: [:index, :new, :create, :show]
   end
+
+  patch 'consultations/:id/appointment_status', to: 'consultations#appointment_status', as: :update_appointment_status
 end

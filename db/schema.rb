@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_174551) do
     t.integer "client_amount_cents", default: 0, null: false
     t.string "client_amount_currency", default: "USD", null: false
     t.jsonb "client_payment"
-    t.string "status", default: "pending"
+    t.string "appointment_status", default: "pending"
     t.string "string"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

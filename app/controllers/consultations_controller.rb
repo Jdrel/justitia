@@ -1,6 +1,7 @@
 class ConsultationsController < ApplicationController
   def index
-    @consultations = Consultation.where(user: current_user)
+    @lawyer = Lawyer.find(params[:lawyer_id])
+    @consultations = Consultation.where(lawyer: @lawyer)
   end
 
   def new
@@ -22,11 +23,17 @@ class ConsultationsController < ApplicationController
     consultation.lawyer = lawyer
     consultation.client = client
     consultation.save
-
     redirect_to lawyer_consultation_path(lawyer, consultation)
   end
 
-  def show
-
+  def appointment_status
+    @consultation = Consultation.find(params[:id])
+    @lawyer = @consultation.lawyer
+    @consultation.appointment_status = params[:appointment_status]
+    @consultation.save
+    respond_to do |format|
+      format.js
+    end
   end
+
 end
