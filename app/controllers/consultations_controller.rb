@@ -24,6 +24,25 @@ class ConsultationsController < ApplicationController
   end
 
   def show
+    @consultation = Consultation.find(params[:id])
+    account_sid = ENV['TWILIO_SID']
+    api_key = ENV['TWILIO_KEY']
+    api_secret = ENV['TWILIO_SECRET']
+    # Create Video grant for our token
+    video_grant = Twilio::JWT::AccessToken::VideoGrant.new
+    video_grant.room = "Consultation-#{@consultation.id}"
+    @video_room = video_grant.room
+    identity = current_user.email
+    # Create an Access Token
+    token = Twilio::JWT::AccessToken.new(
+      account_sid,
+      api_key,
+      api_secret,
+      [video_grant],
+      identity: identity
+    )
+    # Assigning token to instance variable that is passed to the view
+    @twilio_token = token.to_jwt
 
-  end
+    end
 end

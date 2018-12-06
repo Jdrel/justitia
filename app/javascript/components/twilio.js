@@ -1,19 +1,18 @@
 function initVideoCall(){
 
-  const button = document.getElementById('my-button');
+  const localMedia = document.getElementById('local-media');
 
-  if (button) {
+  if (localMedia) {
 
     const { connect, createLocalTracks, createLocalVideoTrack } = require('twilio-video');
 
-
-    button.addEventListener('click', (event) => {
       console.log("hello video");
-      const token = document.getElementById('token').value;
+      const token = localMedia.dataset.token;
+      const videoRoom = localMedia.dataset.room;
 
       connect(token, {
         audio: true,
-        name: 'test-room',
+        name: videoRoom,
         video: { width: 640 }
       }).then(room => {
         console.log(`Successfully joined a Room: ${room}`);
@@ -65,8 +64,6 @@ function initVideoCall(){
         const localMediaContainer = document.getElementById('local-media');
         localMediaContainer.appendChild(track.attach());
       });
-
-    });
 
   }
 }
