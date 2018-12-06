@@ -20,10 +20,14 @@ class LawyersController < ApplicationController
   def find_lawyers_with_specialty(param_speciality)
     @lawyers = []
     all_lawyers = Lawyer.all
-    all_lawyers.each do |lawyer|
-      lawyer.specialties.each do |specialty|
-        if specialty.category.name == param_speciality
-          @lawyers << lawyer
+    if params[:category] == "All categories"
+      @lawyers = all_lawyers
+    else
+      all_lawyers.each do |lawyer|
+        lawyer.specialties.each do |specialty|
+          if specialty.category.name == param_speciality
+            @lawyers << lawyer
+          end
         end
       end
     end
