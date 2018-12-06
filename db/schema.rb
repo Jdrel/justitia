@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_04_152156) do
+ActiveRecord::Schema.define(version: 2018_12_05_174551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2018_12_04_152156) do
   create_table "clients", force: :cascade do |t|
     t.bigint "user_id"
     t.string "stripe_token"
-    t.integer "stripe_id"
+    t.string "stripe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_clients_on_user_id"
@@ -40,10 +40,11 @@ ActiveRecord::Schema.define(version: 2018_12_04_152156) do
     t.integer "client_amount_cents", default: 0, null: false
     t.string "client_amount_currency", default: "USD", null: false
     t.jsonb "client_payment"
-    t.string "status"
+    t.string "status", default: "pending"
     t.string "string"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "start_time"
     t.index ["client_id"], name: "index_consultations_on_client_id"
     t.index ["lawyer_id"], name: "index_consultations_on_lawyer_id"
   end
@@ -52,7 +53,6 @@ ActiveRecord::Schema.define(version: 2018_12_04_152156) do
     t.bigint "user_id"
     t.text "description"
     t.integer "years_of_experience"
-    t.integer "hourly_rate"
     t.boolean "is_first_consultation_free"
     t.boolean "is_online"
     t.string "stripe_token"
@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(version: 2018_12_04_152156) do
     t.string "photo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "hourly_rate_cents", default: 0, null: false
+    t.string "hourly_rate_currency", default: "USD", null: false
     t.index ["user_id"], name: "index_lawyers_on_user_id"
   end
 
