@@ -18,12 +18,8 @@ class LawyersController < ApplicationController
     end
   end
 
-
-
   # def search(params)
-
   #   search_params = []
-
   # end
 
   def show
