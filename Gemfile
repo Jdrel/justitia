@@ -26,9 +26,12 @@ gem 'redis'
 gem 'sassc-rails'
 gem 'uglifier'
 gem 'webpacker'
+gem 'twilio-ruby', '~> 5.17.0'
+
 group :development do
   gem 'web-console', '>= 3.3.0'
 end
+
 group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
