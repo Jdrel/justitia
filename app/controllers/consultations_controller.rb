@@ -33,7 +33,7 @@ class ConsultationsController < ApplicationController
     video_grant.room = "Consultation-#{@consultation.id}"
     @video_room = video_grant.room
     identity = current_user.email
-    # Create an Access Token
+    # Create an Access Tokenss
     token = Twilio::JWT::AccessToken.new(
       account_sid,
       api_key,
@@ -43,6 +43,11 @@ class ConsultationsController < ApplicationController
     )
     # Assigning token to instance variable that is passed to the view
     @twilio_token = token.to_jwt
-
+    start_consultation if current_user.lawyer == @consultation.lawyer
     end
+
+  def start_consultation
+    @consultation.start_time = Time.new if @consultation.start_time.nil?
+    @consultation.save
+  end
 end

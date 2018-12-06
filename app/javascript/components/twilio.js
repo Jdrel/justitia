@@ -9,11 +9,12 @@ function initVideoCall(){
       console.log("hello video");
       const token = localMedia.dataset.token;
       const videoRoom = localMedia.dataset.room;
+      const disconnet = document.getElementById('disconnect');
 
       connect(token, {
         audio: true,
         name: videoRoom,
-        video: { width: 640 }
+        video: { width: 414 }
       }).then(room => {
         console.log(`Successfully joined a Room: ${room}`);
 
@@ -53,6 +54,9 @@ function initVideoCall(){
           console.log(`Participant "${participant.identity}" has disconnected from the Room`);
         });
 
+        disconnect.addEventListener('click', (event) => {
+          room.disconnect();
+        });
 
 
       }, error => {
