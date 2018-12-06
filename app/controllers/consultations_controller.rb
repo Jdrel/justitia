@@ -19,6 +19,7 @@ class ConsultationsController < ApplicationController
     consultation.lawyer = lawyer
     consultation.client = client
     consultation.save
+    UserMailer.new_consultation(consultation).deliver_now
 
     redirect_to lawyer_consultation_path(lawyer, consultation)
   end
