@@ -1,0 +1,22 @@
+.video {
+  width: 100vw;
+  position: relative;
+}
+
+#remote-media video {
+  position: absolute;
+  width: 100vw;
+
+}
+
+#local-media video {
+  width: 25vw;
+  height: 10vh;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.position-button {
+
+}
