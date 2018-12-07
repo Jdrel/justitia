@@ -9,7 +9,7 @@ function initVideoCall(){
       console.log("hello video");
       const token = localMedia.dataset.token;
       const videoRoom = localMedia.dataset.room;
-      const disconnet = document.getElementById('disconnect');
+      const disconnect = document.getElementById('disconnect');
 
       connect(token, {
         audio: true,
@@ -55,7 +55,12 @@ function initVideoCall(){
         });
 
         disconnect.addEventListener('click', (event) => {
-          room.disconnect();
+          console.log("Hello from EventListener");
+          if (confirm("Do you really want to end this videocall?")) {
+            room.disconnect();
+          } else {
+            event.preventDefault();
+          }
         });
 
 
