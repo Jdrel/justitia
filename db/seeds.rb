@@ -34,12 +34,13 @@ seed_categories = Category.all
 
 puts 'Creating 10 lawyers...'
 
-10.times do
+10.times do |i|
+  first_name = Faker::Name.first_name
   user = User.create(
-    first_name: Faker::Name.first_name,
+    first_name: first_name,
     last_name: Faker::Name.last_name,
     address: Faker::WorldCup.city,
-    email: 'justitia.ninjas@gmail.com',
+    email: "#{first_name}#{i.to_s}@justitia.today",
     password: 'secret'
   )
   lawyer = Lawyer.create(
@@ -49,34 +50,32 @@ puts 'Creating 10 lawyers...'
     hourly_rate_cents: rand(3000..50000),
     is_first_consultation_free: Faker::Boolean.boolean,
     is_online: Faker::Boolean.boolean,
-    photo: photos.sample,
-    stripe_token: Faker::String.random(12),
-    stripe_id: rand(0..999)
+    photo: photos.sample
   )
   rand(1..3).times do
     lawyer.specialties.create!(
       lawyer: lawyer,
       category: seed_categories.sample
     )
-  Client.create(
-    user: user
-  )
   end
+  i += 1
 end
 
 puts 'Creating 10 users...'
 
-10.times do
+10.times do |i|
+  first_name = Faker::Name.first_name
   user = User.create(
-    first_name: Faker::Name.first_name,
+    first_name: first_name,
     last_name: Faker::Name.last_name,
     address: Faker::WorldCup.city,
-    email: 'justitia.ninjas@gmail.com',
+    email: "#{first_name}#{i.to_s}@justitia.today",
     password: 'secret'
   )
   Client.create(
     user: user
   )
+  i += 1
 end
 
 puts 'Finished!'
