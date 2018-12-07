@@ -4,7 +4,7 @@ class LawyersController < ApplicationController
   def index
     get_category_names
     search_result = search(params)
-    if search_result.first.nil?
+    if params[:category] == "All categories"
       @lawyers = Lawyer.all
     else
       search_result
@@ -41,12 +41,14 @@ class LawyersController < ApplicationController
     end
 
     if params[:min_price].present?
-      sql_query = "hourly_rate > :query"
-      @lawyers = @lawyers.where(sql_query, query: "#{params[:min_price]}")
+      price_in_cents = params[:min_price].to_i * 100
+      sql_query = "hourly_rate_cents > :query"
+      @lawyers = @lawyers.where(sql_query, query: "#{price_in_cents}")
     end
     if params[:max_price].present?
-      sql_query = "hourly_rate < :query"
-      @lawyers = @lawyers.where(sql_query, query: "#{params[:max_price]}")
+      price_in_cents = params[:min_price].to_i * 100
+      sql_query = "hourly_rate_cents < :query"
+      @lawyers = @lawyers.where(sql_query, query: "#{price_in_cents}")
     end
     if params[:category].present?
       @lawyers = find_lawyers_with_specialty(params[:category])
