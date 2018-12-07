@@ -30,8 +30,9 @@
   display: inline-flex;
   align-items: center;
   position: relative;
+  text-decoration: none;
   h5 {
-  color: $dark-blue;
+    color: $dark-blue;
   }
   ul {
     list-style-type: none;
@@ -41,7 +42,7 @@
     color: $gray-dark;
   }
 
-.online-circle{
+.online-circle-green {
   background-color: $online-green;
   height: 15px;
   width: 15px;
@@ -49,7 +50,16 @@
   position: absolute;
   top: 5px;
   right: 5px;
+}
 
+.online-circle-red {
+  background-color: $online-red;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 
 .lawyer-avatar {
@@ -66,5 +76,28 @@
 }
 .lawyer-decription{
   width:50%;
+  text-decoration: none;
+
+  }
 }
+
+#name-size {
+  font-size: 16px;
+}
+
+.form-size {
+  width: 63px;
+  height: 20px;
+  font-size: 9px;
+  padding: 2px;
+  margin: 0 2px;
+}
+
+.search-results {
+  h5 {
+    font-size: 13px;
+    font-weight: lighter;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }

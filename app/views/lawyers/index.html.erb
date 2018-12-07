@@ -1,8 +1,11 @@
-<%= render 'shared/lawyer_filter' %>
+
+<div class="container">
+
 
 <div class="lawyers-container">
+  <%= render 'shared/lawyer_filter' %>
   <div class ="search-results">
-    These are the lawyers we found for you:
+    <h5>Who can help you:</h5>
   </div>
   <% @lawyers.each do |lawyer| %>
   <%= link_to lawyer_path(lawyer), :action => 'go' do %>
@@ -12,7 +15,7 @@
       <%=  image_tag(lawyer.photo) %>
     </div>
     <div class="lawyer-decription">
-      <h5><%= lawyer.user.first_name.capitalize + " " + lawyer.user.last_name.capitalize %></h5>
+      <h5 id="name-size"><%= lawyer.user.first_name.capitalize + " " + lawyer.user.last_name.capitalize %></h5>
       <ul>
         <li>Specialties: <%= truncate(lawyer.categories, length: 35) %></li>
         <li><i class="fas fa-dollar-sign"></i> Price per hour: <%= humanized_money_with_symbol lawyer.hourly_rate %></li>
@@ -22,11 +25,16 @@
       </ul>
     </div>
     <% if lawyer.is_online  %>
-    <div class="online-circle">
-    </div>
+      <div class="online-circle-green"></div>
+    <% else %>
+      <div class="online-circle-red"></div>
     <% end  %>
 
   </div>
   <% end %>
   <% end %>
 </div>
+
+
+</div>
+
