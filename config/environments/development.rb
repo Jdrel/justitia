@@ -1,12 +1,16 @@
 Rails.application.configure do
 
-  # # mail opener
+  # # mail opener with LETTER OPENER
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
+  # Postmark Setup currently used in production but we can use the setting below to test postmark in development
+  # config.action_mailer.delivery_method = :postmark
+  # config.action_mailer.postmark_settings = { :api_token => ENV['POSTMARK_API_KEY'] }
+  # config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = true
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # Settings specified here will take precedence over those in config/application.rb.
 
