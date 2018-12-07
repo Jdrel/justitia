@@ -15,7 +15,7 @@
       <h5><%= lawyer.user.first_name.capitalize + " " + lawyer.user.last_name.capitalize %></h5>
       <ul>
         <li>Specialties: <%= truncate(lawyer.categories, length: 35) %></li>
-        <li><i class="fas fa-euro-sign"></i> Price per hour: €<%= lawyer.hourly_rate %></li>
+        <li><i class="fas fa-dollar-sign"></i> Price per hour: <%= humanized_money_with_symbol lawyer.hourly_rate %></li>
         <% if lawyer.is_first_consultation_free %>
         <li><i class="fas fa-handshake"></i> First consultation is free!</li>
         <% end %>
