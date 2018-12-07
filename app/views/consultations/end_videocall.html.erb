@@ -1,7 +1,5 @@
 <h2>Your Videocall Summary</h2>
-<br>
- <%=  image_tag(@consultation.lawyer.photo) %>
-<p>Your videocalll with <%= @consultation.lawyer.user.first_name + " " + @consultation.lawyer.user.last_name %> had a duration of <%= @consultation.duration/600%> minutes and cost you $<%= @consultation.client_amount_cents/1000 %>.</p>
+<p>Your videocalll with <%= @consultation.lawyer.user.first_name + " " + @consultation.lawyer.user.last_name %> had a duration of <%= @consultation.duration_to_minutes%> minutes and cost you <%= humanized_money_with_symbol @consultation.client_amount %>.</p>
 <br>
 <small>Thank you for trusting Justitia!</small>
 
