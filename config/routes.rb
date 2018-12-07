@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   end
 
   patch 'consultations/:id/appointment_status', to: 'consultations#appointment_status', as: :update_appointment_status
+  get '/consultations/:id/end_videocall', to: 'consultations#end_videocall', as: 'end_videocall'
 end

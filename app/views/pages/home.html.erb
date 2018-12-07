@@ -4,8 +4,8 @@
       <h2>Get professional legal advice</h2>
       <br>
       <p>100,000 experienced lawyers ready to videochat confidentially</p>
-      <%= form_tag lawyers_path, method: :get do %>
-      <%= text_field_tag :category, params[:name], placeholder: "Type a law field...", class: "form-homepage", 'data-categories' => @categories_names_json, id: "categories_search_home"  %>
+      <%= form_tag lawyers_path, method: :get, class: "form-group" do %>
+      <%= select_tag :category, options_for_select(@categories_names), class: "form-control background-grey", prompt: "Select your category"  %>
       <%= submit_tag("Search", :class=>"btn btn-light", :name=>"submit", style: "margin-top: 15px;") %>
       <% end %>
     </div>
@@ -18,7 +18,7 @@
     <i class="fas fa-car fa-5x"></i>
   </div>
   <div class="icon-description">
-    <p class="text-center">Car Accident</p>
+    <p>Car Accident</p>
   </div>
 </div>
 
@@ -27,7 +27,7 @@
     <i class="fas fa-home fa-5x"></i>
   </div>
   <div class="icon-description">
-    <p class="text-center">Real Estate</p>
+    <p>Real Estate</p>
   </div>
 </div>
 
@@ -37,7 +37,7 @@
   <i class="fas fa-users fa-5x"></i>
 </div>
 <div class="icon-description">
-  <p class="text-center">Family</p>
+  <p>Family</p>
 </div>
 </div>
 
@@ -48,7 +48,7 @@
   <i class="fas fa-gavel fa-5x"></i>
 </div>
 <div class="icon-description">
-  <p class="text-center">Civil Rights</p>
+  <p>Civil Rights</p>
 </div>
 </div>
 
@@ -58,7 +58,7 @@
   <i class="fas fa-id-card-alt fa-5x"></i>
 </div>
 <div class="icon-description">
-  <p class="text-center">Immigration</p>
+  <p>Immigration</p>
 </div>
 </div>
 
@@ -67,7 +67,7 @@
    <i class="fas fa-dollar-sign fa-5x"></i>
  </div>
  <div class="icon-description">
-  <p class="text-center">Bankruptcy</p>
+  <p>Bankruptcy</p>
 </div>
 </div>
 </div>

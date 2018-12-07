@@ -1,20 +1,20 @@
 function initVideoCall(){
 
-  const button = document.getElementById('my-button');
+  const localMedia = document.getElementById('local-media');
 
-  if (button) {
+  if (localMedia) {
 
     const { connect, createLocalTracks, createLocalVideoTrack } = require('twilio-video');
 
-
-    button.addEventListener('click', (event) => {
       console.log("hello video");
-      const token = document.getElementById('token').value;
+      const token = localMedia.dataset.token;
+      const videoRoom = localMedia.dataset.room;
+      const disconnect = document.getElementById('disconnect');
 
       connect(token, {
         audio: true,
-        name: 'test-room',
-        video: { width: 640 }
+        name: videoRoom,
+        video: { width: 414 }
       }).then(room => {
         console.log(`Successfully joined a Room: ${room}`);
 
@@ -54,6 +54,14 @@ function initVideoCall(){
           console.log(`Participant "${participant.identity}" has disconnected from the Room`);
         });
 
+        disconnect.addEventListener('click', (event) => {
+          console.log("Hello from EventListener");
+          if (confirm("Do you really want to end this videocall?")) {
+            room.disconnect();
+          } else {
+            event.preventDefault();
+          }
+        });
 
 
       }, error => {
@@ -65,8 +73,6 @@ function initVideoCall(){
         const localMediaContainer = document.getElementById('local-media');
         localMediaContainer.appendChild(track.attach());
       });
-
-    });
 
   }
 }
