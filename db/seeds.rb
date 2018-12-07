@@ -31,15 +31,14 @@ end
 
 seed_categories = Category.all
 
-puts 'Creating 10 fake lawyer...'
+puts 'Creating 10 lawyers...'
 
-15.times do
-  full_name = Faker::GameOfThrones.character
+10.times do
   user = User.create(
-    first_name: full_name.split.first,
-    last_name: full_name.split.last,
-    address: Faker::GameOfThrones.city,
-    email: Faker::Internet.email,
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    address: Faker::WorldCup.city,
+    email: 'justitia.ninjas@gmail.com',
     password: 'secret'
   )
   lawyer = Lawyer.create(
@@ -58,7 +57,25 @@ puts 'Creating 10 fake lawyer...'
       lawyer: lawyer,
       category: seed_categories.sample
     )
+  Client.create(
+    user: user
+  )
   end
+end
+
+puts 'Creating 10 users...'
+
+10.times do
+  user = User.create(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    address: Faker::WorldCup.city,
+    email: 'justitia.ninjas@gmail.com',
+    password: 'secret'
+  )
+  Client.create(
+    user: user
+  )
 end
 
 puts 'Finished!'
