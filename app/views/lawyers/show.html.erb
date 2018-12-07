@@ -4,7 +4,7 @@
 
       <div class="profile-position">
         <%= image_tag(@lawyer.photo, class: "lawyer-avatar avatar-large") %>
-          <h4 class="profile-text"> <%= @lawyer.user.first_name %> <%= @lawyer.user.first_name %>  </h4>
+          <h4 class="profile-text"> <%= @lawyer.user.first_name %> <%= @lawyer.user.last_name %>  </h4>
       </div>
     </div>
   </div>
@@ -12,7 +12,7 @@
   <div class="basic-info">
     <p class="text-position"><i class="fas fa-map-marker-alt"></i> <%= @lawyer.user.address %>  </p>
     <p class="text-position"><i class="fas fa-gavel"></i>  Legal fields: corporate law </p>
-    <p class="text-position"><i class="fas fa-euro-sign"></i>  Price per 6 minutes: <%= @lawyer.hourly_rate / 10 %>  €</p>
+    <p class="text-position"><i class="fas fa-dollar-sign"></i>  Price per hour: <%= humanized_money_with_symbol @lawyer.hourly_rate %> </p>
     <% if @lawyer.is_first_consultation_free %>
       <p class="text-position"><i class="fas fa-check"></i> Book first videochat for free </p>
     <% end %>
