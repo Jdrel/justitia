@@ -60,7 +60,7 @@ class ConsultationsController < ApplicationController
     # Assigning token to instance variable that is passed to the view
     @twilio_token = token.to_jwt
     start_consultation if current_user.lawyer == @consultation.lawyer
-    end
+  end
 
   def start_consultation
     @consultation.start_time = Time.new if @consultation.start_time.nil?

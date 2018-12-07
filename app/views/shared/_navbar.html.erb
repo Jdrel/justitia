@@ -1,5 +1,10 @@
 <nav class="navbar navbar-light d-flex p-2">
   <a class="navbar-brand navbar-title" href=<%= root_path %>>JUSTITIA</a>
+
+  <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+  <%= link_to "Log in", new_user_session_path %>
+        <%= link_to "Sign up", new_user_registration_path %>
+
    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
