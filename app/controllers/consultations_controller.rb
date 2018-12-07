@@ -1,4 +1,8 @@
 class ConsultationsController < ApplicationController
+  def index
+    @lawyer = Lawyer.find(params[:lawyer_id])
+    @consultations = Consultation.where(lawyer: @lawyer)
+  end
 
   def new
     @consultation = Consultation.new
@@ -22,8 +26,17 @@ class ConsultationsController < ApplicationController
     consultation.client = client
     consultation.save
     UserMailer.new_consultation(consultation).deliver_now
-
     redirect_to lawyer_consultation_path(lawyer, consultation)
+  end
+
+  def appointment_status
+    @consultation = Consultation.find(params[:id])
+    @lawyer = @consultation.lawyer
+    @consultation.appointment_status = params[:appointment_status]
+    @consultation.save
+    respond_to do |format|
+      format.js
+    end
   end
 
   def show
@@ -47,7 +60,7 @@ class ConsultationsController < ApplicationController
     # Assigning token to instance variable that is passed to the view
     @twilio_token = token.to_jwt
     start_consultation if current_user.lawyer == @consultation.lawyer
-    end
+  end
 
   def start_consultation
     @consultation.start_time = Time.new if @consultation.start_time.nil?

@@ -10,7 +10,6 @@ class CreateConsultations < ActiveRecord::Migration[5.2]
       t.jsonb :client_payment
       t.string :status
       t.string :string
-
       t.timestamps
     end
   end

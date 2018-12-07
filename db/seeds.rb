@@ -1,14 +1,6 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
 puts 'Cleaning database...'
-Lawyer.destroy_all
 Client.destroy_all
+Lawyer.destroy_all
 User.destroy_all
 Category.destroy_all
 Specialty.destroy_all
@@ -32,15 +24,15 @@ end
 
 seed_categories = Category.all
 
-puts 'Creating 10 fake lawyer...'
+puts 'Creating 10 lawyers...'
 
-15.times do
-  full_name = Faker::GameOfThrones.character
+10.times do |i|
+  first_name = Faker::Name.first_name
   user = User.create(
-    first_name: full_name.split.first,
-    last_name: full_name.split.last,
-    address: Faker::GameOfThrones.city,
-    email: Faker::Internet.email,
+    first_name: first_name,
+    last_name: Faker::Name.last_name,
+    address: Faker::WorldCup.city,
+    email: "#{first_name}#{i.to_s}@justitia.today",
     password: 'secret'
   )
   lawyer = Lawyer.create(
@@ -50,16 +42,50 @@ puts 'Creating 10 fake lawyer...'
     hourly_rate_cents: rand(3000..50000),
     is_first_consultation_free: Faker::Boolean.boolean,
     is_online: Faker::Boolean.boolean,
-    photo: photos.sample,
-    stripe_token: Faker::String.random(12),
-    stripe_id: rand(0..999)
+    photo: photos.sample
   )
   rand(1..3).times do
     lawyer.specialties.create!(
       lawyer: lawyer,
       category: seed_categories.sample
     )
+  Client.create(
+    user: user
+  )
   end
+  i += 1
+end
+
+puts 'Creating 10 users...'
+
+10.times do |i|
+  first_name = Faker::Name.first_name
+  user = User.create(
+    first_name: first_name,
+    last_name: Faker::Name.last_name,
+    address: Faker::WorldCup.city,
+    email: "#{first_name}#{i.to_s}@justitia.today",
+    password: 'secret'
+  )
+  Client.create(
+    user: user
+  )
+  i += 1
+end
+
+puts 'Creating 10 users...'
+
+10.times do
+  user = User.create(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    address: Faker::WorldCup.city,
+    email: 'justitia.ninjas@gmail.com',
+    password: 'secret'
+  )
+  Client.create(
+    user: user
+  )
 end
 
 puts 'Finished!'

@@ -2,7 +2,7 @@ class PagesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:home, :video]
 
   def home
-    get_category_names
+    get_category_names_alphabetically_ordered
   end
 
   def video
@@ -10,11 +10,13 @@ class PagesController < ApplicationController
 
   private
 
-  def get_category_names
-    @categories_names = ["All categories"]
+  def get_category_names_alphabetically_ordered
+    @category_names = []
     Category.all.each do |category|
-      @categories_names << category.name
+      @category_names << category.name
     end
-    return @categories_names
+    @category_names.sort_by!{ |c| c.downcase }
+    @category_names.insert(0,"All categories")
+    return @category_names
   end
 end
