@@ -77,7 +77,7 @@ class ConsultationsController < ApplicationController
     amount: @consultation.client_amount_cents,
     currency: @consultation.client_amount_currency,
     description: "Consultation: #{@consultation.id}"
-  )
+    )
 
     @consultation.payment_status = 'paid'
     @consultation.client_payment = charge.to_json
