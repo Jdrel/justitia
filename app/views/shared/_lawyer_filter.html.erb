@@ -1,9 +1,9 @@
   <div class="filter-lawyers-container">
   <%= form_tag lawyers_path, method: :get, class: "form-inline" do %>
-  <%= select_tag :is_online, options_for_select([["online",true],["offline",false]]), prompt: "Online/offline", class: "form-control col-auto my-1 mr-5" %>
+  <%= select_tag :is_online, options_for_select([["online",true],["offline",false]], params[:is_online]), prompt: "Online/offline", class: "form-control col-auto my-1 mr-5" %>
   <%= text_field_tag :min_price, params[:min_price], placeholder: "Min price", class: "form-control col-auto my-1 mr-5" %>
   <%= text_field_tag :max_price, params[:max_price], placeholder: "Max price", class: "form-control col-auto my-1 mr-5" %>
-  <%= select_tag :category, options_for_select(@category_names), prompt: "Category", class: " form-control col-auto my-1 mr-5" %>
+  <%= select_tag :category, options_for_select(@category_names, params[:category]), prompt: "Category", class: " form-control col-auto my-1 mr-5" %>
   <%= submit_tag("filter", :class=>"btn btn-success", :name=>"submit") %>
   <% end %>
 </div>

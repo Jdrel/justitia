@@ -5,7 +5,7 @@
       <br>
       <p>100,000 experienced lawyers ready to videochat confidentially</p>
       <%= form_tag lawyers_path, method: :get, class: "form-group" do %>
-      <%= select_tag :category, options_for_select(@category_names), class: "form-control background-grey", prompt: "Select your category"  %>
+      <%= select_tag :category, options_for_select(@category_names), class: "form-control background-grey"  %>
       <%= submit_tag("Search", :class=>"btn btn-light", :name=>"submit", style: "margin-top: 15px;") %>
       <% end %>
     </div>
