@@ -55,10 +55,10 @@ class LawyersController < ApplicationController
   end
 
   def get_category_names
-    @categories_names = []
+    @category_names = []
     Category.all.each do |category|
-      @categories_names << category.name
+      @category_names << category.name
     end
-    return @categories_names
+    return @category_names
   end
 end
