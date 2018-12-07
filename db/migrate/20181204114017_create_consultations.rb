@@ -8,7 +8,7 @@ class CreateConsultations < ActiveRecord::Migration[5.2]
       t.jsonb :lawyer_payment
       t.monetize :client_amount
       t.jsonb :client_payment
-      t.string :appointment_status
+      t.string :status
       t.string :string
       t.timestamps
     end
