@@ -9,5 +9,5 @@
 
 import { initVideoCall } from '../components/twilio';
 
-
 initVideoCall();
+

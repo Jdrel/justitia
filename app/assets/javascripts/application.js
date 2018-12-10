@@ -3,3 +3,4 @@
 //= require rails-ujs
 //= require_tree .
 //= require jquery-ui/widgets/autocomplete
+
