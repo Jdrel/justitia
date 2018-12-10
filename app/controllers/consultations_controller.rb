@@ -5,6 +5,7 @@ class ConsultationsController < ApplicationController
 
   def index
     @lawyer = Lawyer.find(params[:lawyer_id])
+    authorize(@lawyer)
     @consultations = Consultation.where(lawyer: @lawyer)
   end
 
@@ -34,17 +35,27 @@ class ConsultationsController < ApplicationController
   end
 
   def appointment_status
-    @consultation = Consultation.find(params[:id])
-    @lawyer = @consultation.lawyer
-    @consultation.appointment_status = params[:appointment_status]
-    @consultation.save
-    respond_to do |format|
-      format.js
-    end
+    # if authenticate_lawyer
+      @consultation = Consultation.find(params[:id])
+      @lawyer = @consultation.lawyer
+      @consultation.appointment_status = params[:appointment_status]
+      @consultation.save
+      respond_to do |format|
+        format.js
+      end
+    # else
+    #   redirect_to lawyers_path
+    # end
   end
+
+  # def authenticate_lawyer
+  #   lawyer = Lawyer.find(params[:lawyer_id])
+  #   current_user.id == lawyer.user.id
+  # end
 
   def show
     @consultation = Consultation.find(params[:id])
+    authorize(@consultation)
     # Assigning token to instance variable that is passed to the view
     token = twilio_token
     @twilio_token = token.to_jwt
