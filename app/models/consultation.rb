@@ -7,4 +7,8 @@ class Consultation < ApplicationRecord
   def duration_to_minutes
     duration / 60
   end
+
+  def end_time
+    start_time + duration
+  end
 end
