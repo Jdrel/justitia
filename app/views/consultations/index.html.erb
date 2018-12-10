@@ -1,3 +1,4 @@
+
 <h2> <%= @lawyer.user.first_name %> </h2>
 
 <h3> <%= @lawyer.user.address %> </h3>
@@ -11,7 +12,7 @@
   <%= link_to 'Reject', update_appointment_status_path(consultation, :appointment_status => 'rejected'), remote: true, method: 'patch', class: 'btn btn-sm btn-danger'%>
   <%= link_to 'Accept', update_appointment_status_path(consultation, :appointment_status => 'accepted'), method: 'patch', remote: true, class: 'btn btn-sm btn-primary'%>
 
-
 <% end %>
 
 <% end %>
+

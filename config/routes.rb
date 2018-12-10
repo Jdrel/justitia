@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   post '/lawyers/:lawyer_id/consultations/new_appointment', to: 'consultations#create_new_appointment', as: :create_new_appointment
   get '/lawyers/:lawyer_id/consultations/:id/new_appointment/confirmation', to: 'consultations#confirmation', as: :confirmation
 
-
   resources :lawyers, only: [:index, :show, :new] do
     resources :consultations, only: [:index, :new, :create, :show]
   end
