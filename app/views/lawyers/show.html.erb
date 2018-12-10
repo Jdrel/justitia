@@ -11,7 +11,7 @@
 
   <div class="basic-info">
     <p class="text-position"><i class="fas fa-map-marker-alt"></i> <%= @lawyer.user.address %>  </p>
-    <p class="text-position"><i class="fas fa-gavel"></i>  Legal fields: corporate law </p>
+    <p class="text-position"><i class="fas fa-gavel"></i>  <%= truncate(@lawyer.categories, length: 35) %></p>
     <p class="text-position"><i class="fas fa-dollar-sign"></i>  Price per hour: <%= humanized_money_with_symbol @lawyer.hourly_rate %> </p>
     <% if @lawyer.is_first_consultation_free %>
       <p class="text-position"><i class="fas fa-check"></i> Book first videochat for free </p>
