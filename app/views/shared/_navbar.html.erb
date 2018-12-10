@@ -1,10 +1,53 @@
-<header>
-<nav class="navbar navbar-light d-flex p-2">
-  <%= link_to root_path do %>
-    <%= image_tag('justitia_logo.png', :class => "justitia-logo") %>
-    <% end %>
-   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-</nav>
-</header>
+<div class="navbar-wagon">
+  <!-- Logo -->
+  <a href="/" class="navbar-wagon-brand">
+    <%= image_tag("logo.png") %>
+  </a>
+
+  <!-- Right Navigation -->
+  <% if user_signed_in? %>
+  <!-- Profile picture for lawyer with dropdown list -->
+  <% if current_user.is_lawyer? %>
+    <div class="navbar-wagon-item d-none d-md-block">
+      <div class="dropdown">
+        <%= image_tag current_user.lawyer.photo, class: "avatar dropdown-toggle", id: "navbar-wagon-menu", :"data-toggle" => "dropdown" %>
+        <ul class="dropdown-menu dropdown-menu-right navbar-wagon-dropdown-menu">
+          <li><a href="#">Dashboard</a></li>
+          <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
+        </ul>
+      </div>
+    </div>
+  <% else %>
+    <div class="navbar-wagon-right d-none d-md-block">
+      <%= link_to "Log out", destroy_user_session_path, class: "navbar-wagon-item navbar-wagon-link", method: :delete %>
+    </div>
+  <% end %>
+  <!-- END of profile picture for lawyer with dropdown list -->
+  <% else %>
+    <div class="navbar-wagon-right d-none d-md-block">
+     <%= link_to "Log in", new_user_session_path, class: "navbar-wagon-item navbar-wagon-link" %>
+     <%= link_to "Sign up", new_user_registration_path, class: "navbar-wagon-item navbar-wagon-link" %>
+   </div>
+ <% end %>
+
+ <!-- Dropdown appearing on mobile only -->
+ <div class="navbar-wagon-item d-md-none d-lg-none">
+  <div class="dropdown">
+    <i class="fas fa-bars fa-lg" data-toggle="dropdown" role="button"></i>
+    <ul class="dropdown-menu dropdown-menu-right navbar-wagon-dropdown-menu">
+      <% if user_signed_in? %>
+        <% if current_user.is_lawyer? %>
+
+      <li><%= link_to "Dashboard", destroy_user_session_path %></li>
+      <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
+       <% else  %>
+       <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
+       <% end  %>
+      <% else  %>
+      <li><%= link_to "Log in", new_user_session_path %></li>
+      <li><%= link_to "Sign up", new_user_registration_path %></li>
+      <% end  %>
+    </ul>
+  </div>
+</div>
+</div>
