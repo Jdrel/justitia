@@ -2,6 +2,7 @@ class Lawyer < ApplicationRecord
   belongs_to :user
   has_many :consultations, dependent: :destroy
   has_many :specialties, dependent: :destroy
+  has_many :categories, through: :specialties
   monetize :hourly_rate_cents
 
   def categories
