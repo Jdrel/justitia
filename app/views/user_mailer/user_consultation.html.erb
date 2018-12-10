@@ -1,0 +1,6 @@
+Hi <%= @client_name %>,<br><br>
+
+You scheduled a call with <%= @lawyer_name  %> today. You can access the consultation here: <%= link_to 'start consultation', lawyer_consultation_url(@lawyer, @consultation) %>.<br><br>
+
+Kind regards,<br>
+Justitita

@@ -4,4 +4,8 @@ class UserMailerPreview < ActionMailer::Preview
   def new_consultation
     UserMailer.new_consultation
   end
+  # Preview this email at http://localhost:3000/rails/mailers/user_mailer/user_consultation
+  def user_consultation
+    UserMailer.user_consultation
+  end
 end
