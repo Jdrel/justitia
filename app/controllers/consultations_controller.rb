@@ -45,20 +45,14 @@ class ConsultationsController < ApplicationController
 
   def show
     @consultation = Consultation.find(params[:id])
-    # Create Video grant for our token
-    video_grant = Twilio::JWT::AccessToken::VideoGrant.new
-    video_grant.room = "Consultation-#{@consultation.id}"
-    @video_room = video_grant.room
-    # Create an Access Token
-    token = twilio_token
     # Assigning token to instance variable that is passed to the view
+    token = twilio_token
     @twilio_token = token.to_jwt
     start_consultation if current_user.lawyer == @consultation.lawyer
   end
 
   def start_consultation
     @consultation.start_time = Time.new if @consultation.start_time.nil?
-    @consultation.video_room = @video_room
     @consultation.save
   end
 
@@ -84,8 +78,9 @@ class ConsultationsController < ApplicationController
     end
 
     # close the room
-    @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, twilio_token)
-    room = @client.video.rooms(@consultation.video_room).update(status: 'completed')
+    # @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, twilio_token)
+    # room = @client.video.rooms('DailyStandup').fetch
+    # room = @client.video.rooms('video_room').update(status: 'completed')
     @consultation.save
   end
 
@@ -97,6 +92,11 @@ class ConsultationsController < ApplicationController
   end
 
   def twilio_token
+    # Create Video grant for our token
+    video_grant = Twilio::JWT::AccessToken::VideoGrant.new
+    video_grant.room = "Consultation-#{@consultation.id}"
+    @video_room = video_grant.room
+    # Create an Access Token
     identity = current_user.email
     Twilio::JWT::AccessToken.new(
       TW_ACCOUNT_SID,
