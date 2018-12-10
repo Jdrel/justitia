@@ -63,4 +63,8 @@ class LawyersController < ApplicationController
     end
     return @category_names
   end
+
+  def new
+    @lawyer = Lawyer.new
+  end
 end
