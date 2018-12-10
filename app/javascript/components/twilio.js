@@ -1,6 +1,7 @@
 function initVideoCall(){
 
   const localMedia = document.getElementById('local-media');
+  const remoteMedia = document.getElementById('remote-media');
 
   if (localMedia) {
 
@@ -26,11 +27,11 @@ function initVideoCall(){
           console.log(`Participant "${participant.identity}" is already connected to the Room`);
 
            participant.tracks.forEach(track => {
-            document.getElementById('remote-media').appendChild(track.attach());
+            remoteMedia.appendChild(track.attach());
           });
 
           participant.on('trackAdded', track => {
-            document.getElementById('remote-media').appendChild(track.attach());
+            remoteMedia.appendChild(track.attach());
           });
         });
 
@@ -40,11 +41,11 @@ function initVideoCall(){
 
 
           participant.tracks.forEach(track => {
-            document.getElementById('remote-media').appendChild(track.attach());
+            remoteMedia.appendChild(track.attach());
           });
 
           participant.on('trackAdded', track => {
-            document.getElementById('remote-media').appendChild(track.attach());
+            remoteMedia.appendChild(track.attach());
           });
 
         });
@@ -81,8 +82,7 @@ function initVideoCall(){
 
 
       createLocalVideoTrack().then(track => {
-        const localMediaContainer = document.getElementById('local-media');
-        localMediaContainer.appendChild(track.attach());
+        localMedia.appendChild(track.attach());
       });
 
   }
