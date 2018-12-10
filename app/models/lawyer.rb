@@ -10,7 +10,7 @@ class Lawyer < ApplicationRecord
     self.specialties.each do |specialty|
       categories_names << specialty.category.name
     end
-    categories_names_string = categories_names.join(", ")
+    categories_names_string = categories_names.sort.uniq.join(", ")
     return categories_names_string
   end
 
