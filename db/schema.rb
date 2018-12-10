@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_06_151243) do
+ActiveRecord::Schema.define(version: 2018_12_10_145417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2018_12_06_151243) do
     t.datetime "start_time"
     t.string "payment_status", default: "pending"
     t.datetime "appointment_time"
+    t.string "video_room"
     t.index ["client_id"], name: "index_consultations_on_client_id"
     t.index ["lawyer_id"], name: "index_consultations_on_lawyer_id"
   end
