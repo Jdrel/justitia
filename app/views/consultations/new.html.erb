@@ -1,16 +1,20 @@
-<p>You are about to start a videochat with <%= @lawyer.user.first_name + " " + @lawyer.user.last_name %>. Your lawyer will charge your credit card based on the duration of this videochat at the rate of $<%= @lawyer.calculate_5mins_rate %> per 5 minutes block.
-<br>
-<%= @lawyer.user.first_name + " " + @lawyer.user.last_name %> hourly rate: $<%= @lawyer.hourly_rate %>.</p>
+<div class="consultation-container">
+  <h5>You're about to start a videochat with <strong><%= @lawyer.user.first_name + " " + @lawyer.user.last_name %></strong></h5>
+  <p>Your lawyer will charge your credit card based on the duration of this videochat at the rate of $<%= @lawyer.calculate_5mins_rate %> per 5 minutes block.
+  <br>
+  <br>
+  <strong><%= @lawyer.user.first_name + " " + @lawyer.user.last_name %> hourly rate: $<%= @lawyer.hourly_rate %>.</strong></p>
 
-<%= simple_form_for([@lawyer, @consultation]) do |f| %>
-  <% if @client.stripe_id.nil? %>
-    <script
-        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-        data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-        data-name="Justitia.today"
-        data-email="<%= current_user.email %>"
-        data-description="Justitia videochat"></script>
-  <% else %>
-    <%= f.submit "Start videochat now", class: "btn btn-primary" %>
+  <%= simple_form_for([@lawyer, @consultation]) do |f| %>
+    <% if @client.stripe_id.nil? %>
+      <script
+          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+          data-name="Justitia.today"
+          data-email="<%= current_user.email %>"
+          data-description="Justitia videochat"></script>
+    <% else %>
+      <%= f.submit "Start videochat now", class: "btn btn-primary", id: "start-videochat" %>
+    <% end %>
   <% end %>
-<% end %>
+</div>

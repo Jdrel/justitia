@@ -7,6 +7,8 @@
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= favicon_link_tag asset_path('favicon.ico'), :rel => 'icon', :type => "image/x-icon" %>
+
     <%#= stylesheet_pack_tag 'application', media: 'all' %> <!-- Uncomment if you import CSS in app/javascript/packs/application.js -->
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -16,8 +18,10 @@
 
   </head>
   <body>
-    <%= render 'shared/flashes' %>
+    <% unless controller_name=="consultations" && action_name=='show' %>
     <%= render 'shared/navbar' %>
+    <% end %>
+    <%= render 'shared/flashes' %>
     <%= yield %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_pack_tag 'application' %>

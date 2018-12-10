@@ -10,7 +10,6 @@
 #remote-media video {
   position: absolute;
   width: 100vw;
-
 }
 
 #local-media video {
@@ -32,4 +31,10 @@
     background-color: #dc3545;
     border-color: #dc3545;
     border-radius: 205px;
+}
+
+#start-videochat {
+  margin-left: 116px;
+  margin-right: 116px;
+  margin-top: 25px;
 }

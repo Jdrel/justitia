@@ -1,6 +1,7 @@
 function initVideoCall(){
 
   const localMedia = document.getElementById('local-media');
+  const remoteMedia = document.getElementById('remote-media');
 
   if (localMedia) {
 
@@ -26,33 +27,44 @@ function initVideoCall(){
           console.log(`Participant "${participant.identity}" is already connected to the Room`);
 
            participant.tracks.forEach(track => {
-            document.getElementById('remote-media').appendChild(track.attach());
+            remoteMedia.appendChild(track.attach());
           });
 
           participant.on('trackAdded', track => {
-            document.getElementById('remote-media').appendChild(track.attach());
+            remoteMedia.appendChild(track.attach());
           });
         });
 
         // Log new Participants as they connect to the Room
-        room.once('participantConnected', participant => {
+        room.on('participantConnected', participant => {
           console.log(`Participant "${participant.identity}" has just connected to the Room`);
 
 
           participant.tracks.forEach(track => {
-            document.getElementById('remote-media').appendChild(track.attach());
+            remoteMedia.appendChild(track.attach());
           });
 
           participant.on('trackAdded', track => {
-            document.getElementById('remote-media').appendChild(track.attach());
+            remoteMedia.appendChild(track.attach());
           });
 
         });
 
         // Log Participants as they disconnect from the Room
-        room.once('participantDisconnected', participant => {
+        room.on('participantDisconnected', participant => {
           console.log(`Participant "${participant.identity}" has disconnected from the Room`);
         });
+
+
+        room.once('disconnected', room => {
+          // Detach the local media elements
+          room.localParticipant.tracks.forEach(track => {
+            const attachedElements = track.detach();
+            attachedElements.forEach(element => element.remove());
+            console.log("call finnished");
+          });
+        });
+
 
         disconnect.addEventListener('click', (event) => {
           console.log("Hello from EventListener");
@@ -70,8 +82,7 @@ function initVideoCall(){
 
 
       createLocalVideoTrack().then(track => {
-        const localMediaContainer = document.getElementById('local-media');
-        localMediaContainer.appendChild(track.attach());
+        localMedia.appendChild(track.attach());
       });
 
   }

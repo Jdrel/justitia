@@ -7,6 +7,14 @@ class User < ApplicationRecord
   has_one :lawyer, dependent: :destroy
   after_create :link_user_to_client
 
+  def is_lawyer?
+    self.lawyer
+  end
+
+  def full_name
+    self.first_name + " " + self.last_name
+  end
+
   private
 
   def link_user_to_client

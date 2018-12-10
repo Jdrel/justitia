@@ -1,13 +1,13 @@
 <h2> What are your details </h2>
 
-<%#= simple_form_for @user do |f| %>
+<%#= simple_form_for(@user, lawyer_path(@lawyer), method: :get ) do |f| %>
   <%#= f.input :first_name %>
   <%#= f.input :last_name %>
   <%#= f.input :email %>
   <%#= f.input :address %>
 <%# end %>
 
-<%#= simple_form_for @lawyer do |f| %>
+<%#= simple_form_for(@lawyer,  do |f| %>
   <%#= f.input :description %>
   <%#= f.input :years_of_experience %>
   <%#= f.input :hourly_rate %>

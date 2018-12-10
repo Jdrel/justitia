@@ -1,4 +1,8 @@
 class ConsultationsController < ApplicationController
+  TW_ACCOUNT_SID = ENV['TWILIO_SID']
+  TW_API_KEY = ENV['TWILIO_KEY']
+  TW_API_SECRET = ENV['TWILIO_SECRET']
+
   def index
     @lawyer = Lawyer.find(params[:lawyer_id])
     @consultations = Consultation.where(lawyer: @lawyer)
@@ -41,23 +45,8 @@ class ConsultationsController < ApplicationController
 
   def show
     @consultation = Consultation.find(params[:id])
-    account_sid = ENV['TWILIO_SID']
-    api_key = ENV['TWILIO_KEY']
-    api_secret = ENV['TWILIO_SECRET']
-    # Create Video grant for our token
-    video_grant = Twilio::JWT::AccessToken::VideoGrant.new
-    video_grant.room = "Consultation-#{@consultation.id}"
-    @video_room = video_grant.room
-    identity = current_user.email
-    # Create an Access Tokenss
-    token = Twilio::JWT::AccessToken.new(
-      account_sid,
-      api_key,
-      api_secret,
-      [video_grant],
-      identity: identity
-    )
     # Assigning token to instance variable that is passed to the view
+    token = twilio_token
     @twilio_token = token.to_jwt
     start_consultation if current_user.lawyer == @consultation.lawyer
   end
@@ -69,18 +58,29 @@ class ConsultationsController < ApplicationController
 
   def end_videocall
     @consultation = Consultation.find(params[:id])
-    @consultation.duration = Time.now - @consultation.start_time
-    @consultation.client_amount_cents = calculate_client_amount
 
-    charge = Stripe::Charge.create(
-    customer: @consultation.client.stripe_id,
-    amount: @consultation.client_amount_cents,
-    currency: @consultation.client_amount_currency,
-    description: "Consultation: #{@consultation.id}"
-    )
+    unless @consultation.start_time.nil?
+      @consultation.duration = Time.now - @consultation.start_time
+      @consultation.client_amount_cents = calculate_client_amount
 
-    @consultation.payment_status = 'paid'
-    @consultation.client_payment = charge.to_json
+      charge = Stripe::Charge.create(
+      customer: @consultation.client.stripe_id,
+      amount: @consultation.client_amount_cents,
+      currency: @consultation.client_amount_currency,
+      description: "Consultation: #{@consultation.id}"
+      )
+
+      @consultation.payment_status = 'paid'
+      @consultation.client_payment = charge.to_json
+    else
+      @consultation.duration = 0
+      @consultation.payment_status = 'cancelled'
+    end
+
+    # close the room
+    # @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, twilio_token)
+    # room = @client.video.rooms('DailyStandup').fetch
+    # room = @client.video.rooms('video_room').update(status: 'completed')
     @consultation.save
   end
 
@@ -109,5 +109,21 @@ class ConsultationsController < ApplicationController
   def confirmation
     @consultation = Consultation.find(params[:id])
     @lawyer = Lawyer.find(params[:lawyer_id])
+  end
+
+  def twilio_token
+    # Create Video grant for our token
+    video_grant = Twilio::JWT::AccessToken::VideoGrant.new
+    video_grant.room = "Consultation-#{@consultation.id}"
+    @video_room = video_grant.room
+    # Create an Access Token
+    identity = current_user.email
+    Twilio::JWT::AccessToken.new(
+      TW_ACCOUNT_SID,
+      TW_API_KEY,
+      TW_API_SECRET,
+      [video_grant],
+      identity: identity
+    )
   end
 end
