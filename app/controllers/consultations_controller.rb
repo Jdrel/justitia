@@ -86,9 +86,29 @@ class ConsultationsController < ApplicationController
 
   def calculate_client_amount
     rate = @consultation.lawyer.calculate_5mins_rate
-    minutes = (@consultation.duration/60)
-    five_minutes_block = (minutes/5).abs
+    minutes = (@consultation.duration / 60)
+    five_minutes_block = (minutes / 5).abs
     (rate * five_minutes_block + rate) * 100
+  end
+
+  def new_appointment
+    @consultation = Consultation.new
+  end
+
+  def create_new_appointment
+    @consultation = Consultation.new
+    lawyer = Lawyer.find(params[:lawyer_id])
+    @consultation.lawyer = lawyer
+    @consultation.start_time = params[:start_time]
+    @consultation.client = current_user.client
+    @consultation.save
+    # UserMailer.user_consultation(@consultation).deliver_now
+    redirect_to confirmation_path(lawyer, @consultation)
+  end
+
+  def confirmation
+    @consultation = Consultation.find(params[:id])
+    @lawyer = Lawyer.find(params[:lawyer_id])
   end
 
   def twilio_token

@@ -1,0 +1,3 @@
+<h2>Your appointment is booked.</h2>
+
+<p> Your appointment has been booked with <%= @lawyer.user.first_name %> <%= @lawyer.user.last_name %> at <%= @consultation.start_time.strftime('%H:%M') %> on <%= @consultation.start_time.strftime('%A, %b %d') %> </p>
