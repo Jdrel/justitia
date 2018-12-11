@@ -71,29 +71,35 @@ class ConsultationsController < ApplicationController
   def end_videocall
     @consultation = Consultation.find(params[:id])
 
-    unless @consultation.start_time.nil?
-      @consultation.duration = Time.now - @consultation.start_time
-      @consultation.client_amount_cents = calculate_client_amount
+    unless @consultation.start_time.nil? # consultation has happened
+      if @consultation.payment_status.nil? # first_one to close the call
 
-      charge = Stripe::Charge.create(
-      customer: @consultation.client.stripe_id,
-      amount: @consultation.client_amount_cents,
-      currency: @consultation.client_amount_currency,
-      description: "Consultation: #{@consultation.id}"
-      )
+        @consultation.duration = Time.now - @consultation.start_time
+        @consultation.client_amount_cents = calculate_client_amount
 
-      @consultation.payment_status = 'paid'
-      @consultation.client_payment = charge.to_json
+        charge = Stripe::Charge.create(
+        customer: @consultation.client.stripe_id,
+        amount: @consultation.client_amount_cents,
+        currency: @consultation.client_amount_currency,
+        description: "Consultation: #{@consultation.id}"
+        )
 
-      # close the room
-      @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
-      room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
-    else
+        @consultation.payment_status = 'paid'
+        @consultation.client_payment = charge.to_json
+
+        # close the room
+        @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
+        room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
+        @consultation.save
+      end
+
+    else # the lawyer has not arrived
       @consultation.duration = 0
       @consultation.payment_status = 'cancelled'
+      @consultation.save
     end
 
-    @consultation.save
+
   end
 
   def calculate_client_amount
