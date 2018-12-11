@@ -64,7 +64,7 @@ function initVideoCall(){
           });
           console.log("call finnished");
           const consultationId = remoteMedia.dataset.consultationid;
-          window.location.href = `https://www.justitia.today/consultations/${consultationid}/end_videocall`;
+          window.location.href = `https://www.justitia.today/consultations/${consultationId}/end_videocall`;
         });
 
 
