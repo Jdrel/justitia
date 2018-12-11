@@ -7,35 +7,42 @@
 }
 
 .icon-card {
-  height: 150px;
-  width: 150px;
-  box-shadow: 0 0.5px 1px rgba(0,0,0,0.5);
+  height: 105px;
+  width: 95px;
+  box-shadow: 0 0.5px 0.5px rgba(0,0,0,0.4);
   background-size: cover !important;
   background-position: center;
   color: $dark-blue;
-  margin: 25px;
-  padding: 30px 0 0px 35px;
+  margin: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
+
+.icon-description {
+  font-size: 12px;
+  color: $dark;
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+.icon img {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
 }
 
 .lawyers-container {
-  margin: 10px;
+  margin: 5px;
   a {
     text-decoration: none !important;
     color: $dark;
-    h5 {
-      color: $dark-blue;
-    }
-  }
-  a:hover {
-    font-weight: bolder;
-    h5 {
-      font-weight: bold;
-    }
   }
 }
 
 .lawyer-card {
-  box-shadow: 1px 1px 8px -1px rgba(39,26,195,0.5);
+  box-shadow: 1px 1px 8px -1px rgba(39,26,195,0.4);
   width: 100%;
   margin-top: 10px;
   padding-top: 5px;
@@ -52,42 +59,48 @@
     color: $gray-dark;
   }
 
+  hr {
+    margin: 4px 0;
+  }
+
 .online-circle-green {
   background-color: $online-green;
-  height: 15px;
-  width: 15px;
+  height: 10px;
+  width: 10px;
   border-radius: 50%;
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  right: 15px;
 }
 
 .online-circle-red {
   background-color: $online-red;
-  height: 15px;
-  width: 15px;
+  height: 10px;
+  width: 10px;
   border-radius: 50%;
   position: absolute;
   top: 5px;
-  right: 5px;
+  right: 15px;
 }
 
 .lawyer-avatar {
-  width: 50%;
+  width: 40%;
   display:flex;
   justify-content: center;
   img {
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    width: 85px;
+    height: 85px;
     object-fit: cover;
+    margin: 7.5px 0;
   }
 
 }
 
 .lawyer-decription {
-  width:50%;
+  width: 150px;
   }
+
 }
 
 #name-size {
