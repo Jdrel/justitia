@@ -75,22 +75,23 @@ class ConsultationsController < ApplicationController
       if @consultation.payment_status == 'pending' # first_one to close the call
 
         @consultation.duration = Time.now - @consultation.start_time
-        @consultation.client_amount_cents = @consultation.calculate_client_amount
+        @consultation.client_amount = @consultation.calculate_client_amount
 
         charge = Stripe::Charge.create(
         customer: @consultation.client.stripe_id,
-        amount: @consultation.client_amount_cents,
+        amount: @consultation.client_amount.cents,
         currency: @consultation.client_amount_currency,
         description: "Consultation: #{@consultation.id}"
         )
 
         @consultation.payment_status = 'paid'
         @consultation.client_payment = charge.to_json
+        @consultation.save
 
         # close the room
         @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
         room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
-        @consultation.save
+
       end
 
     else # the lawyer has not arrived
