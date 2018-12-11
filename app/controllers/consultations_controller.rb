@@ -91,12 +91,12 @@ class ConsultationsController < ApplicationController
 
     else # the lawyer has not arrived
       @consultation.duration = 0
-      @consultation.paymeint_status = 'cancelled'
+      @consultation.payment_status = 'cancelled'
       @consultation.save
     end
  end
 
-  
+
   private
 
   def start_consultation
