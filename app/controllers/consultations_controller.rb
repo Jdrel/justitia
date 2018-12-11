@@ -75,7 +75,7 @@ class ConsultationsController < ApplicationController
       if @consultation.payment_status == 'pending' # first_one to close the call
 
         @consultation.duration = Time.now - @consultation.start_time
-        @consultation.client_amount_cents = calculate_client_amount
+        @consultation.client_amount_cents = @consultation.calculate_client_amount
 
         charge = Stripe::Charge.create(
         customer: @consultation.client.stripe_id,
@@ -100,13 +100,6 @@ class ConsultationsController < ApplicationController
     end
 
 
-  end
-
-  def calculate_client_amount
-    rate = @consultation.lawyer.calculate_5mins_rate
-    minutes = (@consultation.duration / 60)
-    five_minutes_block = (minutes / 5).abs
-    (rate * five_minutes_block + rate) * 100
   end
 
   def new_appointment
