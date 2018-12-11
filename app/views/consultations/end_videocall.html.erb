@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-10 col-lg-6 offset-lg-4">
       <h2>Thank you for your call with <%= @consultation.lawyer.user.full_name %> </h2>
-      <p>Your call started at: <%= @consultation.start_time.localtime.strftime("%I:%M%p") %> and ended at <%= @consultation.end_time.localtime.strftime("%I:%M%p") %> (<%= @consultation.duration_to_minutes%> minutes) </p>
+      <p>Your call started at: <%= @consultation.start_time.localtime.strftime("%I:%M%p") %> and ended at <%= @consultation.end_time.localtime.strftime("%I:%M%p") %> (<%= @consultation.duration_to_minutes%> minutes). </p>
     </div>
   </div>
 </div>
@@ -84,3 +84,5 @@
   </div>
 </div>
 </div>
+<br>
+<br>
