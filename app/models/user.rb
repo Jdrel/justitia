@@ -11,6 +11,10 @@ class User < ApplicationRecord
     self.lawyer
   end
 
+  def full_name
+    self.first_name + " " + self.last_name
+  end
+
   private
 
   def link_user_to_client

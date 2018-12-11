@@ -28,7 +28,8 @@ gem 'uglifier'
 gem 'webpacker'
 gem 'twilio-ruby', '~> 5.17.0'
 gem 'postmark-rails'
-
+gem 'bootstrap4-datetime-picker-rails'
+gem "pundit"
 
 group :development do
   gem 'web-console', '>= 3.3.0'

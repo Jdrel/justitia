@@ -12,6 +12,7 @@ class UserMailer < ApplicationMailer
   # instant consultation
   def new_consultation(consultation)
     consultation_information(consultation)
+
     mail(
       :subject => "You've got a new consultation with #{@client_name}",
       :to  => @lawyer_email,
