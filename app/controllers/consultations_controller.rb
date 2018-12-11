@@ -72,7 +72,7 @@ class ConsultationsController < ApplicationController
     @consultation = Consultation.find(params[:id])
 
     unless @consultation.start_time.nil? # consultation has happened
-      if @consultation.payment_status.nil? # first_one to close the call
+      if @consultation.payment_status == 'pending' # first_one to close the call
 
         @consultation.duration = Time.now - @consultation.start_time
         @consultation.client_amount_cents = calculate_client_amount

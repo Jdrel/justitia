@@ -1,88 +1,106 @@
-<div class="container margin-10-px">
-  <div class="row">
-    <div class="col-10 col-lg-6 offset-lg-1">
-      <h2>Thank you for your call with <%= @consultation.lawyer.user.full_name %> </h2>
-      <p>Your call started at: <%= @consultation.start_time.localtime.strftime("%I:%M%p") %> and ended at <%= @consultation.end_time.localtime.strftime("%I:%M%p") %> (<%= @consultation.duration_to_minutes%> minutes) </p>
-       <%= link_to "Book new consultation with #{@consultation.lawyer.user.full_name}",  new_appointment_path(@consultation.lawyer), class: 'btn btn-success' %>
+<% if @consultation.payment_status == 'cancelled' %>
+
+  <div class="container margin-10-px">
+    <div class="row">
+      <div class="col-10 col-lg-6 offset-lg-1">
+        <h2>Call with <%= @consultation.lawyer.user.full_name %> cancelled</h2>
+        <p>You cancelled your call before the consultation started with <%= @consultation.lawyer.user.full_name %> so your card was NOT charged</p>
+         <%= link_to "Book new consultation with #{@consultation.lawyer.user.full_name}",  new_appointment_path(@consultation.lawyer), class: 'btn btn-success' %>
+      </div>
     </div>
+
   </div>
 
-</div>
-<div class="invoice-wrapper">
-<div class="container">
-  <div class="card">
-    <div class="card-header">
-      Invoice
-      <strong><%= @consultation.id %></strong>
-      <span class="badge badge-success float-right">Paid</span>
+
+<% else %>
+
+  <div class="container margin-10-px">
+    <div class="row">
+      <div class="col-10 col-lg-6 offset-lg-1">
+        <h2>Thank you for your call with <%= @consultation.lawyer.user.full_name %> </h2>
+        <p>Your call started at: <%= @consultation.start_time.localtime.strftime("%I:%M%p") %> and ended at <%= @consultation.end_time.localtime.strftime("%I:%M%p") %> (<%= @consultation.duration_to_minutes%> minutes) </p>
+         <%= link_to "Book new consultation with #{@consultation.lawyer.user.full_name}",  new_appointment_path(@consultation.lawyer), class: 'btn btn-success' %>
+      </div>
     </div>
-    <div class="card-body">
-      <div class="row mb-4">
-        <div class="col-sm-6">
-          <h6 class="mb-3">From:</h6>
-          <div>
-            <strong>Justitia Inc</strong>
-          </div>
-          <div>Carrer d'en Grassot, 101</div>
-            <div>Barcelona, Spain</div>
-            <div>Email: hello@justitia.today</div>
-            <div>Phone: +33 667 23 81 72</div>
-          </div>
+
+  </div>
+  <div class="invoice-wrapper">
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        Invoice
+        <strong><%= @consultation.id %></strong>
+        <span class="badge badge-success float-right">Paid</span>
+      </div>
+      <div class="card-body">
+        <div class="row mb-4">
           <div class="col-sm-6">
-            <h6 class="mb-3">To:</h6>
+            <h6 class="mb-3">From:</h6>
             <div>
-              <strong><%= @consultation.client.user.full_name %></strong>
+              <strong>Justitia Inc</strong>
             </div>
-            <div>32 Plaza Catalunya, Spain</div>
-            <div>Email: <%= @consultation.client.user.email %></div>
-            <div>Phone: +33 123 456 789</div>
-          </div>
-       </div>
-        <div class="table-responsive-sm">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th class="left">price per 5 min</th>
-                <th class="center">Min</th>
-                <th class="right">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="left strong">Call with <%= @consultation.lawyer.user.full_name %></td>
-                <td class="right">€ <%= @consultation.lawyer.calculate_5mins_rate %></td>
-                <td class="center"><%= @consultation.duration_to_minutes %></td>
-                <td class="right"><%= humanized_money_with_symbol @consultation.client_amount %> </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 col-sm-5">
-          </div>
-          <div class="col-lg-4 col-sm-5 ml-auto">
-            <table class="table table-clear">
+            <div>Carrer d'en Grassot, 101</div>
+              <div>Barcelona, Spain</div>
+              <div>Email: hello@justitia.today</div>
+              <div>Phone: +33 667 23 81 72</div>
+            </div>
+            <div class="col-sm-6">
+              <h6 class="mb-3">To:</h6>
+              <div>
+                <strong><%= @consultation.client.user.full_name %></strong>
+              </div>
+              <div>32 Plaza Catalunya, Spain</div>
+              <div>Email: <%= @consultation.client.user.email %></div>
+              <div>Phone: +33 123 456 789</div>
+            </div>
+         </div>
+          <div class="table-responsive-sm">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th class="left">price per 5 min</th>
+                  <th class="center">Min</th>
+                  <th class="right">Total</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr>
-                  <td class="left">
-                    <strong>Subtotal</strong>
-                  </td>
+                  <td class="left strong">Call with <%= @consultation.lawyer.user.full_name %></td>
+                  <td class="right">€ <%= @consultation.lawyer.calculate_5mins_rate %></td>
+                  <td class="center"><%= @consultation.duration_to_minutes %></td>
                   <td class="right"><%= humanized_money_with_symbol @consultation.client_amount %> </td>
                 </tr>
-               <tr>
-                <td class="left">
-                  <strong>Total</strong>
-                </td>
-                <td class="right">
-                  <strong><%= humanized_money_with_symbol @consultation.client_amount %> </strong>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-sm-5">
+            </div>
+            <div class="col-lg-4 col-sm-5 ml-auto">
+              <table class="table table-clear">
+                <tbody>
+                  <tr>
+                    <td class="left">
+                      <strong>Subtotal</strong>
+                    </td>
+                    <td class="right"><%= humanized_money_with_symbol @consultation.client_amount %> </td>
+                  </tr>
+                 <tr>
+                  <td class="left">
+                    <strong>Total</strong>
+                  </td>
+                  <td class="right">
+                    <strong><%= humanized_money_with_symbol @consultation.client_amount %> </strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-</div>
+  </div>
+
+<% end %>
