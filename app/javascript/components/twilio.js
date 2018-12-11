@@ -75,7 +75,7 @@ function initVideoCall(){
         disconnect.addEventListener('click', (event) => {
           console.log("Hello from EventListener");
           if (confirm("Do you really want to end this videocall?")) {
-            room.disconnect();
+            // room.disconnect();
           } else {
             event.preventDefault();
           }
