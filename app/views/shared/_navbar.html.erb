@@ -33,8 +33,8 @@
  <!-- Dropdown appearing on mobile only -->
  <div class="navbar-wagon-item d-md-none d-lg-none">
   <div class="dropdown">
-    <i class="fas fa-bars fa-lg" data-toggle="dropdown" role="button"></i>
-    <ul class="dropdown-menu dropdown-menu-right navbar-wagon-dropdown-menu">
+    <i class="fas fa-bars fa-lg" data-toggle="dropdown" role="button" id="blue-burger"></i>
+    <ul class="dropdown-menu dropdown-menu-right navbar-wagon-dropdown-menu" id="dropdown-overlay">
       <% if user_signed_in? %>
         <% if current_user.is_lawyer? %>
 
