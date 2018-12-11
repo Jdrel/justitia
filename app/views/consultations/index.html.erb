@@ -1,18 +1,10 @@
-
-<h2> <%= @lawyer.user.first_name %> </h2>
-
-<h3> <%= @lawyer.user.address %> </h3>
-
+<h2> <%= @lawyer.user.full_name %> </h2>
+<h3> Please find your pending consultations below: </h3>
 <% @consultations.each do |consultation| %>
-
-<% if consultation.appointment_status == "pending"%>
-
+<% if consultation.appointment_status == "pending" || consultation.appointment_status == "Pending" %>
   <div data-consultation-id= <%= consultation.id %> > <%= consultation.appointment_status %> </div>
-
-  <%= link_to 'Reject', update_appointment_status_path(consultation, :appointment_status => 'rejected'), remote: true, method: 'patch', class: 'btn btn-sm btn-danger'%>
+  <%= link_to 'Reject', update_appointment_status_path(consultation, :appointment_status => 'rejected'), method: 'patch', remote: true, class: 'btn btn-sm btn-danger'%>
   <%= link_to 'Accept', update_appointment_status_path(consultation, :appointment_status => 'accepted'), method: 'patch', remote: true, class: 'btn btn-sm btn-primary'%>
-
 <% end %>
-
 <% end %>
 

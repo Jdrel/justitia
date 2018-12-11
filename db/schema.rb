@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_10_145417) do
+ActiveRecord::Schema.define(version: 2018_12_11_114804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,8 +40,7 @@ ActiveRecord::Schema.define(version: 2018_12_10_145417) do
     t.integer "client_amount_cents", default: 0, null: false
     t.string "client_amount_currency", default: "USD", null: false
     t.jsonb "client_payment"
-    t.string "appointment_status", default: "pending"
-    t.string "string"
+    t.string "appointment_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "start_time"
