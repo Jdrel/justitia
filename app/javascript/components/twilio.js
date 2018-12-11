@@ -15,7 +15,10 @@ function initVideoCall(){
       connect(token, {
         audio: true,
         name: videoRoom,
-        video: { width: 414 }
+        video: {
+          width: { min: 414 },
+          height: { min: 414 }
+        }
       }).then(room => {
         console.log(`Successfully joined a Room: ${room}`);
 
