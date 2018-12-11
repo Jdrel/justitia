@@ -17,7 +17,7 @@
   <div class="container margin-10-px">
     <div class="row">
       <div class="col-10 col-lg-6 offset-lg-1">
-        <% if @consulation.lawer.use == current_user %>
+        <% if @consultation.lawyer.user == current_user %>
           <h2>Summary of your call with <%= @consultation.client.user.full_name %> </h2>
           <p>Your call started at: <%= @consultation.start_time.localtime.strftime("%I:%M%p") %> and ended at <%= @consultation.end_time.localtime.strftime("%I:%M%p") %> (<%= @consultation.duration_to_minutes%> minutes) </p>
         <% else %>
@@ -73,7 +73,7 @@
                 <tr>
                   <td class="left strong">Call with <%= @consultation.lawyer.user.full_name %></td>
                   <td class="right">€ <%= @consultation.lawyer.calculate_5mins_rate %></td>
-                  <td class="center"><%= @consultation.calculate_client_amount %></td>
+                  <td class="center"><%= @consultation.duration_to_units %></td>
                   <td class="right"><%= humanized_money_with_symbol @consultation.client_amount %> </td>
                 </tr>
               </tbody>
