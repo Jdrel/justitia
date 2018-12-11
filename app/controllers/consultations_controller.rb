@@ -2,6 +2,7 @@ class ConsultationsController < ApplicationController
   TW_ACCOUNT_SID = ENV['TWILIO_SID']
   TW_API_KEY = ENV['TWILIO_KEY']
   TW_API_SECRET = ENV['TWILIO_SECRET']
+  TW_TOKEN = ENV['TWILIO_TOKEN']
 
   def index
     @lawyer = Lawyer.find(params[:lawyer_id])
@@ -83,15 +84,15 @@ class ConsultationsController < ApplicationController
 
       @consultation.payment_status = 'paid'
       @consultation.client_payment = charge.to_json
+
+      # close the room
+      @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
+      room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
     else
       @consultation.duration = 0
       @consultation.payment_status = 'cancelled'
     end
 
-    # close the room
-    # @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, twilio_token)
-    # room = @client.video.rooms('DailyStandup').fetch
-    # room = @client.video.rooms('video_room').update(status: 'completed')
     @consultation.save
   end
 
