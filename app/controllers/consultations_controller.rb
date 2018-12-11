@@ -63,7 +63,7 @@ class ConsultationsController < ApplicationController
     start_consultation if current_user.lawyer == @consultation.lawyer
   end
 
-    def end_videocall
+  def end_videocall
     @consultation = Consultation.find(params[:id])
 
     unless @consultation.start_time.nil? # consultation has happened
@@ -94,16 +94,14 @@ class ConsultationsController < ApplicationController
       @consultation.paymeint_status = 'cancelled'
       @consultation.save
     end
- end
+  end
 
-  
   private
 
   def start_consultation
     @consultation.start_time = Time.new if @consultation.start_time.nil?
     @consultation.save
   end
-
 
   def twilio_token
     # Create Video grant for our token
@@ -136,12 +134,5 @@ class ConsultationsController < ApplicationController
     @consultation = Consultation.new
     @consultation.lawyer = @lawyer
     @consultation.client = client
-  end
-
-  def calculate_client_amount
-    rate = @consultation.lawyer.calculate_5mins_rate
-    minutes = (@consultation.duration / 60)
-    five_minutes_block = (minutes / 5).abs
-    (rate * five_minutes_block + rate) * 100
   end
 end
