@@ -32,7 +32,7 @@ class ConsultationsController < ApplicationController
   def create_new_appointment
     set_basic_details_for_new_consultation
     @consultation.appointment_time = params[:appointment_time]
-    @consultation.appointment_status = "Pending"
+    @consultation.appointment_status = "pending"
     @consultation.save
     redirect_to appointment_confirmation_path(@lawyer, @consultation)
   end
@@ -49,6 +49,7 @@ class ConsultationsController < ApplicationController
     @lawyer = @consultation.lawyer
     @consultation.appointment_status = params[:appointment_status]
     @consultation.save
+    UserMailer.appointment_status_updated_client(@consultation).deliver_now
   end
 
   # PAGE WHERE CLIENT AND USER HAVE A CALL

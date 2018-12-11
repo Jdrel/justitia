@@ -1,0 +1,15 @@
+Hi <%= @client_name %>,<br><br>
+
+<% if @consultation.appointment_status == "accepted"%>
+
+<%= @lawyer_name %> has accepted the consultation for <%= @consultation.appointment_time.strftime('%A, %b %d') %> at <%= @consultation.appointment_time.strftime('%H:%M') %>. We will send you the call details shortly before the call.<br><br>
+
+<% else %>
+
+<%= @lawyer_name %> has rejected the consultation, please try scheduling the call for a different time or pick a different lawyer <%= link_to 'here', lawyers_url %>.<br><br>
+
+<% end %>
+
+
+Kind regards,<br>
+Justitita

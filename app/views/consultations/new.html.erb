@@ -3,7 +3,7 @@
   <p>Your lawyer will charge your credit card based on the duration of this videochat at the rate of $<%= @lawyer.calculate_5mins_rate %> per 5 minutes block.
   <br>
   <br>
-  <strong><%= @lawyer.user.first_name + " " + @lawyer.user.last_name %> hourly rate: $<%= @lawyer.hourly_rate %>.</strong></p>
+  <strong><%= @lawyer.user.full_name %> hourly rate: $<%= @lawyer.hourly_rate %>.</strong></p>
 
   <%= simple_form_for([@lawyer, @consultation]) do |f| %>
     <% if @client.stripe_id.nil? %>
