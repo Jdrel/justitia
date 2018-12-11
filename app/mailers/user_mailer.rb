@@ -1,6 +1,5 @@
 class UserMailer < ApplicationMailer
   def consultation_information(consultation)
-    consultation = Consultation.last
     @consultation = consultation
     @lawyer = @consultation.lawyer
     @client = @consultation.client
@@ -10,8 +9,10 @@ class UserMailer < ApplicationMailer
     @client_email = @client.user.email
   end
 
+  # instant consultation
   def new_consultation(consultation)
-    consultation_information(@consultation)
+    consultation_information(consultation)
+
     mail(
       :subject => "You've got a new consultation with #{@client_name}",
       :to  => @lawyer_email,
@@ -20,8 +21,9 @@ class UserMailer < ApplicationMailer
       :track_opens => 'true')
   end
 
+  # future consultations
   def user_consultation(consultation)
-    consultation_information(@consultation)
+    consultation_information(consultation)
     mail(
       :subject => "Your consultation with #{@lawyer_name}",
       :to  => @client_email,
