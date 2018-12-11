@@ -9,7 +9,7 @@
 .icon-card {
   height: 150px;
   width: 150px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  box-shadow: 0 0.5px 1px rgba(0,0,0,0.5);
   background-size: cover !important;
   background-position: center;
   color: $dark-blue;
@@ -18,11 +18,24 @@
 }
 
 .lawyers-container {
-  margin:15px;
+  margin: 10px;
+  a {
+    text-decoration: none !important;
+    color: $dark;
+    h5 {
+      color: $dark-blue;
+    }
+  }
+  a:hover {
+    font-weight: bolder;
+    h5 {
+      font-weight: bold;
+    }
+  }
 }
 
 .lawyer-card {
-  box-shadow: 2px 2px 15px -1px rgba(39,26,195,1);
+  box-shadow: 1px 1px 8px -1px rgba(39,26,195,0.5);
   width: 100%;
   margin-top: 10px;
   padding-top: 5px;
@@ -30,10 +43,7 @@
   display: inline-flex;
   align-items: center;
   position: relative;
-  text-decoration: none;
-  h5 {
-    color: $dark-blue;
-  }
+  background-color: white;
   ul {
     list-style-type: none;
     padding: 0;
@@ -74,10 +84,9 @@
   }
 
 }
-.lawyer-decription{
-  width:50%;
-  text-decoration: none;
 
+.lawyer-decription {
+  width:50%;
   }
 }
 
@@ -85,18 +94,9 @@
   font-size: 16px;
 }
 
-.form-size {
-  width: 63px;
-  height: 20px;
-  font-size: 9px;
-  padding: 2px;
-  margin: 0 2px;
-}
-
 .search-results {
   h5 {
-    font-size: 13px;
-    font-weight: lighter;
+    font-size: 15px;
     margin-top: 10px;
     margin-bottom: 10px;
   }

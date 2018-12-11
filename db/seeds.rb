@@ -39,7 +39,7 @@ puts 'Creating 10 lawyers...'
     user: user,
     description: Faker::GameOfThrones.quote,
     years_of_experience: rand(0..45),
-    hourly_rate_cents: rand(3000..50000),
+    hourly_rate: rand(30..500),
     is_first_consultation_free: Faker::Boolean.boolean,
     is_online: Faker::Boolean.boolean,
     photo: photos.sample
