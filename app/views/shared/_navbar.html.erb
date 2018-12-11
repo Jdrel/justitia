@@ -12,7 +12,7 @@
       <div class="dropdown">
         <%= image_tag current_user.lawyer.photo, class: "avatar dropdown-toggle", id: "navbar-wagon-menu", :"data-toggle" => "dropdown" %>
         <ul class="dropdown-menu dropdown-menu-right navbar-wagon-dropdown-menu">
-          <li><a href="#">Dashboard</a></li>
+          <li><%= link_to "Dashboard", lawyer_consultations_path(current_user.lawyer)  %></li>
           <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
         </ul>
       </div>
@@ -38,7 +38,7 @@
       <% if user_signed_in? %>
         <% if current_user.is_lawyer? %>
 
-      <li><%= link_to "Dashboard", destroy_user_session_path %></li>
+      <li><%= link_to "Dashboard",lawyer_consultations_path(current_user.lawyer) %></li>
       <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
        <% else  %>
        <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>

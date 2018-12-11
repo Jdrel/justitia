@@ -4,6 +4,7 @@ class ConsultationsController < ApplicationController
   TW_API_SECRET = ENV['TWILIO_SECRET']
   TW_TOKEN = ENV['TWILIO_TOKEN']
 
+  # INSTANT CONSULTATIONS
   def index
     @lawyer = Lawyer.find(params[:lawyer_id])
     authorize(@lawyer)
@@ -17,43 +18,42 @@ class ConsultationsController < ApplicationController
   end
 
   def create
-    client = current_user.client
-    if client.stripe_id.nil?
-      customer = Stripe::Customer.create({
-      source: params[:stripeToken],
-      email:  params[:stripeEmail]
-      })
-      client.stripe_id = customer.id
-      client.save
-    end
-    lawyer = Lawyer.find(params[:lawyer_id])
-    consultation = Consultation.new
-    consultation.lawyer = lawyer
-    consultation.client = client
-    consultation.save
-    UserMailer.new_consultation(consultation).deliver_now
-    redirect_to lawyer_consultation_path(lawyer, consultation)
+    set_basic_details_for_new_consultation
+    @consultation.save
+    UserMailer.new_consultation(@consultation).deliver_now
+    redirect_to lawyer_consultation_path(@lawyer, @consultation)
   end
 
-  def appointment_status
-    # if authenticate_lawyer
-      @consultation = Consultation.find(params[:id])
-      @lawyer = @consultation.lawyer
-      @consultation.appointment_status = params[:appointment_status]
-      @consultation.save
-      respond_to do |format|
-        format.js
-      end
-    # else
-    #   redirect_to lawyers_path
-    # end
+  # FUTURE CONSULTATIONS (i.e. appointments)
+  def new_appointment
+    @consultation = Consultation.new
+    @client = current_user.client
   end
 
-  # def authenticate_lawyer
-  #   lawyer = Lawyer.find(params[:lawyer_id])
-  #   current_user.id == lawyer.user.id
-  # end
+  def create_new_appointment
+    set_basic_details_for_new_consultation
+    @consultation.appointment_time = params[:appointment_time]
+    @consultation.appointment_status = "pending"
+    @consultation.save
+    redirect_to appointment_confirmation_path(@lawyer, @consultation)
+  end
 
+  # SHOW PAGE OF APPOINTMENT CONFIRMATION
+  def appointment_confirmation
+    @consultation = Consultation.find(params[:id])
+    @lawyer = Lawyer.find(params[:lawyer_id])
+  end
+
+  # METHOD THAT ALLOWS THE LAWYER TO CHANGE THE STATUS OF THE APPOINTMENT AND SENDS AN EMAIL  TO BOTH PARTIES
+  def update_appointment_status
+    @consultation = Consultation.find(params[:id])
+    @lawyer = @consultation.lawyer
+    @consultation.appointment_status = params[:appointment_status]
+    @consultation.save
+    UserMailer.appointment_status_updated_client(@consultation).deliver_now
+  end
+
+  # PAGE WHERE CLIENT AND USER HAVE A CALL
   def show
     @consultation = Consultation.find(params[:id])
     authorize(@consultation)
@@ -63,11 +63,6 @@ class ConsultationsController < ApplicationController
     start_consultation if current_user.lawyer == @consultation.lawyer
   end
 
-  def start_consultation
-    @consultation.start_time = Time.new if @consultation.start_time.nil?
-    @consultation.save
-  end
-
   def end_videocall
     @consultation = Consultation.find(params[:id])
 
@@ -75,22 +70,23 @@ class ConsultationsController < ApplicationController
       if @consultation.payment_status == 'pending' # first_one to close the call
 
         @consultation.duration = Time.now - @consultation.start_time
-        @consultation.client_amount_cents = calculate_client_amount
+        @consultation.client_amount = @consultation.calculate_client_amount
 
         charge = Stripe::Charge.create(
         customer: @consultation.client.stripe_id,
-        amount: @consultation.client_amount_cents,
+        amount: @consultation.client_amount.cents,
         currency: @consultation.client_amount_currency,
         description: "Consultation: #{@consultation.id}"
         )
 
         @consultation.payment_status = 'paid'
         @consultation.client_payment = charge.to_json
+        @consultation.save
 
         # close the room
         @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
         room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
-        @consultation.save
+
       end
 
     else # the lawyer has not arrived
@@ -98,35 +94,13 @@ class ConsultationsController < ApplicationController
       @consultation.payment_status = 'cancelled'
       @consultation.save
     end
-
-
   end
+  
+  private
 
-  def calculate_client_amount
-    rate = @consultation.lawyer.calculate_5mins_rate
-    minutes = (@consultation.duration / 60)
-    five_minutes_block = (minutes / 5).abs
-    (rate * five_minutes_block + rate) * 100
-  end
-
-  def new_appointment
-    @consultation = Consultation.new
-  end
-
-  def create_new_appointment
-    @consultation = Consultation.new
-    lawyer = Lawyer.find(params[:lawyer_id])
-    @consultation.lawyer = lawyer
-    @consultation.start_time = params[:start_time]
-    @consultation.client = current_user.client
+  def start_consultation
+    @consultation.start_time = Time.new if @consultation.start_time.nil?
     @consultation.save
-    # UserMailer.user_consultation(@consultation).deliver_now
-    redirect_to confirmation_path(lawyer, @consultation)
-  end
-
-  def confirmation
-    @consultation = Consultation.find(params[:id])
-    @lawyer = Lawyer.find(params[:lawyer_id])
   end
 
   def twilio_token
@@ -142,6 +116,23 @@ class ConsultationsController < ApplicationController
       TW_API_SECRET,
       [video_grant],
       identity: identity
-    )
+      )
+  end
+
+  def set_basic_details_for_new_consultation
+    # Setting the Stripe details, lawyer and creating the consultation.
+    client = current_user.client
+    if client.stripe_id.nil?
+      customer = Stripe::Customer.create({
+        source: params[:stripeToken],
+        email:  params[:stripeEmail]
+      })
+      client.stripe_id = customer.id
+      client.save
+    end
+    @lawyer = Lawyer.find(params[:lawyer_id])
+    @consultation = Consultation.new
+    @consultation.lawyer = @lawyer
+    @consultation.client = client
   end
 end
