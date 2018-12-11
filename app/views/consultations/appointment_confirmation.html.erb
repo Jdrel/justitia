@@ -1,3 +1,6 @@
-<h2>Your appointment is booked.</h2>
-
+<div class="consultation-container">
+<div class="info-box">
+<h5>Your appointment is booked.</h5>
 <p> Your appointment has been scheduled with <%= @consultation.lawyer.user.full_name %> at <%= @consultation.appointment_time.strftime('%H:%M') %> on <%= @consultation.appointment_time.strftime('%A, %b %d') %>. You will receive a confirmation whenever the lawyer confirms the booking. </p>
+</div>
+</div>
