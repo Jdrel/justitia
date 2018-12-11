@@ -1,7 +1,7 @@
 <div class="video-container">
   <div class="video">
 
-    <div id="remote-media" data-consultationid="<%= @consultation.id %>">
+    <div id="remote-media" data-consultationid="<%= @consultation.id %>" data-envurl="<%= root_url %>">
     </div>
 
     <div id="local-media" data-token="<%= @twilio_token %>" data-room="<%= @video_room %>">
@@ -10,6 +10,6 @@
     <div class="position-button">
     <%= link_to "End videochat", end_videocall_path(@consultation), id: "disconnect", class: "btn btn-danger" %>
     </div>
-    
+
   </div>
 </div>
