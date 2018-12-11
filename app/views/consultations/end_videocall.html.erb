@@ -1,10 +1,12 @@
 <div class="container margin-10-px">
   <div class="row">
-    <div class="col-10 col-lg-6 offset-lg-4">
+    <div class="col-10 col-lg-6 offset-lg-1">
       <h2>Thank you for your call with <%= @consultation.lawyer.user.full_name %> </h2>
       <p>Your call started at: <%= @consultation.start_time.localtime.strftime("%I:%M%p") %> and ended at <%= @consultation.end_time.localtime.strftime("%I:%M%p") %> (<%= @consultation.duration_to_minutes%> minutes) </p>
+       <%= link_to "Book new consultation with #{@consultation.lawyer.user.full_name}",  new_appointment_path(@consultation.lawyer), class: 'btn btn-success' %>
     </div>
   </div>
+
 </div>
 <div class="invoice-wrapper">
 <div class="container">
