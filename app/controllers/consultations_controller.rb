@@ -2,6 +2,7 @@ class ConsultationsController < ApplicationController
   TW_ACCOUNT_SID = ENV['TWILIO_SID']
   TW_API_KEY = ENV['TWILIO_KEY']
   TW_API_SECRET = ENV['TWILIO_SECRET']
+  TW_TOKEN = ENV['TWILIO_TOKEN']
 
   # INSTANT CONSULTATIONS
   def index
@@ -62,6 +63,40 @@ class ConsultationsController < ApplicationController
     start_consultation if current_user.lawyer == @consultation.lawyer
   end
 
+    def end_videocall
+    @consultation = Consultation.find(params[:id])
+
+    unless @consultation.start_time.nil? # consultation has happened
+      if @consultation.payment_status == 'pending' # first_one to close the call
+
+        @consultation.duration = Time.now - @consultation.start_time
+        @consultation.client_amount = @consultation.calculate_client_amount
+
+        charge = Stripe::Charge.create(
+        customer: @consultation.client.stripe_id,
+        amount: @consultation.client_amount.cents,
+        currency: @consultation.client_amount_currency,
+        description: "Consultation: #{@consultation.id}"
+        )
+
+        @consultation.payment_status = 'paid'
+        @consultation.client_payment = charge.to_json
+        @consultation.save
+
+        # close the room
+        @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
+        room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
+
+      end
+
+    else # the lawyer has not arrived
+      @consultation.duration = 0
+      @consultation.paymeint_status = 'cancelled'
+      @consultation.save
+    end
+ end
+
+  
   private
 
   def start_consultation
@@ -69,28 +104,6 @@ class ConsultationsController < ApplicationController
     @consultation.save
   end
 
-  def end_videocall
-    @consultation = Consultation.find(params[:id])
-
-    unless @consultation.start_time.nil?
-      @consultation.duration = Time.now - @consultation.start_time
-      @consultation.client_amount_cents = calculate_client_amount
-
-      charge = Stripe::Charge.create(
-        customer: @consultation.client.stripe_id,
-        amount: @consultation.client_amount_cents,
-        currency: @consultation.client_amount_currency,
-        description: "Consultation: #{@consultation.id}"
-        )
-
-      @consultation.payment_status = 'paid'
-      @consultation.client_payment = charge.to_json
-    else
-      @consultation.duration = 0
-      @consultation.payment_status = 'cancelled'
-    end
-    @consultation.save
-  end
 
   def twilio_token
     # Create Video grant for our token

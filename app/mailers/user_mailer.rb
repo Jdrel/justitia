@@ -9,6 +9,7 @@ class UserMailer < ApplicationMailer
     @client_email = @client.user.email
   end
 
+  # instant consultation
   def new_consultation(consultation)
     consultation_information(consultation)
     mail(
@@ -18,8 +19,8 @@ class UserMailer < ApplicationMailer
       :html_body => "You've got a new consultation with #{@client_name}",
       :track_opens => 'true')
   end
-
   def appointment_status_updated_client(consultation)
+
     consultation_information(consultation)
     mail(
       :subject => "Your consultation with #{@lawyer_name}",

@@ -1,5 +1,5 @@
-  <div class="filter-lawyers-container">
-  <%= form_tag lawyers_path, method: :get, class: "form-inline " do %>
+<div class="filter-lawyers-container">
+  <%= form_tag lawyers_path, method: :get, class: "form-inline" do %>
   <%= select_tag :is_online, options_for_select([["online",true],["offline",false]], params[:is_online]), prompt: "status", class: "form-control form-control-sm form-size" %>
   <%= text_field_tag :min_price, params[:min_price], placeholder: "min price", class: "form-control form-size" %>
   <%= text_field_tag :max_price, params[:max_price], placeholder: "max price", class: "form-control form-size" %>

@@ -1,3 +1,16 @@
-.filter-lawyers-container {
+.form-size {
+  width: 65px;
+  height: 20px;
+  font-size: 9px;
+  padding: 2px;
+  margin: 0 2.5px;
 
+}
+
+.filter-lawyers-container {
+  position: sticky;
+  top: 70px;
+  z-index: 1;
+  padding: 10px 0px;
+  background-color: white;
 }

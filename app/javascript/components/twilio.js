@@ -61,8 +61,10 @@ function initVideoCall(){
           room.localParticipant.tracks.forEach(track => {
             const attachedElements = track.detach();
             attachedElements.forEach(element => element.remove());
-            console.log("call finnished");
           });
+          console.log("call finnished");
+          const consultationId = remoteMedia.dataset.consultationid;
+          window.location.href = `https://www.justitia.today/consultations/${consultationId}/end_videocall`;
         });
 
 

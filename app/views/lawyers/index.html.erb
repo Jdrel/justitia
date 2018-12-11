@@ -1,9 +1,6 @@
-
+<%= render 'shared/lawyer_filter' %>
 <div class="container">
-
-
 <div class="lawyers-container">
-  <%= render 'shared/lawyer_filter' %>
   <div class ="search-results">
     <h5>Who can help you:</h5>
   </div>
@@ -17,10 +14,10 @@
     <div class="lawyer-decription">
       <h5 id="name-size"><%= lawyer.user.first_name.capitalize + " " + lawyer.user.last_name.capitalize %></h5>
       <ul>
-        <li>Specialties: <%= truncate(lawyer.categories, length: 35) %></li>
+        <li><i class="fas fa-thumbs-up"></i> Expertise: <%= truncate(lawyer.categories, length: 35) %> </li>
         <li><i class="fas fa-dollar-sign"></i> Price per hour: <%= humanized_money_with_symbol lawyer.hourly_rate %></li>
         <% if lawyer.is_first_consultation_free %>
-        <li><i class="fas fa-handshake"></i> First consultation is free!</li>
+        <li><i class="fas fa-handshake"></i> First consultation is free! </li>
         <% end %>
       </ul>
     </div>
