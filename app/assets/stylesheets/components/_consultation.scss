@@ -1,4 +1,22 @@
 .consultation-container {
-  padding: 10px;
-  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  margin-top: -15px;
+}
+
+.consultation-container h5 {
+  flex-grow: 1;
+  justify-content: space-around;
+}
+
+.info-details p {
+  flex-grow: 1;
+}
+
+.info-box {
+  margin: 40px;
+}
+
+#keep-calm {
+  border-radius: 155px;
 }

@@ -10,17 +10,17 @@
   </div>
 
   <div class="basic-info">
-    <p class="text-position"><i class="fas fa-map-marker-alt"></i> <%= @lawyer.user.address %>  </p>
-    <p class="text-position"><i class="fas fa-gavel"></i>  <%= truncate(@lawyer.categories, length: 35) %></p>
-    <p class="text-position"><i class="fas fa-dollar-sign"></i>  Price per hour: <%= humanized_money_with_symbol @lawyer.hourly_rate %> </p>
+    <p class="text-position"><i class="fas fa-map-marker-alt"></i>  &nbsp;&nbsp;<%= @lawyer.user.address %>  </p>
+    <p class="text-position"><i class="fas fa-gavel"></i>  &nbsp;<%= truncate(@lawyer.categories, length: 35) %></p>
+    <p class="text-position"><i class="fas fa-dollar-sign"></i> &nbsp;&nbsp;&nbsp;Price per hour: <%= humanized_money_with_symbol @lawyer.hourly_rate %> </p>
     <% if @lawyer.is_first_consultation_free %>
-      <p class="text-position"><i class="fas fa-check"></i> Book first videochat for free </p>
+      <p class="text-position"><i class="fas fa-check"></i> &nbsp;Book first videochat for free </p>
     <% end %>
   </div>
 
   <div class="button-position">
-    <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-light"%>
-    <%= link_to "Videochat now", new_lawyer_consultation_path(@lawyer), class: "btn btn-primary"%>
+    <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-light", id: "bigger-btn-light"%>
+    <%= link_to "Videochat now", new_lawyer_consultation_path(@lawyer), class: "btn btn-primary", id: "bigger-btn-primary"%>
   </div>
 
   <div id="description-position">
@@ -28,8 +28,11 @@
     <p><%= @lawyer.description %></p>
   </div>
 
+  <div id="description-position">
+    <h5>Reviews</h5>
+  </div>
   <div class="review-position">
-    <%= image_tag 'reviews', id: "review-size" %>
+    <%= image_tag 'review', id: "review-size" %>
   </div>
 
 </div>
