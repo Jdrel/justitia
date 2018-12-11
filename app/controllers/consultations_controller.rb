@@ -76,7 +76,7 @@ class ConsultationsController < ApplicationController
         customer: @consultation.client.stripe_id,
         amount: @consultation.client_amount.cents,
         currency: @consultation.client_amount_currency,
-        description: "Consultation: #{@consultation.id}"
+        description: "Consultation: #{@consultation.id} #{current_user.email}"
         )
 
         @consultation.payment_status = 'paid'
@@ -95,7 +95,7 @@ class ConsultationsController < ApplicationController
       @consultation.save
     end
   end
-  
+
   private
 
   def start_consultation
