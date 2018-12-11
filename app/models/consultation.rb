@@ -10,7 +10,7 @@ class Consultation < ApplicationRecord
 
   def duration_to_units
     minutes = duration_to_minutes
-    (minutes / 5).abs + 1
+    (minutes / 5) + 1
   end
 
   def end_time
@@ -19,7 +19,7 @@ class Consultation < ApplicationRecord
 
   def calculate_client_amount
     rate = lawyer.calculate_5mins_rate
-    five_minutes_units = duration_to_minutes
-    rate * five_minutes_units * 100
+    five_minutes_units = duration_to_units
+    rate * five_minutes_units
   end
 end
