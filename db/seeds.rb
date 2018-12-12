@@ -35,15 +35,16 @@ puts 'Creating 10 lawyers...'
     email: "#{first_name}#{i.to_s}@justitia.today",
     password: 'secret'
   )
-  lawyer = Lawyer.create(
+  lawyer = Lawyer.new(
     user: user,
     description: Faker::GameOfThrones.quote,
     years_of_experience: rand(0..45),
     hourly_rate: rand(30..500),
     is_first_consultation_free: Faker::Boolean.boolean,
     is_online: Faker::Boolean.boolean,
-    photo: photos.sample
   )
+  lawyer.remote_photo_url = photos.sample
+  lawyer.save!
   rand(1..3).times do
     lawyer.specialties.create!(
       lawyer: lawyer,

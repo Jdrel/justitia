@@ -1,5 +1,6 @@
 class LawyersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
+  before_action :lawyer_params, only: :create
 
   def index
     get_category_names
@@ -15,6 +16,7 @@ class LawyersController < ApplicationController
     @lawyer = Lawyer.find(params[:id])
   end
 
+
   # METHODS THAT ALLOW LAWYER TO PUT HIMSELF ONLINE/OFFLINE
 
    def online
@@ -29,6 +31,20 @@ class LawyersController < ApplicationController
     @lawyer.is_online = false
     @lawyer.save
     render "update_online"
+
+  def new
+    @lawyer = Lawyer.new
+  end
+
+  def create
+    @lawyer = Lawyer.new
+    @lawyer.user = current_user
+    @lawyer.description = params['lawyer']['description']
+    @lawyer.years_of_experience = params['lawyer']['years_of_experience']
+    @lawyer.is_first_consultation_free = params['lawyer']['is_first_consultation_free']
+    @lawyer.photo = params['lawyer']['photo']
+    @lawyer.save
+    redirect_to lawyer_path(@lawyer)
   end
 
   private
@@ -62,7 +78,8 @@ class LawyersController < ApplicationController
     return @category_names
   end
 
-  def new
-    @lawyer = Lawyer.new
+  def lawyer_params
+    params.require(:lawyer).permit(:description, :years_of_experience, :hourly_rate, :is_first_consultation_free, :photo)
   end
+
 end

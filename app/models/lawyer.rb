@@ -5,6 +5,8 @@ class Lawyer < ApplicationRecord
   has_many :categories, through: :specialties
   monetize :hourly_rate_cents
 
+  mount_uploader :photo, PhotoUploader
+
   def categories
     categories_names = []
     self.specialties.each do |specialty|
