@@ -1,0 +1,4 @@
+<div class=btn-group role="group">
+  <%= link_to 'Online', online_lawyer_path(@lawyer), method: :patch, remote: true, class: "btn #{@lawyer.is_online ? 'btn-success' : 'btn-secondary'}", id: "online-button"%>
+  <%= link_to 'Offline', offline_lawyer_path(@lawyer), method: :patch, remote: true, class: "btn #{!@lawyer.is_online ? 'btn-danger' : 'btn-secondary'}", id: "offline-button" %>
+</div>

@@ -4,13 +4,14 @@ class ConsultationsController < ApplicationController
   TW_API_SECRET = ENV['TWILIO_SECRET']
   TW_TOKEN = ENV['TWILIO_TOKEN']
 
-  # INSTANT CONSULTATIONS
   def index
     @lawyer = Lawyer.find(params[:lawyer_id])
     authorize(@lawyer)
     @consultations = Consultation.where(lawyer: @lawyer)
+    @consultations = @consultations.where.not(appointment_time: nil)
   end
 
+  # INSTANT CONSULTATIONS
   def new
     @consultation = Consultation.new
     @lawyer = Lawyer.find(params[:lawyer_id])

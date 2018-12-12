@@ -16,6 +16,22 @@ class LawyersController < ApplicationController
     @lawyer = Lawyer.find(params[:id])
   end
 
+
+  # METHODS THAT ALLOW LAWYER TO PUT HIMSELF ONLINE/OFFLINE
+
+   def online
+    @lawyer = Lawyer.find(params[:lawyer_id])
+    @lawyer.is_online = true
+    @lawyer.save
+    render "update_online"
+  end
+
+  def offline
+    @lawyer = Lawyer.find(params[:lawyer_id])
+    @lawyer.is_online = false
+    @lawyer.save
+    render "update_online"
+
   def new
     @lawyer = Lawyer.new
   end

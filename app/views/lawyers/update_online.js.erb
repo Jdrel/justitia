@@ -1,0 +1,6 @@
+function updateButtons() {
+  const buttons = document.querySelector(".btn-group");
+  buttons.innerHTML = '<%= j render "consultations/button_group", lawyer: @lawyer  %>'
+}
+
+updateButtons();

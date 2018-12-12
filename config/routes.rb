@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     resources :consultations, only: [:index, :new, :create, :show]
   end
 
+  patch 'lawyers/:lawyer_id/online', to: 'lawyers#online', as: :online_lawyer
+  patch 'lawyers/:lawyer_id/offline', to: 'lawyers#offline', as: :offline_lawyer
+
   patch '/consultations/:id/appointment_status', to: 'consultations#update_appointment_status', as: :update_appointment_status
   get '/consultations/:id/end_videocall', to: 'consultations#end_videocall', as: 'end_videocall'
 

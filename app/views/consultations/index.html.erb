@@ -1,6 +1,15 @@
 <div class="container message-container">
+<br>
+  <div class="row">
+    <div class="lawyer-availability">
+      <p>Set your current availability:&nbsp;&nbsp;&nbsp;&nbsp; </p>
+      <%= render "consultations/button_group", lawyer: @lawyer  %>
+    </div>
+  </div>
+
   <div class="row">
     <h1>Manage your appointments</h1>
+
 
     <% @consultations.each do |consultation| %>
 

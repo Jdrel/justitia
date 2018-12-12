@@ -11,7 +11,7 @@
     <div class="lawyer-avatar">
       <%=  cl_image_tag(lawyer.photo) %>
     </div>
-    <div class="lawyer-decription">
+    <div class="lawyer-description">
       <h5 id="name-size"><%= lawyer.user.first_name.capitalize + " " + lawyer.user.last_name.capitalize %></h5>
       <hr>
       <ul>
@@ -22,12 +22,13 @@
         <% end %>
       </ul>
     </div>
+    <div>
     <% if lawyer.is_online  %>
-      <div class="online-circle-green"></div>
+      <div class="online-circle-green" data-icon-online="<%= lawyer.id %>"></div>
     <% else %>
-      <div class="online-circle-red"></div>
+      <div class="online-circle-red" data-icon-offline="<%= lawyer.id %>"></div>
     <% end  %>
-
+  </div>
   </div>
   <% end %>
   <% end %>
