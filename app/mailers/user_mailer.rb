@@ -20,13 +20,34 @@ class UserMailer < ApplicationMailer
       :track_opens => 'true')
   end
   def appointment_status_updated_client(consultation)
-
     consultation_information(consultation)
     mail(
       :subject => "Your consultation with #{@lawyer_name}",
       :to  => @client_email,
       :from => 'hello@justitia.today',
       :html_body => "Your consultation with #{@lawyer_name}",
+      :track_opens => 'true')
+  end
+
+  def pre_appointment_email_client(consultation_id)
+    consultation = Consultation.find(consultation_id)
+    consultation_information(consultation)
+    mail(
+      :subject => "You have a call today with #{@lawyer_name} at #{@consultation.appointment_time.strftime('%A, %b %d')}",
+      :to  => @client_email,
+      :from => 'hello@justitia.today',
+      :html_body => "You have a call today with #{@lawyer_name} at #{@consultation.appointment_time.strftime('%A, %b %d')}",
+      :track_opens => 'true')
+  end
+
+  def pre_appointment_email_lawyer(consultation_id)
+    consultation = Consultation.find(consultation_id)
+    consultation_information(consultation)
+    mail(
+      :subject => "You have a call today with #{@client_name} at #{@consultation.appointment_time.strftime('%A, %b %d')}",
+      :to  => @lawyer_email,
+      :from => 'hello@justitia.today',
+      :html_body => "You have a call today with #{@client_name} at #{@consultation.appointment_time.strftime('%A, %b %d')}",
       :track_opens => 'true')
   end
 end

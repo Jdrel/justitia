@@ -28,6 +28,14 @@ class ConsultationsController < ApplicationController
   def new_appointment
     @consultation = Consultation.new
     @client = current_user.client
+    @lawyer = Lawyer.find(params[:lawyer_id])
+    should_the_lawyer_give_a_free_consult?
+    @ask_for_credit_card = true
+    if !@client.stripe_id.nil?
+      @ask_for_credit_card = false
+    elsif should_the_lawyer_give_a_free_consult?
+      @ask_for_credit_card = false
+    end
   end
 
   def create_new_appointment
@@ -51,6 +59,16 @@ class ConsultationsController < ApplicationController
     @consultation.appointment_status = params[:appointment_status]
     @consultation.save
     UserMailer.appointment_status_updated_client(@consultation).deliver_now
+    pre_appointment_email_moment = @consultation.appointment_time - 3600
+    if params[:appointment_status] == "accepted"
+      if pre_appointment_email_moment > Time.now
+        UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
+        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
+      else
+        UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait: 5.seconds)
+        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver_later(wait: 5.seconds)
+      end
+    end
   end
 
   # PAGE WHERE CLIENT AND USER HAVE A CALL
@@ -65,7 +83,6 @@ class ConsultationsController < ApplicationController
 
   def end_videocall
     @consultation = Consultation.find(params[:id])
-
     unless @consultation.start_time.nil? # consultation has happened
       if @consultation.payment_status == 'pending' # first_one to close the call
 
@@ -73,12 +90,12 @@ class ConsultationsController < ApplicationController
         @consultation.client_amount = @consultation.calculate_client_amount
 
         charge = Stripe::Charge.create(
+
         customer: @consultation.client.stripe_id,
         amount: @consultation.client_amount.cents,
         currency: @consultation.client_amount_currency,
         description: "Consultation: #{@consultation.id} #{current_user.email}"
         )
-
         @consultation.payment_status = 'paid'
         @consultation.client_payment = charge.to_json
         @consultation.save
@@ -86,9 +103,7 @@ class ConsultationsController < ApplicationController
         # close the room
         @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
         room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
-
       end
-
     else # the lawyer has not arrived
       @consultation.duration = 0
       @consultation.payment_status = 'cancelled'
@@ -97,6 +112,12 @@ class ConsultationsController < ApplicationController
   end
 
   private
+
+  def should_the_lawyer_give_a_free_consult?
+    consultations = @lawyer.consultations.where(client_id: @client.id)
+    valid_consultations = consultations.where("duration > 0")
+    (valid_consultations.count == 0 && @lawyer.is_first_consultation_free)
+  end
 
   def start_consultation
     @consultation.start_time = Time.new if @consultation.start_time.nil?

@@ -12,4 +12,12 @@ Rails.application.routes.draw do
 
   patch '/consultations/:id/appointment_status', to: 'consultations#update_appointment_status', as: :update_appointment_status
   get '/consultations/:id/end_videocall', to: 'consultations#end_videocall', as: 'end_videocall'
+
+  Rails.application.routes.draw do
+  # Sidekiq Web UI, only for admins.
+  require "sidekiq/web"
+  authenticate :user, lambda { |u| u.admin } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+end
 end
