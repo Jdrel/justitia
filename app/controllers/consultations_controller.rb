@@ -9,6 +9,7 @@ def index
   @lawyer = Lawyer.find(params[:lawyer_id])
   authorize(@lawyer)
   @consultations = Consultation.where(lawyer: @lawyer)
+  @consultations = @consultations.where.not(appointment_time: nil)
 end
 
 # INSTANT CONSULTATIONS
@@ -17,7 +18,7 @@ def new
   @lawyer = Lawyer.find(params[:lawyer_id])
   @client = current_user.client
 end
-
+  
 def create
   set_basic_details_for_new_consultation
   @consultation.save

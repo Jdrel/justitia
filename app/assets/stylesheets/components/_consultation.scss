@@ -15,8 +15,23 @@
 
 .info-box {
   margin: 40px;
+  text-align: center;
+  img {
+    height: 130px;
+    width: 130px;
+  }
+  h5 {
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 30px;
+    font-weight: bold;
+    margin: 30px;
+  }
 }
 
 #keep-calm {
   border-radius: 155px;
+}
+
+.lawyer-availability {
+  margin: 33px 0px 10px 33px;
 }

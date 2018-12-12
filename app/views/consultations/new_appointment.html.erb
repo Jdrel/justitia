@@ -1,26 +1,33 @@
-<div class="container">
+<div class="appointment-container">
   <div class="row">
-    <div class="div col-6 offset-3">
-      <h1>New appointment</h1>
-      <p>Please select a date and time for your appointment in the timezone of the lawyer (Central European Standard Time):</p>
+    <div class="col-12">
+      <div class="hero-image" id="hero-long">
+        <div class="hero-text">
+          <h2>Book a new appointment</h2>
+          <br>
+          <p>Please select a time for your appointment (Central European Standard Time):</p>
+          <br>
+          <%= simple_form_for(@consultation, :method => :post, :url => new_appointment_path) do |f| %>
+          <%= text_field_tag :appointment_time, nil, id: "appointment_time_input"%>
 
-      <%= simple_form_for(@consultation, :method => :post, :url => new_appointment_path) do |f| %>
-      <%= text_field_tag :appointment_time, nil, id: "appointment_time_input"%>
-      <% if @ask_for_credit_card %>
-      <script
-      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-      data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-      data-name="Justitia.today"
-      data-email="<%= current_user.email %>"
-      data-description="Justitia videochat"></script>
-      <% else %>
-      <%= f.submit "submit" %>
-      <% end %>
-      <% end %>
-    </div>
+            <% if @ask_for_credit_card %>
+            <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+            data-name="Justitia.today"
+            data-email="<%= current_user.email %>"
+            data-description="Justitia videochat"></script>
+            <% else %>
+            <br>
+            <%= f.submit "SUBMIT", :class=>"btn btn-light", style: "margin-top: 40px; letter-spacing: 1px;" %>
+            <% end %>
+            <% end %>
+            </div>
+          </div>
+      </div>
   </div>
 </div>
 
 <script>
-  $('#appointment_time_input').datetimepicker({ uiLibrary: 'bootstrap4', footer: true, modal: true, format: 'HH:MM yyyy-mm-dd'});
+  $('#appointment_time_input').datetimepicker({ uiLibrary: 'materialdesign', footer: true, modal: true, format: 'HH:MM yyyy-mm-dd'});
 </script>

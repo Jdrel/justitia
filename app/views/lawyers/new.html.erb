@@ -1,1 +1,22 @@
-  <%= render 'shared/form' %>
+<div class="container">
+  <h2>Register as Lawyer</h2>
+
+  <%= simple_form_for @lawyer do |f| %>
+    <%= f.error_notification %>
+    <div class="form-inputs sign-up-form">
+      <%= f.input :description %>
+      <%= f.input :years_of_experience %>
+      <%= f.input :hourly_rate %>
+      <%= f.input :is_first_consultation_free %>
+      <%= f.input :photo %>
+      <%= f.input :photo_cache, as: :hidden %>
+      <%= f.input :stripe_id %>
+    </div>
+
+
+    <div class="form-actions">
+      <%= f.button :submit, "Add Lawyer details", class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+

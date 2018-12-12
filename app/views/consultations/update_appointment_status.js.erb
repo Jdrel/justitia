@@ -1,1 +1,1 @@
-document.querySelector("[data-consultation-id='<%= @consultation.id %>']").innerText =  `<%= @consultation.appointment_status %>`;
+document.querySelector("[data-consultation-id='<%= @consultation.id %>']").innerHTML = `<div class='status'><p id='approved'><%= @consultation.appointment_status.capitalize %></p></div>`;
