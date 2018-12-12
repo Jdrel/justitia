@@ -32,7 +32,7 @@ class ConsultationsController < ApplicationController
     @ask_for_credit_card = true
     if !@client.stripe_id.nil?
       @ask_for_credit_card = false
-    elsif should_the_lawyer_give_a_free_consult(@client)
+    elsif @lawyer.should_the_lawyer_give_a_free_consult?(@client)
       @ask_for_credit_card = false
     end
   end
@@ -142,7 +142,7 @@ class ConsultationsController < ApplicationController
     # Setting the Stripe details, lawyer and creating the consultation.
     @client = current_user.client
     @lawyer = Lawyer.find(params[:lawyer_id])
-    if @client.stripe_id.nil? && !should_the_lawyer_give_a_free_consult?(@client)
+    if @client.stripe_id.nil? && !@lawyer.should_the_lawyer_give_a_free_consult?(@client)
       customer = Stripe::Customer.create({
         source: params[:stripeToken],
         email:  params[:stripeEmail]
@@ -153,7 +153,7 @@ class ConsultationsController < ApplicationController
     @consultation = Consultation.new
     @consultation.lawyer = @lawyer
     @consultation.client = @client
-    if should_the_lawyer_give_a_free_consult?(@client)
+    if @lawyer.should_the_lawyer_give_a_free_consult?(@client)
       @consultation.payment_status = 'free'
     end
   end
