@@ -51,6 +51,16 @@ class ConsultationsController < ApplicationController
     @consultation.appointment_status = params[:appointment_status]
     @consultation.save
     UserMailer.appointment_status_updated_client(@consultation).deliver_now
+    pre_appointment_email_moment = @consultation.appointment_time - 3600
+    if params[:appointment_status] == "accepted"
+      if pre_appointment_email_moment > Time.now
+        UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
+        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
+      else
+        UserMailer.pre_appointment_email_client(@consultation.id).deliver.now
+        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver.now
+      end
+    end
   end
 
   # PAGE WHERE CLIENT AND USER HAVE A CALL
@@ -65,7 +75,6 @@ class ConsultationsController < ApplicationController
 
   def end_videocall
     @consultation = Consultation.find(params[:id])
-
     unless @consultation.start_time.nil? # consultation has happened
       if @consultation.payment_status == 'pending' # first_one to close the call
 
@@ -73,12 +82,12 @@ class ConsultationsController < ApplicationController
         @consultation.client_amount = @consultation.calculate_client_amount
 
         charge = Stripe::Charge.create(
+
         customer: @consultation.client.stripe_id,
         amount: @consultation.client_amount.cents,
         currency: @consultation.client_amount_currency,
         description: "Consultation: #{@consultation.id} #{current_user.email}"
         )
-
         @consultation.payment_status = 'paid'
         @consultation.client_payment = charge.to_json
         @consultation.save
@@ -86,9 +95,7 @@ class ConsultationsController < ApplicationController
         # close the room
         @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
         room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
-
       end
-
     else # the lawyer has not arrived
       @consultation.duration = 0
       @consultation.payment_status = 'cancelled'

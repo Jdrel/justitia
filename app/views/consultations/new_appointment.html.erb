@@ -1,8 +1,9 @@
 <div class="container">
   <div class="row">
-    <div class="div col-8 offset-2">
-      <h3>New appointment</h3>
-      <p>Please select a date for your appointment:</p>
+    <div class="div col-6 offset-3">
+      <h1>New appointment</h1>
+      <p>Please select a date and time for your appointment in the timezone of the lawyer (Central European Standard Time):</p>
+
       <%= simple_form_for(@consultation, :method => :post, :url => new_appointment_path) do |f| %>
       <%= text_field_tag :appointment_time, nil, id: "appointment_time_input"%>
       <% if @client.stripe_id.nil? %>
@@ -21,6 +22,5 @@
 </div>
 
 <script>
-  $('#appointment_time_input').datetimepicker({ footer: true, modal: true, format: 'HH:MM yyyy-mm-dd' });
+  $('#appointment_time_input').datetimepicker({ uiLibrary: 'bootstrap4', footer: true, modal: true, format: 'HH:MM yyyy-mm-dd'});
 </script>
-

@@ -1,0 +1,7 @@
+Hi <%= @client_name %>,<br><br>
+
+You have a call in an hour with <%= @lawyer_name %>. The exact time of your call is: <%= @consultation.appointment_time.strftime('%H:%M') %>. You can access the call here: <%= link_to 'start consultation', lawyer_consultation_url(@lawyer, @consultation) %>.<br><br>
+
+
+Kind regards,<br>
+Justitita
