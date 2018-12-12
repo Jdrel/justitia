@@ -30,6 +30,8 @@ gem 'twilio-ruby', '~> 5.17.0'
 gem 'postmark-rails'
 gem 'bootstrap4-datetime-picker-rails'
 gem "pundit"
+gem 'sidekiq'
+gem 'sidekiq-failures', '~> 1.0'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
