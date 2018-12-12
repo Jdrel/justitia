@@ -6,7 +6,7 @@
 
       <%= simple_form_for(@consultation, :method => :post, :url => new_appointment_path) do |f| %>
       <%= text_field_tag :appointment_time, nil, id: "appointment_time_input"%>
-      <% if @client.stripe_id.nil? %>
+      <% if @ask_for_credit_card %>
       <script
       src="https://checkout.stripe.com/checkout.js" class="stripe-button"
       data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
