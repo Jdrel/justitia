@@ -31,6 +31,7 @@ class LawyersController < ApplicationController
     @lawyer.is_online = false
     @lawyer.save
     render "update_online"
+  end
 
   def new
     @lawyer = Lawyer.new
