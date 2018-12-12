@@ -3,7 +3,7 @@
     <div class="col-10 offset-col-2">
 
       <div class="profile-position">
-        <%= image_tag(@lawyer.photo, class: "lawyer-avatar avatar-large") %>
+        <%= cl_image_tag(@lawyer.photo, class: "lawyer-avatar avatar-large") %>
           <h4 class="profile-text"> <%= @lawyer.user.first_name %> <%= @lawyer.user.last_name %>  </h4>
       </div>
     </div>
