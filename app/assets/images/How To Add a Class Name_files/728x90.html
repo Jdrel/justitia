@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!-- saved from url=(0077)https://s0.2mdn.net/3813226/1543415879549/we_w2_holiday_728x90_es/728x90.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="ad.size" content="width=728, height=90">
+    <script type="text/javascript">
+        var clickTag = "http://www.google.com";
+
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="./style(1).css">
+    <!--    GreenSock cdn-->
+    <script src="./TweenLite.min.js"></script>
+    <script src="./TimelineLite.min.js"></script>
+    <script src="./EasePack.min.js"></script>
+    <script src="./CSSPlugin.min.js"></script>
+<script type="text/javascript">
+    
+      (function() {
+        var relegateNavigation = '';
+        var handleClickTagMessage = function(e) {
+          try {
+            var eventData = JSON.parse(e.data);
+          } catch (err) {
+            return;
+          }
+          if (eventData.isInitClickTag) {
+            if (eventData.clickTags) {
+              for (var i = 0; i < eventData.clickTags.length; i++) {
+                var clkTag = eventData.clickTags[i];
+                window[clkTag.name] = clkTag.url;
+              }
+            } else if (eventData.clickTag) {
+              window.clickTag = eventData.clickTag;
+            }
+            relegateNavigation = eventData.relegateNavigation;
+          }
+        };
+
+        if (open.call) {
+          window.open = function(open) {
+            return function(url, name, features) {
+              if (relegateNavigation === 'parent') {
+                var message = {'clickTag': url, 'isPostClickTag': true};
+                parent.postMessage(JSON.stringify(message), '*');
+              } else {
+                var args = [url, name];
+                if (features) {
+                  args.push(features);
+                }
+                open.apply(window, args);
+              }
+            };
+          }(window.open);
+        }
+
+        if (window.addEventListener) {
+          window.addEventListener(
+              'message', handleClickTagMessage, false);
+        } else {
+          window.attachEvent('onmessage', handleClickTagMessage);
+        }
+      })();
+    
+  </script></head>
+
+<body>
+    <div id="banner" draggable="false" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1); visibility: visible; display: block;">
+        <img id="visual" class="blockElement" src="./visual(1).jpg" style="backface-visibility: hidden; transform: matrix3d(1.1, 0.000191986, 0, 0, -0.000191986, 1.1, 0, 0, 0, 0, 1, 0, 10, 0, 0.01, 1);">
+        <img id="paper_tear" class="blockElement" src="./paper_tear(1).png" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1);">
+        <img id="graphic" class="blockElement" src="./graphic(1).png" style="backface-visibility: hidden; transform: matrix3d(1.1, 0.000191986, 0, 0, -0.000191986, 1.1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1);">
+
+        <!-- copy -->
+        <img id="copy00" class="copy blockElement hide" src="./copy00(1).png" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1); visibility: inherit; opacity: 1;">
+        <img id="copy01" class="copy blockElement hide" src="./copy01(1).png" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1); visibility: inherit; opacity: 1;">
+        <img id="copy02" class="copy blockElement hide" src="./copy02(1).png" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1); visibility: inherit; opacity: 1;">
+        
+        <img id="logo" class="blockElement hide" src="./logo(1).png" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1); visibility: inherit; opacity: 1;">
+        
+        <div id="cta" class="blockElement hide" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1); visibility: inherit; opacity: 1; transform-origin: 80px 45px 0px;">
+            <img id="cta_up" class="blockElement" src="./cta(1).png" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1);">
+            <img id="cta_hover" class="blockElement hide" src="./cta_hover(1).png" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1); visibility: hidden; opacity: 0; transform-origin: 80px 45px 0px;">
+        </div>
+
+        <div id="border" class="blockElement" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1);"></div>
+        <div id="overlay" class="blockElement" style="backface-visibility: hidden; transform: matrix3d(1, 0.000174533, 0, 0, -0.000174533, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0.01, 1); visibility: hidden; opacity: 0;"></div>
+    <div class="blockElement" style="z-index: 100;"></div></div>
+
+<script type="text/javascript" src="./animation(1).js"></script>
+<script>
+    document.onreadystatechange = function() {
+        if (document.readyState == "complete") {
+            console.log("banner load:", document.readyState);
+            initBanner();
+        }
+    }
+
+</script>
+<script type="text/javascript" src="./Enabler.js"></script>
+<script type="text/javascript" src="./logic(1).js"></script>
+
+
+</body></html>
