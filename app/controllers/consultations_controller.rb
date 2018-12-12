@@ -91,7 +91,7 @@ class ConsultationsController < ApplicationController
       @consultation.duration = 0
       @consultation.payment_status = 'cancelled'
       @consultation.save
-      elsif @consultation.payment_status = "free" # The consultation was free
+      elsif @consultation.payment_status == "free" # The consultation was free
       @consultation.duration = Time.now - @consultation.start_time
       @consultation.save
       end

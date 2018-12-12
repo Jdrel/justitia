@@ -1,3 +1,16 @@
+<% if @consultation.payment_status == 'free' %>
+
+  <div class="container margin-10-px">
+    <div class="row">
+      <div class="col-10 col-lg-6 offset-lg-1">
+        <h2>Call with <%= @consultation.lawyer.user.full_name %> was free!</h2>
+        <p><%= @consultation.lawyer.user.full_name %> offered this call for free, therefore your card was NOT charged</p>
+         <%= link_to "Book new consultation with #{@consultation.lawyer.user.full_name}",  new_appointment_path(@consultation.lawyer), class: 'btn btn-success' %>
+      </div>
+    </div>
+
+  </div>
+
 <% if @consultation.payment_status == 'cancelled' %>
 
   <div class="container margin-10-px">
