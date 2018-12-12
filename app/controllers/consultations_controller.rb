@@ -28,6 +28,14 @@ class ConsultationsController < ApplicationController
   def new_appointment
     @consultation = Consultation.new
     @client = current_user.client
+    @lawyer = Lawyer.find(params[:lawyer_id])
+    should_the_lawyer_give_a_free_consult?
+    @ask_for_credit_card = true
+    if !@client.stripe_id.nil?
+      @ask_for_credit_card = false
+    elsif should_the_lawyer_give_a_free_consult?
+      @ask_for_credit_card = false
+    end
   end
 
   def create_new_appointment
@@ -104,6 +112,12 @@ class ConsultationsController < ApplicationController
   end
 
   private
+
+  def should_the_lawyer_give_a_free_consult?
+    consultations = @lawyer.consultations.where(client_id: @client.id)
+    valid_consultations = consultations.where("duration > 0")
+    (valid_consultations.count == 0 && @lawyer.is_first_consultation_free)
+  end
 
   def start_consultation
     @consultation.start_time = Time.new if @consultation.start_time.nil?
