@@ -4,45 +4,45 @@ class ConsultationsController < ApplicationController
   TW_API_SECRET = ENV['TWILIO_SECRET']
   TW_TOKEN = ENV['TWILIO_TOKEN']
 
-  def index
-    @lawyer = Lawyer.find(params[:lawyer_id])
-    authorize(@lawyer)
-    @consultations = Consultation.where(lawyer: @lawyer)
-    @consultations = @consultations.where.not(appointment_time: nil)
-  end
+# OVERVIEW FOR THE LAWYER DASHBOARD
+def index
+  @lawyer = Lawyer.find(params[:lawyer_id])
+  authorize(@lawyer)
+  @consultations = Consultation.where(lawyer: @lawyer)
+  @consultations = @consultations.where.not(appointment_time: nil)
+end
 
-  # INSTANT CONSULTATIONS
-  def new
-    @consultation = Consultation.new
-    @lawyer = Lawyer.find(params[:lawyer_id])
-    @client = current_user.client
-  end
-
-  def create
-    set_basic_details_for_new_consultation
-    @consultation.save
-    UserMailer.new_consultation(@consultation).deliver_now
-    redirect_to lawyer_consultation_path(@lawyer, @consultation)
-  end
+# INSTANT CONSULTATIONS
+def new
+  @consultation = Consultation.new
+  @lawyer = Lawyer.find(params[:lawyer_id])
+  @client = current_user.client
+end
+  
+def create
+  set_basic_details_for_new_consultation
+  @consultation.save
+  UserMailer.new_consultation(@consultation).deliver_now
+  redirect_to lawyer_consultation_path(@lawyer, @consultation)
+end
 
   # FUTURE CONSULTATIONS (i.e. appointments)
   def new_appointment
     @consultation = Consultation.new
-    @client = current_user.client
     @lawyer = Lawyer.find(params[:lawyer_id])
-    should_the_lawyer_give_a_free_consult?
+    @client = current_user.client
     @ask_for_credit_card = true
     if !@client.stripe_id.nil?
       @ask_for_credit_card = false
-    elsif should_the_lawyer_give_a_free_consult?
+    elsif @lawyer.should_the_lawyer_give_a_free_consult?(@client)
       @ask_for_credit_card = false
     end
   end
 
   def create_new_appointment
     set_basic_details_for_new_consultation
-    @consultation.appointment_time = params[:appointment_time]
     @consultation.appointment_status = "pending"
+    @consultation.appointment_time = params[:appointment_time]
     @consultation.save
     redirect_to appointment_confirmation_path(@lawyer, @consultation)
   end
@@ -60,7 +60,7 @@ class ConsultationsController < ApplicationController
     @consultation.appointment_status = params[:appointment_status]
     @consultation.save
     UserMailer.appointment_status_updated_client(@consultation).deliver_now
-    pre_appointment_email_moment = @consultation.appointment_time - 3600
+    pre_appointment_email_moment = @consultation.appointment_time - 3600 # 1 hour before the appointment time
     if params[:appointment_status] == "accepted"
       if pre_appointment_email_moment > Time.now
         UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
@@ -84,41 +84,26 @@ class ConsultationsController < ApplicationController
 
   def end_videocall
     @consultation = Consultation.find(params[:id])
-    unless @consultation.start_time.nil? # consultation has happened
-      if @consultation.payment_status == 'pending' # first_one to close the call
-
-        @consultation.duration = Time.now - @consultation.start_time
-        @consultation.client_amount = @consultation.calculate_client_amount
-
-        charge = Stripe::Charge.create(
-
-        customer: @consultation.client.stripe_id,
-        amount: @consultation.client_amount.cents,
-        currency: @consultation.client_amount_currency,
-        description: "Consultation: #{@consultation.id} #{current_user.email}"
-        )
-        @consultation.payment_status = 'paid'
-        @consultation.client_payment = charge.to_json
+    if @consultation.duration.nil? # making sure that only one participant closes the room
+      case [@consultation.start_time.nil?, @consultation.payment_status]
+      when [true, 'pending'] # The consultation never happened because the client stopped it before the lawyer entered
+        @consultation.duration = 0
+        @consultation.payment_status = 'cancelled'
         @consultation.save
-
-        # close the room
-        @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
-        room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
+      when [false, 'pending'] # The consultation happened and we need to charge the client
+        set_consultation_duration
+        charge_the_client
+        @consultation.save
+        close_twilio_room
+      when [false, 'free'] # The consultation happened, however the consultation was free
+        set_consultation_duration
+        @consultation.save
+        close_twilio_room
       end
-    else # the lawyer has not arrived
-      @consultation.duration = 0
-      @consultation.payment_status = 'cancelled'
-      @consultation.save
     end
   end
 
   private
-
-  def should_the_lawyer_give_a_free_consult?
-    consultations = @lawyer.consultations.where(client_id: @client.id)
-    valid_consultations = consultations.where("duration > 0")
-    (valid_consultations.count == 0 && @lawyer.is_first_consultation_free)
-  end
 
   def start_consultation
     @consultation.start_time = Time.new if @consultation.start_time.nil?
@@ -141,20 +126,44 @@ class ConsultationsController < ApplicationController
       )
   end
 
+  def set_consultation_duration
+    @consultation.duration = Time.now - @consultation.start_time
+  end
+
+  def close_twilio_room
+    @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
+    room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
+  end
+
+  def charge_the_client
+    @consultation.client_amount = @consultation.calculate_client_amount
+    charge = Stripe::Charge.create(
+      customer: @consultation.client.stripe_id,
+      amount: @consultation.client_amount.cents,
+      currency: @consultation.client_amount_currency,
+      description: "Consultation: #{@consultation.id} #{current_user.email}"
+      )
+    @consultation.payment_status = 'paid'
+    @consultation.client_payment = charge.to_json
+  end
+
   def set_basic_details_for_new_consultation
     # Setting the Stripe details, lawyer and creating the consultation.
-    client = current_user.client
-    if client.stripe_id.nil?
+    @client = current_user.client
+    @lawyer = Lawyer.find(params[:lawyer_id])
+    if @client.stripe_id.nil? && !@lawyer.should_the_lawyer_give_a_free_consult?(@client)
       customer = Stripe::Customer.create({
         source: params[:stripeToken],
         email:  params[:stripeEmail]
       })
-      client.stripe_id = customer.id
-      client.save
+      @client.stripe_id = customer.id
+      @client.save
     end
-    @lawyer = Lawyer.find(params[:lawyer_id])
     @consultation = Consultation.new
     @consultation.lawyer = @lawyer
-    @consultation.client = client
+    @consultation.client = @client
+    if @lawyer.should_the_lawyer_give_a_free_consult?(@client)
+      @consultation.payment_status = 'free'
+    end
   end
 end

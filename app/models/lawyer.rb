@@ -19,4 +19,10 @@ class Lawyer < ApplicationRecord
   def calculate_5mins_rate
     hourly_rate * 0.0833
   end
+
+  def should_the_lawyer_give_a_free_consult?(client)
+    consultations = self.consultations.where(client_id: client.id)
+    valid_consultations = consultations.where("duration > 0")
+    valid_consultations.count == 0 && self.is_first_consultation_free
+  end
 end
