@@ -57,8 +57,8 @@ class ConsultationsController < ApplicationController
         UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
         UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
       else
-        UserMailer.pre_appointment_email_client(@consultation.id).deliver.now
-        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver.now
+        UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait: 5.seconds)
+        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver_later(wait: 5.seconds)
       end
     end
   end
