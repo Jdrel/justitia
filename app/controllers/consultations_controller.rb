@@ -5,25 +5,25 @@ class ConsultationsController < ApplicationController
   TW_TOKEN = ENV['TWILIO_TOKEN']
 
 # OVERVIEW FOR THE LAWYER DASHBOARD
-  def index
-    @lawyer = Lawyer.find(params[:lawyer_id])
-    authorize(@lawyer)
-    @consultations = Consultation.where(lawyer: @lawyer)
-  end
+def index
+  @lawyer = Lawyer.find(params[:lawyer_id])
+  authorize(@lawyer)
+  @consultations = Consultation.where(lawyer: @lawyer)
+end
 
 # INSTANT CONSULTATIONS
-  def new
-    @consultation = Consultation.new
-    @lawyer = Lawyer.find(params[:lawyer_id])
-    @client = current_user.client
-  end
+def new
+  @consultation = Consultation.new
+  @lawyer = Lawyer.find(params[:lawyer_id])
+  @client = current_user.client
+end
 
-  def create
-    set_basic_details_for_new_consultation
-    @consultation.save
-    UserMailer.new_consultation(@consultation).deliver_now
-    redirect_to lawyer_consultation_path(@lawyer, @consultation)
-  end
+def create
+  set_basic_details_for_new_consultation
+  @consultation.save
+  UserMailer.new_consultation(@consultation).deliver_now
+  redirect_to lawyer_consultation_path(@lawyer, @consultation)
+end
 
   # FUTURE CONSULTATIONS (i.e. appointments)
   def new_appointment
@@ -83,19 +83,21 @@ class ConsultationsController < ApplicationController
 
   def end_videocall
     @consultation = Consultation.find(params[:id])
-    unless @consultation.start_time.nil? || @consultation.payment_status == "free" # consultation has happened or the call is not free
-      if @consultation.payment_status == 'pending' # first_one to close the call
-        charge_the_client_and_close_the_room
-      end
-    else # There is no payment
-      if @consultation.start_time.nil? # The consultation never happened
-      @consultation.duration = 0
-      @consultation.payment_status = 'cancelled'
-      @consultation.save
-      elsif @consultation.payment_status == 'free' && @consultation.duration.nil? # The consultation was free
-      @consultation.duration = Time.now - @consultation.start_time
-      @consultation.save
-      close_twilio_room
+    if @consultation.duration.nil? # making sure that only one participant closes the room
+      case [@consultation.start_time.nil?, @consultation.payment_status]
+      when [true, 'pending'] # The consultation never happened because the client stopped it before the lawyer entered
+        @consultation.duration = 0
+        @consultation.payment_status = 'cancelled'
+        @consultation.save
+      when [false, 'pending'] # The consultation happened and we need to charge the client
+        set_consultation_duration
+        charge_the_client
+        @consultation.save
+        close_twilio_room
+      when [false, 'free'] # The consultation happened, however the consultation was free
+        set_consultation_duration
+        @consultation.save
+        close_twilio_room
       end
     end
   end
@@ -123,25 +125,25 @@ class ConsultationsController < ApplicationController
       )
   end
 
+  def set_consultation_duration
+    @consultation.duration = Time.now - @consultation.start_time
+  end
+
   def close_twilio_room
     @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
     room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
   end
 
-  def charge_the_client_and_close_the_room
-    @consultation.duration = Time.now - @consultation.start_time
+  def charge_the_client
     @consultation.client_amount = @consultation.calculate_client_amount
     charge = Stripe::Charge.create(
-    customer: @consultation.client.stripe_id,
-    amount: @consultation.client_amount.cents,
-    currency: @consultation.client_amount_currency,
-    description: "Consultation: #{@consultation.id} #{current_user.email}"
-    )
+      customer: @consultation.client.stripe_id,
+      amount: @consultation.client_amount.cents,
+      currency: @consultation.client_amount_currency,
+      description: "Consultation: #{@consultation.id} #{current_user.email}"
+      )
     @consultation.payment_status = 'paid'
     @consultation.client_payment = charge.to_json
-    @consultation.save
-    # close the room
-    close_twilio_room
   end
 
   def set_basic_details_for_new_consultation
