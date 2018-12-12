@@ -13,6 +13,7 @@
 </div>
 
 <div class="cards-container">
+<%= link_to lawyers_path(category: 'Traffic') do %>
   <div class="icon-card">
    <div class="icon">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkyXUQcQS9ZE94PSF-4LYhC6YP95bgtTxwxAulv_z5B8X1xc8d" alt="">
@@ -21,17 +22,20 @@
     <p>Traffic</p>
   </div>
 </div>
+<% end %>
 
-<div class="icon-card">
-  <div class="icon">
-    <img src="https://i.pinimg.com/736x/02/e6/83/02e683960532346abb2f635893dc9817.jpg" alt="">
+<%= link_to lawyers_path(category: 'Real Estate') do %>
+  <div class="icon-card">
+    <div class="icon">
+      <img src="https://i.pinimg.com/736x/02/e6/83/02e683960532346abb2f635893dc9817.jpg" alt="">
+    </div>
+    <div class="icon-description">
+      <p>Real Estate</p>
+    </div>
   </div>
-  <div class="icon-description">
-    <p>Real Estate</p>
-  </div>
-</div>
+<% end %>
 
-
+<%= link_to lawyers_path(category: 'Family') do %>
 <div class="icon-card">
  <div class="icon">
   <img src="https://mountainmessenger.com/wp-content/uploads/2017/11/family_icon_1511540095.png" alt="">
@@ -40,17 +44,20 @@
   <p>Family</p>
 </div>
 </div>
+<% end %>
 
-<div class="icon-card">
- <div class="icon">
-  <img src="https://mscivilrightsproject.org/wp-content/themes/civil-rights-blank-theme/css/img/group-icon.png" alt="">
-</div>
-<div class="icon-description">
-  <p>Civil Rights</p>
-</div>
-</div>
+<%= link_to lawyers_path(category: 'Civil Rights') do %>
+  <div class="icon-card">
+    <div class="icon">
+      <img src="https://mscivilrightsproject.org/wp-content/themes/civil-rights-blank-theme/css/img/group-icon.png" alt="">
+    </div>
+  <div class="icon-description">
+    <p>Civil Rights</p>
+    </div>
+  </div>
+<% end %>
 
-
+<%= link_to lawyers_path(category: 'Immigration') do %>
 <div class="icon-card">
  <div class="icon">
   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGNa8jG0wI69l8bKZindthLs8LxhQVSLwdvu0DnwidlYgtLHkz" alt="">
@@ -59,7 +66,9 @@
   <p>Immigration</p>
 </div>
 </div>
+<% end %>
 
+<%= link_to lawyers_path(category: 'Tax') do %>
 <div class="icon-card">
  <div class="icon">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgyO03oYbdAk3X_Ck_DOxSVDsKGBQTQwhxer_0Vr2wieiWXm6D" alt="">
@@ -68,4 +77,39 @@
   <p>Tax</p>
 </div>
 </div>
+<% end %>
+
+<%= link_to lawyers_path(category: 'Personal Injury') do %>
+<div class="icon-card">
+ <div class="icon">
+    <img src="https://cdn4.iconfinder.com/data/icons/medical-health-flat-circle-icons-vol-2-1/96/110-512.png" alt="">
+ </div>
+ <div class="icon-description">
+  <p>Personal Injury</p>
 </div>
+</div>
+<% end %>
+
+<%= link_to lawyers_path(category: 'Corporate') do %>
+<div class="icon-card">
+ <div class="icon">
+    <img src="https://cdn0.iconfinder.com/data/icons/team-work-and-organization-2/128/57-512.png" alt="">
+ </div>
+ <div class="icon-description">
+  <p>Corporate</p>
+</div>
+</div>
+<% end %>
+
+<%= link_to lawyers_path(category: 'Employment') do %>
+<div class="icon-card">
+ <div class="icon">
+    <img src="https://steemitimages.com/DQmXoFz5FgG7ZLReFW16MQ9u3gMyX8bRcNQwvmvayLZ5eK3/Adel%20-%20Opinion%20(8.%20Blockchain%20Incubation%20to%20Employment%2C%20icon).png" alt="">
+ </div>
+ <div class="icon-description">
+  <p>Employment</p>
+</div>
+</div>
+<% end %>
+</div>
+
