@@ -15,7 +15,10 @@ function initVideoCall(){
       connect(token, {
         audio: true,
         name: videoRoom,
-        video: { width: 414 }
+        video: {
+          width: { min: 414 },
+          height: { min: 414 }
+        }
       }).then(room => {
         console.log(`Successfully joined a Room: ${room}`);
 
@@ -64,14 +67,15 @@ function initVideoCall(){
           });
           console.log("call finnished");
           const consultationId = remoteMedia.dataset.consultationid;
-          window.location.href = `https://www.justitia.today/consultations/${consultationId}/end_videocall`;
+          const envUrl = remoteMedia.dataset.envurl;
+          window.location.href = `${envUrl}consultations/${consultationId}/end_videocall`;
         });
 
 
         disconnect.addEventListener('click', (event) => {
           console.log("Hello from EventListener");
           if (confirm("Do you really want to end this videocall?")) {
-            room.disconnect();
+            // room.disconnect();
           } else {
             event.preventDefault();
           }

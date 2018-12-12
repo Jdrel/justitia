@@ -72,7 +72,7 @@
               <tbody>
                 <tr>
                   <td class="left strong">Call with <%= @consultation.lawyer.user.full_name %></td>
-                  <td class="right">€ <%= @consultation.lawyer.calculate_5mins_rate %></td>
+                  <td class="right"><%= humanized_money_with_symbol @consultation.lawyer.calculate_5mins_rate %></td>
                   <td class="center"><%= @consultation.duration_to_units %></td>
                   <td class="right"><%= humanized_money_with_symbol @consultation.client_amount %> </td>
                 </tr>

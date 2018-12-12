@@ -1,13 +1,16 @@
 <div class="video-container">
-<h4>Welcome to your consultation with <%= @consultation.lawyer.user.full_name %>.</h4>
-</div>
 
-<div class="video">
-  <div id="remote-media" data-consultationid="<%= @consultation.id %>">
+  <div class="video">
+
+    <div id="remote-media" data-consultationid="<%= @consultation.id %>" data-envurl="<%= root_url %>">
+    </div>
+
+    <div id="local-media" data-token="<%= @twilio_token %>" data-room="<%= @video_room %>">
+    </div>
+
+    <div class="position-button">
+    <%= link_to "End videochat", end_videocall_path(@consultation), id: "disconnect", class: "btn btn-danger" %>
+    </div>
+
   </div>
-  <div id="local-media" data-token="<%= @twilio_token %>" data-room="<%= @video_room %>">
-  </div>
-<div class="position-button">
-<%= link_to "End videochat", end_videocall_path(@consultation), id: "disconnect", class: "btn btn-danger" %>
-</div>
 </div>

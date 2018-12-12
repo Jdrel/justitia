@@ -14,7 +14,7 @@
   justify-content: space-between;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
 }
 
 /* Logo */
@@ -58,6 +58,10 @@
   box-shadow: 1px 1px 4px #E6E6E6;
   border-color: #E6E6E6;
 }
+
+#dropdown-overlay{
+}
+
 .navbar-wagon-dropdown-menu li > a {
   transition: color 0.3s ease;
   font-weight: lighter !important;
@@ -84,4 +88,10 @@
 }
 .navbar-toggler {
 cursor: pointer;
+}
+
+#blue-burger {
+  color: $primary;
+  font-size: 30px;
+  width: 10px;
 }

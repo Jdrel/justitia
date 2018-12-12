@@ -82,12 +82,12 @@ class ConsultationsController < ApplicationController
         @consultation.client_amount = @consultation.calculate_client_amount
 
         charge = Stripe::Charge.create(
-          customer: @consultation.client.stripe_id,
-          amount: @consultation.client_amount.cents,
-          currency: @consultation.client_amount_currency,
-          description: "Consultation: #{@consultation.id}"
-          )
 
+        customer: @consultation.client.stripe_id,
+        amount: @consultation.client_amount.cents,
+        currency: @consultation.client_amount_currency,
+        description: "Consultation: #{@consultation.id} #{current_user.email}"
+        )
         @consultation.payment_status = 'paid'
         @consultation.client_payment = charge.to_json
         @consultation.save
