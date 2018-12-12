@@ -4,13 +4,14 @@ class ConsultationsController < ApplicationController
   TW_API_SECRET = ENV['TWILIO_SECRET']
   TW_TOKEN = ENV['TWILIO_TOKEN']
 
-  # INSTANT CONSULTATIONS
+# OVERVIEW FOR THE LAWYER DASHBOARD
   def index
     @lawyer = Lawyer.find(params[:lawyer_id])
     authorize(@lawyer)
     @consultations = Consultation.where(lawyer: @lawyer)
   end
 
+# INSTANT CONSULTATIONS
   def new
     @consultation = Consultation.new
     @lawyer = Lawyer.find(params[:lawyer_id])
@@ -27,8 +28,8 @@ class ConsultationsController < ApplicationController
   # FUTURE CONSULTATIONS (i.e. appointments)
   def new_appointment
     @consultation = Consultation.new
-    @client = current_user.client
     @lawyer = Lawyer.find(params[:lawyer_id])
+    @client = current_user.client
     @ask_for_credit_card = true
     if !@client.stripe_id.nil?
       @ask_for_credit_card = false
@@ -39,8 +40,8 @@ class ConsultationsController < ApplicationController
 
   def create_new_appointment
     set_basic_details_for_new_consultation
-    @consultation.appointment_time = params[:appointment_time]
     @consultation.appointment_status = "pending"
+    @consultation.appointment_time = params[:appointment_time]
     @consultation.save
     redirect_to appointment_confirmation_path(@lawyer, @consultation)
   end
@@ -86,14 +87,15 @@ class ConsultationsController < ApplicationController
       if @consultation.payment_status == 'pending' # first_one to close the call
         charge_the_client_and_close_the_room
       end
-    else # There is a payment
+    else # There is no payment
       if @consultation.start_time.nil? # The consultation never happened
       @consultation.duration = 0
       @consultation.payment_status = 'cancelled'
       @consultation.save
-      elsif @consultation.payment_status == "free" # The consultation was free
+      elsif @consultation.payment_status == 'free' && @consultation.duration.nil? # The consultation was free
       @consultation.duration = Time.now - @consultation.start_time
       @consultation.save
+      close_twilio_room
       end
     end
   end
@@ -121,6 +123,11 @@ class ConsultationsController < ApplicationController
       )
   end
 
+  def close_twilio_room
+    @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
+    room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
+  end
+
   def charge_the_client_and_close_the_room
     @consultation.duration = Time.now - @consultation.start_time
     @consultation.client_amount = @consultation.calculate_client_amount
@@ -134,8 +141,7 @@ class ConsultationsController < ApplicationController
     @consultation.client_payment = charge.to_json
     @consultation.save
     # close the room
-    @client = Twilio::REST::Client.new(TW_ACCOUNT_SID, TW_TOKEN)
-    room = @client.video.rooms("Consultation-#{@consultation.id}").update(status: 'completed')
+    close_twilio_room
   end
 
   def set_basic_details_for_new_consultation
