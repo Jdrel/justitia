@@ -58,23 +58,6 @@ puts 'Creating 10 lawyers...'
   i += 1
 end
 
-puts 'Creating 10 users...'
-
-10.times do |i|
-  first_name = Faker::Name.first_name
-  user = User.create(
-    first_name: first_name,
-    last_name: Faker::Name.last_name,
-    address: Faker::WorldCup.city,
-    email: "#{first_name}#{i.to_s}@justitia.today",
-    password: 'secret'
-  )
-  Client.create(
-    user: user
-  )
-  i += 1
-end
-
 puts 'Creating 4 clients/users for our use...'
   user = User.create(
     first_name: 'Jascha',
