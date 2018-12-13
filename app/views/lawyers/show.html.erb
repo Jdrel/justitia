@@ -7,7 +7,16 @@
           <h4 class="profile-text"> <%= @lawyer.user.first_name %> <%= @lawyer.user.last_name %>  </h4>
       </div>
     </div>
+
+    <% if @lawyer.is_online  %>
+      <div class="online-circle-green-large", width="20px", data-icon-online="<%= @lawyer.id %>"></div>
+    <% else %>
+      <div class="online-circle-red-large", width="20px", data-icon-offline="<%= @lawyer.id %>"></div>
+    <% end  %>
+
   </div>
+
+
 
   <div class="basic-info">
     <p class="text-position"><i class="fas fa-map-marker-alt"></i>  &nbsp;&nbsp;<%= @lawyer.user.address %>  </p>
@@ -19,8 +28,13 @@
   </div>
 
   <div class="button-position">
+    <% if @lawyer.is_online %>
     <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-outline-primary", id: "bigger-btn-light"%>
     <%= link_to "Videochat now", new_lawyer_consultation_path(@lawyer), class: "btn btn-primary", id: "bigger-btn-primary"%>
+    <% else %>
+    <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-primary", id: "bigger-btn-light"%>
+    <%= link_to "Videochat now", new_lawyer_consultation_path(@lawyer), class: "btn btn-light disabled", id: "bigger-btn-primary"%>
+    <% end  %>
   </div>
 
   <div id="description-position">
