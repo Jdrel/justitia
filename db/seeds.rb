@@ -23,7 +23,8 @@ Category::CATEGORIES.each do |category|
 end
 
 seed_categories = Category.all
-
+lawyer_rates = [120, 180, 240, 300, 360, 420, 480]
+lawyer_cities = ['Madrid', 'Barcelona', 'Valencia', 'Seville', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Las Palmas de Gran Canaria', 'Bilbao', 'Alicante', 'Córdoba', 'Valladolid']
 puts 'Creating 10 lawyers...'
 
 10.times do |i|
@@ -31,19 +32,19 @@ puts 'Creating 10 lawyers...'
   user = User.create(
     first_name: first_name,
     last_name: Faker::Name.last_name,
-    address: Faker::WorldCup.city,
+    address: lawyer_cities.sample,
     email: "#{first_name}#{i.to_s}@justitia.today",
     password: 'secret'
   )
   lawyer = Lawyer.new(
     user: user,
-    description: Faker::GameOfThrones.quote,
-    years_of_experience: rand(0..45),
-    hourly_rate: rand(30..500),
+    description: Faker::Company.catch_phrase,
+    years_of_experience: rand(5..45),
+    hourly_rate: lawyer_rates.sample,
     is_first_consultation_free: Faker::Boolean.boolean,
     is_online: Faker::Boolean.boolean,
   )
-  lawyer.remote_photo_url = photos.sample
+  lawyer.remote_photo_url = photos[i]
   lawyer.save!
   rand(1..3).times do
     lawyer.specialties.create!(
