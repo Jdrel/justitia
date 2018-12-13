@@ -1,14 +1,27 @@
 <% if @consultation.payment_status == 'cancelled' %>
-
+  <% if @consultation.client.user == current_user %>
   <div class="container margin-10-px">
     <div class="row">
       <div class="col-10 col-lg-6 offset-lg-1">
         <h2>Call with <%= @consultation.lawyer.user.full_name %> cancelled</h2>
-        <p>You cancelled your call before the consultation started with <%= @consultation.lawyer.user.full_name %> so your card was <strong>not</strong> charged</p>
+        <p>You cancelled the call before the consultation started with <%= @consultation.lawyer.user.full_name %> so your card was <strong>not</strong> charged</p>
         <%= link_to "Book new consultation with #{@consultation.lawyer.user.full_name}",  new_appointment_path(@consultation.lawyer), class: 'btn btn-success' %>
       </div>
     </div>
   </div>
+
+  <% elsif @consultation.lawyer.user == current_user %>
+
+  <div class="container margin-10-px">
+    <div class="row">
+      <div class="col-10 col-lg-6 offset-lg-1">
+        <h2> Call with <%= @consultation.client.user.full_name %> got cancelled</h2>
+        <p> You cancelled your call before the consultation started with <%= @consultation.client.user.full_name %>. The clients' card did <strong>not</strong> get charged.
+      </div>
+    </div>
+  </div>
+
+  <% end %>
 
 <% elsif @consultation.payment_status == 'free' %>
 
@@ -112,14 +125,31 @@
                   </td>
                   <td class="right"><%= humanized_money_with_symbol @consultation.client_amount %> </td>
                 </tr>
+                <% if @consultation.lawyer.user == current_user %>
                 <tr>
                   <td class="left">
-                    <strong>Total</strong>
+                    <strong>Justitia Fee</strong>
+                  </td>
+                  <td class="right"><%= humanized_money_with_symbol @consultation.lawyer_amount %> </td>
+                </tr>
+                <tr>
+                  <td class="left">
+                  <strong>Total</strong>
                   </td>
                   <td class="right">
-                    <strong><%= humanized_money_with_symbol @consultation.client_amount %> </strong>
+                    <strong><%= humanized_money_with_symbol @consultation.calculate_lawyer_total %> </strong>
                   </td>
                 </tr>
+                  <% else %>
+                    <tr>
+                      <td class="left">
+                        <strong>Total</strong>
+                      </td>
+                      <td class="right">
+                        <strong><%= humanized_money_with_symbol @consultation.client_amount %> </strong>
+                      </td>
+                      </tr>
+                  <% end %>
               </tbody>
             </table>
           </div>

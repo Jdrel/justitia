@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin: 20px 0;
+  margin: 20px 0px 0 20px;
 }
 
 .lawyer-availability {
@@ -16,6 +16,9 @@
 
 .profile-text {
   font-size: 20px;
+}
+  h4 {
+  margin-left: 15px;
 }
 
 .text-position {

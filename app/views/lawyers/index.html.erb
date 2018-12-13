@@ -1,44 +1,18 @@
 <%= render 'shared/lawyer_filter' %>
 <div class="container">
-<div class="lawyers-container">
-  <div class ="search-results">
-    <h5>Who can help you:</h5>
-  </div>
-  <% if @search_result.empty? %>
-  <div class="no-matching-result">
-  <p>Sorry, we do not have any matching lawyers for your search request. <i class="far fa-frown"></i></p>
-  </div>
-  <% else %>
-  <% @lawyers.each do |lawyer| %>
-    <%= link_to lawyer_path(lawyer), :action => 'go' do %>
-  <div class="lawyer-card">
-    <div class="lawyer-avatar">
-      <%=  cl_image_tag(lawyer.photo) %>
+  <div class="lawyers-container">
+    <div class ="search-results">
+      <h5>Who can help you:</h5>
     </div>
-    <div class="lawyer-description">
-      <h5 id="name-size"><%= lawyer.user.first_name.capitalize + " " + lawyer.user.last_name.capitalize %></h5>
-      <hr>
-      <ul>
-        <li><i class="fas fa-thumbs-up"></i> Expertise: <%= truncate(lawyer.categories, length: 35) %> </li>
-        <li><i class="fas fa-dollar-sign"></i> Price per hour: <%= humanized_money_with_symbol lawyer.hourly_rate %></li>
-        <% if lawyer.is_first_consultation_free %>
-        <li><i class="fas fa-handshake"></i> First consultation is free! </li>
-        <% end %>
-      </ul>
-    </div>
-    <div>
-    <% if lawyer.is_online  %>
-      <div class="online-circle-green" data-icon-online="<%= lawyer.id %>"></div>
+    <% if params[:category] == "All categories" %>
+      <%= render 'lawyer_cards' %>
+    <% elsif @search_result.empty? %>
+      <div class="no-matching-result">
+      <p>Sorry, we do not have any matching lawyers for your search request. <i class="far fa-frown"></i></p>
+      </div>
     <% else %>
-      <div class="online-circle-red" data-icon-offline="<%= lawyer.id %>"></div>
-    <% end  %>
+      <%= render 'lawyer_cards' %>
+    <% end %>
   </div>
-  </div>
-  <% end %>
-  <% end %>
-  <% end %>
-</div>
-
-
 </div>
 
