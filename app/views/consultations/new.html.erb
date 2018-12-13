@@ -3,12 +3,12 @@
 
 <div class="consultation-container">
   <div class="info-box">
-    <h5>You're about to start a videochat with <strong><%= @lawyer.user.first_name + " " + @lawyer.user.last_name %></strong></h5>
+    <h5>You're about to start a videochat with <strong><%= @lawyer.user.full_name %></strong></h5>
     <div class="info-details">
     <p>Your lawyer will charge your credit card based on the duration of this videochat at the rate of $<%= @lawyer.calculate_5mins_rate %> per 5 minutes block.
     <br>
     <br>
-    <strong><%= @lawyer.user.first_name + " " + @lawyer.user.last_name %>'s hourly rate: $<%= @lawyer.hourly_rate %>.</strong></p>
+    <strong><%= @lawyer.user.full_name %>'s hourly rate: $<%= @lawyer.hourly_rate %>.</strong></p>
     <p>Thanks for choosing Justitia! <i class="fas fa-balance-scale"></i></p>
     </div>
   <%= simple_form_for([@lawyer, @consultation]) do |f| %>
@@ -24,6 +24,5 @@
     <% end %>
   <% end %>
   </div>
-
 
 </div>
