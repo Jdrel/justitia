@@ -1,31 +1,32 @@
 class ConsultationsController < ApplicationController
-before_action :set_consultation, only: [:appointment_confirmation, :update_appointment_status, :show, :end_videocall]
-before_action :set_lawyer, only: [:index, :new, :new_appointment, :appointment_confirmation, :set_basic_details_for_new_consultation]
-before_action :create_new_consultation, only: [:new, :new_appointment, :set_basic_details_for_new_consultation]
+  # TOP LEVEL CLASS DOCUMENTATION FOR THE SAKE OF RUBOCOP
+  before_action :set_consultation, only: [:appointment_confirmation, :update_appointment_status, :show, :end_videocall]
+  before_action :set_lawyer, only: [:index, :new, :new_appointment, :appointment_confirmation, :set_basic_details_for_new_consultation]
+  before_action :create_new_consultation, only: [:new, :new_appointment, :set_basic_details_for_new_consultation]
 
   TW_ACCOUNT_SID = ENV['TWILIO_SID']
   TW_API_KEY = ENV['TWILIO_KEY']
   TW_API_SECRET = ENV['TWILIO_SECRET']
   TW_TOKEN = ENV['TWILIO_TOKEN']
 
-# OVERVIEW FOR THE LAWYER DASHBOARD
-def index
-  authorize(@lawyer)
-  @consultations = Consultation.where(lawyer: @lawyer)
-  @consultations = @consultations.where.not(appointment_time: nil)
-end
+  # OVERVIEW FOR THE LAWYER DASHBOARD
+  def index
+    authorize(@lawyer)
+    @consultations = Consultation.where(lawyer: @lawyer)
+    @consultations = @consultations.where.not(appointment_time: nil)
+  end
 
-# INSTANT CONSULTATIONS
-def new
-  @client = current_user.client
-end
+  # INSTANT CONSULTATIONS
+  def new
+    @client = current_user.client
+  end
 
-def create
-  set_basic_details_for_new_consultation
-  @consultation.save
-  UserMailer.new_consultation(@consultation).deliver_now
-  redirect_to lawyer_consultation_path(@lawyer, @consultation)
-end
+  def create
+    set_basic_details_for_new_consultation
+    @consultation.save
+    UserMailer.new_consultation(@consultation).deliver_now
+    redirect_to lawyer_consultation_path(@lawyer, @consultation)
+  end
 
   # FUTURE CONSULTATIONS (i.e. appointments)
   def new_appointment
@@ -40,7 +41,7 @@ end
 
   def create_new_appointment
     set_basic_details_for_new_consultation
-    @consultation.appointment_status = "pending"
+    @consultation.appointment_status = 'pending'
     @consultation.appointment_time = params[:appointment_time]
     @consultation.save
     redirect_to appointment_confirmation_path(@lawyer, @consultation)
@@ -50,22 +51,13 @@ end
   def appointment_confirmation
   end
 
-  # METHOD THAT ALLOWS THE LAWYER TO CHANGE THE STATUS OF THE APPOINTMENT AND SENDS AN EMAIL  TO BOTH PARTIES
+  # METHOD THAT ALLOWS THE LAWYER TO CHANGE THE STATUS OF THE APPOINTMENT AND SEND EMAILS
   def update_appointment_status
     @lawyer = @consultation.lawyer
     @consultation.appointment_status = params[:appointment_status]
     @consultation.save
-    UserMailer.appointment_status_updated_client(@consultation).deliver_now
-    pre_appointment_email_moment = @consultation.appointment_time - 3600 # 1 hour before the appointment time
-    if params[:appointment_status] == "accepted"
-      if pre_appointment_email_moment > Time.now
-        UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
-        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
-      else
-        UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait: 5.seconds)
-        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver_later(wait: 5.seconds)
-      end
-    end
+    UserMailer.appointment_status_updated_client(@consultation).deliver_now # send an email to the client that the appointment has been confirmed
+    send_email_1_hour_before_call # sends an email to the client and the lawyer one hour before the call. If the call is within an hour it will send it immediatly
   end
 
   # PAGE WHERE CLIENT AND USER HAVE A CALL
@@ -168,6 +160,19 @@ end
     end
     if @lawyer.should_the_lawyer_give_a_free_consult?(@client)
       @consultation.payment_status = 'free'
+    end
+  end
+
+  def send_email_1_hour_before_call
+    pre_appointment_email_moment = @consultation.appointment_time - 3600 # 1 hour before the appointment time
+    if params[:appointment_status] == 'accepted'
+      if pre_appointment_email_moment > Time.now
+        UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
+        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver_later(wait_until: pre_appointment_email_moment)
+      else
+        UserMailer.pre_appointment_email_client(@consultation.id).deliver_later(wait: 5.seconds)
+        UserMailer.pre_appointment_email_lawyer(@consultation.id).deliver_later(wait: 5.seconds)
+      end
     end
   end
 end
