@@ -114,3 +114,23 @@
     margin-bottom: 10px;
   }
 }
+
+.online-circle-green-large {
+  background-color: $online-green;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: 90px;
+  right: 30px;
+}
+
+.online-circle-red-large {
+  background-color: $online-red;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  position: absolute;
+  top: 90px;
+  right: 30px;
+}
