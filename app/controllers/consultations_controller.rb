@@ -150,12 +150,20 @@ class ConsultationsController < ApplicationController
 
   def charge_the_client
     @consultation.client_amount = @consultation.calculate_client_amount
-    charge = Stripe::Charge.create(
-      customer: @consultation.client.stripe_id,
+    @consultation.lawyer_amount = @consultation.calculate_platform_amount
+
+    #create token for connected account
+    token = Stripe::Token.create({
+      :customer => @consultation.client.stripe_id,
+    }, {:stripe_account => @consultation.lawyer.stripe_id})
+
+    charge = Stripe::Charge.create({
+      source: token.id,
       amount: @consultation.client_amount.cents,
       currency: @consultation.client_amount_currency,
-      description: "Consultation: #{@consultation.id} #{current_user.email}"
-      )
+      description: "Consultation: #{@consultation.id} #{current_user.email}",
+      :application_fee => @consultation.lawyer_amount.cents
+      }, :stripe_account => @consultation.lawyer.stripe_id)
     @consultation.payment_status = 'paid'
     @consultation.client_payment = charge.to_json
   end
