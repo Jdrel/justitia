@@ -75,19 +75,53 @@ puts 'Creating 10 users...'
   i += 1
 end
 
-puts 'Creating 10 users...'
-
-10.times do
+puts 'Creating 4 clients/users for our use...'
   user = User.create(
-    first_name: Faker::Name.first_name,
-    last_name: Faker::Name.last_name,
-    address: Faker::WorldCup.city,
-    email: 'justitia.ninjas@gmail.com',
-    password: 'secret'
+    first_name: 'Jascha',
+    last_name: 'Drel',
+    address: 'Amsterdam',
+    email: 'jaschadrel@gmail.com',
+    password: 'secret',
+    admin: true
   )
   Client.create(
     user: user
   )
-end
+
+  user = User.create(
+    first_name: 'Daniel',
+    last_name: 'Mera de Agustin',
+    address: 'Allicante',
+    email: 'daniel.meradeagustin@gmail.com',
+    password: 'secret',
+    admin: true
+  )
+  Client.create(
+    user: user
+  )
+
+  user = User.create(
+    first_name: 'Lamina',
+    last_name: 'Vedder',
+    address: 'Mainz',
+    email: 'lamina-vedder@msn.com',
+    password: 'secret',
+    admin: true
+  )
+  Client.create(
+    user: user
+  )
+
+  user = User.create(
+    first_name: 'Vianney',
+    last_name: 'de Boisredon',
+    address: 'Nantes',
+    email: 'v2boisredon@hotmail.fr',
+    password: 'secret',
+    admin: true
+  )
+  Client.create(
+    user: user
+  )
 
 puts 'Finished!'
