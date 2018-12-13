@@ -1,5 +1,4 @@
 class ConsultationsController < ApplicationController
-  # TOP LEVEL CLASS DOCUMENTATION FOR THE SAKE OF RUBOCOP
   before_action :set_consultation, only: [:appointment_confirmation, :update_appointment_status, :show, :end_videocall]
   before_action :set_lawyer, only: [:index, :create, :new, :new_appointment, :appointment_confirmation]
 
