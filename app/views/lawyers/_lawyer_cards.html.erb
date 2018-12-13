@@ -1,0 +1,27 @@
+<% @lawyers.each do |lawyer| %>
+    <%= link_to lawyer_path(lawyer), :action => 'go' do %>
+  <div class="lawyer-card">
+    <div class="lawyer-avatar">
+      <%=  cl_image_tag(lawyer.photo) %>
+    </div>
+    <div class="lawyer-description">
+      <h5 id="name-size"><%= lawyer.user.first_name.capitalize + " " + lawyer.user.last_name.capitalize %></h5>
+      <hr>
+      <ul>
+        <li><i class="fas fa-thumbs-up"></i> Expertise: <%= truncate(lawyer.categories, length: 35) %> </li>
+        <li><i class="fas fa-dollar-sign"></i> Price per hour: <%= humanized_money_with_symbol lawyer.hourly_rate %></li>
+        <% if lawyer.is_first_consultation_free %>
+        <li><i class="fas fa-handshake"></i> First consultation is free! </li>
+        <% end %>
+      </ul>
+    </div>
+    <div>
+    <% if lawyer.is_online  %>
+      <div class="online-circle-green" data-icon-online="<%= lawyer.id %>"></div>
+    <% else %>
+      <div class="online-circle-red" data-icon-offline="<%= lawyer.id %>"></div>
+    <% end  %>
+  </div>
+  </div>
+  <% end %>
+  <% end %>
