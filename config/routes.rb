@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/lawyers/:lawyer_id/consultations/new_appointment', to: 'consultations#new_appointment', as: :new_appointment
   post '/lawyers/:lawyer_id/consultations/new_appointment', to: 'consultations#create_new_appointment', as: :create_new_appointment
   get '/lawyers/:lawyer_id/consultations/:id/new_appointment/confirmation', to: 'consultations#appointment_confirmation', as: :appointment_confirmation
+  get '/lawyers/stripe', to: 'lawyers#stripe', as: :stripe
 
   resources :lawyers, only: [:index, :show, :new, :create] do
     resources :consultations, only: [:index, :new, :create, :show]
