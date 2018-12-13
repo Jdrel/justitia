@@ -1,6 +1,6 @@
 class ConsultationsController < ApplicationController
   before_action :set_consultation, only: [:appointment_confirmation, :update_appointment_status, :show, :end_videocall]
-  before_action :set_lawyer, only: [:index, :create, :new, :new_appointment, :appointment_confirmation]
+  before_action :set_lawyer, only: [:index, :create, :create_new_appointment, :new, :new_appointment, :appointment_confirmation]
 
   TW_ACCOUNT_SID = ENV['TWILIO_SID']
   TW_API_KEY = ENV['TWILIO_KEY']
