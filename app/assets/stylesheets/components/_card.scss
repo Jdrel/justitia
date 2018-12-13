@@ -1,9 +1,11 @@
 .cards-container {
+  margin: 0 15px 0 15px;
   display: inline-flex;
   flex-wrap: wrap;
   justify-content: center;
   align-content: space-around;
   flex-direction: row;
+  align-items: center;
 }
 
 .icon-card {
