@@ -1,8 +1,7 @@
 class ConsultationsController < ApplicationController
   # TOP LEVEL CLASS DOCUMENTATION FOR THE SAKE OF RUBOCOP
   before_action :set_consultation, only: [:appointment_confirmation, :update_appointment_status, :show, :end_videocall]
-  before_action :set_lawyer, only: [:index, :new, :new_appointment, :appointment_confirmation, :set_basic_details_for_new_consultation]
-  before_action :create_new_consultation, only: [:new, :new_appointment, :set_basic_details_for_new_consultation]
+  before_action :set_lawyer, only: [:index, :create, :new, :new_appointment, :appointment_confirmation]
 
   TW_ACCOUNT_SID = ENV['TWILIO_SID']
   TW_API_KEY = ENV['TWILIO_KEY']
@@ -18,6 +17,7 @@ class ConsultationsController < ApplicationController
 
   # INSTANT CONSULTATIONS
   def new
+    @consultation = Consultation.new
     @client = current_user.client
   end
 
@@ -30,6 +30,7 @@ class ConsultationsController < ApplicationController
 
   # FUTURE CONSULTATIONS (i.e. appointments)
   def new_appointment
+    @consultation = Consultation.new
     @client = current_user.client
     @ask_for_credit_card = true
     if !@client.stripe_id.nil?
@@ -66,7 +67,7 @@ class ConsultationsController < ApplicationController
     # Assigning token to instance variable that is passed to the view
     token = twilio_token
     @twilio_token = token.to_jwt
-    start_consultation if current_user.lawyer == @consultation.lawyer
+    start_consultation
   end
 
   def end_videocall
@@ -99,13 +100,28 @@ class ConsultationsController < ApplicationController
     @lawyer = Lawyer.find(params[:lawyer_id])
   end
 
-  def create_new_consultation
+  def set_new_consultation
     @consultation = Consultation.new
   end
 
   def start_consultation
-    @consultation.start_time = Time.new if @consultation.start_time.nil?
-    @consultation.save
+    if time_of_arrival_of_last_participant
+      @consultation.start_time = time_of_arrival_of_last_participant if @consultation.start_time.nil?
+      @consultation.save
+    end
+  end
+
+  def time_of_arrival_of_last_participant
+    if current_user.lawyer == @consultation.lawyer
+      @consultation.lawyer_arrival_time = Time.new if @consultation.lawyer_arrival_time.nil?
+      @consultation.save
+    elsif current_user.client == @consultation.client
+      @consultation.client_arrival_time = Time.new if @consultation.client_arrival_time.nil?
+      @consultation.save
+    end
+    if @consultation.lawyer_arrival_time && @consultation.client_arrival_time
+      return [@consultation.lawyer_arrival_time, @consultation.client_arrival_time].sort[1]
+    end
   end
 
   def twilio_token
@@ -147,6 +163,7 @@ class ConsultationsController < ApplicationController
 
   def set_basic_details_for_new_consultation
     # Setting the Stripe details, lawyer and creating the consultation.
+    @consultation = Consultation.new
     @client = current_user.client
     @consultation.lawyer = @lawyer
     @consultation.client = @client

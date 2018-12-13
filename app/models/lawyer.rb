@@ -17,7 +17,7 @@ class Lawyer < ApplicationRecord
   end
 
   def calculate_5mins_rate
-    hourly_rate * 0.0833
+    hourly_rate / 12
   end
 
   def should_the_lawyer_give_a_free_consult?(client)
