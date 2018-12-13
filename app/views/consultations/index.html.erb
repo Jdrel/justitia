@@ -1,11 +1,59 @@
+
 <div class="container message-container">
-  <br>
     <div class="profile-position">
       <%= cl_image_tag(@lawyer.photo, class: "lawyer-avatar avatar-large") %>
       <h4 class="profile-text"> <%= @lawyer.user.full_name %></h4>
       <%= render "consultations/button_group", lawyer: @lawyer  %>
     </div>
-    <h1>My appointments</h1>
+<h5 class="heading">Dashboard Stat</h5>
+<div class="wrapper container">
+  <div class="row">
+    <div class="col-xs-4">
+      <a class="dashboard-stat red" href="#">
+        <div class="visual">
+          <i class="fa fa-usd"></i>
+        </div>
+        <div class="details">
+          <div class="number">
+            <span>USD 1200</span>
+          </div>
+          <div class="desc">Total Profit</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-4">
+      <a class="dashboard-stat blue" href="#">
+        <div class="visual">
+          <i class="fa fa-bar-chart-o"></i>
+        </div>
+        <div class="details">
+          <div class="number">
+            <span>5</span>
+          </div>
+          <div class="desc">Videocalls</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xs-4">
+      <a class="dashboard-stat purple" href="#">
+        <div class="visual">
+          <i class="fa fa-comments"></i>
+        </div>
+        <div class="details">
+          <div class="number">
+            <span>3</span>
+          </div>
+          <div class="desc">New Clients</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+  <% if @lawyer.consultations.empty?  %>
+   <h5>My appointments (0)</h5>
+   <% else %>
+    <h5>My appointments (<%= @lawyer.consultations.length %>)</h5>
+    <% end %>
     <% @consultations.each do |consultation| %>
     <div class="col-12">
       <div class="message">
@@ -32,4 +80,5 @@
       </div>
     </div>
     <% end %>
+</div>
 </div>
