@@ -4,9 +4,13 @@
   <div class ="search-results">
     <h5>Who can help you:</h5>
   </div>
+  <% if @search_result.empty? %>
+  <div class="no-matching-result">
+  <p>Sorry, we do not have any matching lawyers for your search request. <i class="far fa-frown"></i></p>
+  </div>
+  <% else %>
   <% @lawyers.each do |lawyer| %>
-  <%= link_to lawyer_path(lawyer), :action => 'go' do %>
-
+    <%= link_to lawyer_path(lawyer), :action => 'go' do %>
   <div class="lawyer-card">
     <div class="lawyer-avatar">
       <%=  cl_image_tag(lawyer.photo) %>
@@ -30,6 +34,7 @@
     <% end  %>
   </div>
   </div>
+  <% end %>
   <% end %>
   <% end %>
 </div>

@@ -4,11 +4,11 @@ class LawyersController < ApplicationController
 
   def index
     get_category_names
-    search_result = search(params)
+    @search_result = search(params)
     if params[:category] == "All categories"
       @lawyers = Lawyer.all
     else
-      search_result
+      @search_result
     end
   end
 
@@ -47,6 +47,7 @@ class LawyersController < ApplicationController
     @lawyer.save
     redirect_to lawyer_path(@lawyer)
   end
+
 
   private
 
