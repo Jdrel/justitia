@@ -1,4 +1,8 @@
 class ConsultationsController < ApplicationController
+before_action :set_consultation, only: [:appointment_confirmation, :update_appointment_status, :show, :end_videocall]
+before_action :set_lawyer, only: [:index, :new, :new_appointment, :appointment_confirmation, :set_basic_details_for_new_consultation]
+before_action :create_new_consultation, only: [:new, :new_appointment, :set_basic_details_for_new_consultation]
+
   TW_ACCOUNT_SID = ENV['TWILIO_SID']
   TW_API_KEY = ENV['TWILIO_KEY']
   TW_API_SECRET = ENV['TWILIO_SECRET']
@@ -6,7 +10,6 @@ class ConsultationsController < ApplicationController
 
 # OVERVIEW FOR THE LAWYER DASHBOARD
 def index
-  @lawyer = Lawyer.find(params[:lawyer_id])
   authorize(@lawyer)
   @consultations = Consultation.where(lawyer: @lawyer)
   @consultations = @consultations.where.not(appointment_time: nil)
@@ -14,11 +17,9 @@ end
 
 # INSTANT CONSULTATIONS
 def new
-  @consultation = Consultation.new
-  @lawyer = Lawyer.find(params[:lawyer_id])
   @client = current_user.client
 end
-  
+
 def create
   set_basic_details_for_new_consultation
   @consultation.save
@@ -28,8 +29,6 @@ end
 
   # FUTURE CONSULTATIONS (i.e. appointments)
   def new_appointment
-    @consultation = Consultation.new
-    @lawyer = Lawyer.find(params[:lawyer_id])
     @client = current_user.client
     @ask_for_credit_card = true
     if !@client.stripe_id.nil?
@@ -49,13 +48,10 @@ end
 
   # SHOW PAGE OF APPOINTMENT CONFIRMATION
   def appointment_confirmation
-    @consultation = Consultation.find(params[:id])
-    @lawyer = Lawyer.find(params[:lawyer_id])
   end
 
   # METHOD THAT ALLOWS THE LAWYER TO CHANGE THE STATUS OF THE APPOINTMENT AND SENDS AN EMAIL  TO BOTH PARTIES
   def update_appointment_status
-    @consultation = Consultation.find(params[:id])
     @lawyer = @consultation.lawyer
     @consultation.appointment_status = params[:appointment_status]
     @consultation.save
@@ -74,7 +70,6 @@ end
 
   # PAGE WHERE CLIENT AND USER HAVE A CALL
   def show
-    @consultation = Consultation.find(params[:id])
     authorize(@consultation)
     # Assigning token to instance variable that is passed to the view
     token = twilio_token
@@ -83,7 +78,6 @@ end
   end
 
   def end_videocall
-    @consultation = Consultation.find(params[:id])
     if @consultation.duration.nil? # making sure that only one participant closes the room
       case [@consultation.start_time.nil?, @consultation.payment_status]
       when [true, 'pending'] # The consultation never happened because the client stopped it before the lawyer entered
@@ -104,6 +98,18 @@ end
   end
 
   private
+
+  def set_consultation
+    @consultation = Consultation.find(params[:id])
+  end
+
+  def set_lawyer
+    @lawyer = Lawyer.find(params[:lawyer_id])
+  end
+
+  def create_new_consultation
+    @consultation = Consultation.new
+  end
 
   def start_consultation
     @consultation.start_time = Time.new if @consultation.start_time.nil?
@@ -150,7 +156,8 @@ end
   def set_basic_details_for_new_consultation
     # Setting the Stripe details, lawyer and creating the consultation.
     @client = current_user.client
-    @lawyer = Lawyer.find(params[:lawyer_id])
+    @consultation.lawyer = @lawyer
+    @consultation.client = @client
     if @client.stripe_id.nil? && !@lawyer.should_the_lawyer_give_a_free_consult?(@client)
       customer = Stripe::Customer.create({
         source: params[:stripeToken],
@@ -159,9 +166,6 @@ end
       @client.stripe_id = customer.id
       @client.save
     end
-    @consultation = Consultation.new
-    @consultation.lawyer = @lawyer
-    @consultation.client = @client
     if @lawyer.should_the_lawyer_give_a_free_consult?(@client)
       @consultation.payment_status = 'free'
     end
