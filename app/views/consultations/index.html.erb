@@ -1,18 +1,12 @@
 <div class="container message-container">
-<br>
-  <div class="row">
-    <div class="lawyer-availability">
-      <p>Set your current availability:&nbsp;&nbsp;&nbsp;&nbsp; </p>
+  <br>
+    <div class="profile-position">
+      <%= cl_image_tag(@lawyer.photo, class: "lawyer-avatar avatar-large") %>
+      <h4 class="profile-text"> <%= @lawyer.user.full_name %></h4>
       <%= render "consultations/button_group", lawyer: @lawyer  %>
     </div>
-  </div>
-
-  <div class="row">
-    <h1>Manage your appointments</h1>
-
-
+    <h1>My appointments</h1>
     <% @consultations.each do |consultation| %>
-
     <div class="col-12">
       <div class="message">
         <div class="appointment-time message-body">
@@ -38,5 +32,4 @@
       </div>
     </div>
     <% end %>
-  </div>
 </div>
