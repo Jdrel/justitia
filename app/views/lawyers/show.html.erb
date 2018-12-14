@@ -29,10 +29,10 @@
 
   <div class="button-position">
     <% if @lawyer.is_online %>
-    <%= link_to "Videochat now", new_lawyer_consultation_path(@lawyer), class: "btn btn-primary", id: "bigger-btn-primary"%>
-    <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-outline-primary", id: "bigger-btn-light"%>
+    <%= link_to "Videochat now", new_lawyer_consultation_path(@lawyer), class: "btn btn-primary bigger-btn-primary"%>
+    <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-outline-primary bigger-btn-light"%>
     <% else %>
-    <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-primary", id: "bigger-btn-light"%>
+    <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-primary bigger-btw-secondary", id: "bigger-btn-light"%>
     <% end  %>
   </div>
 
