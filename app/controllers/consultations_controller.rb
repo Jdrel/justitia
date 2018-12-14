@@ -9,7 +9,6 @@ class ConsultationsController < ApplicationController
 
   # OVERVIEW FOR THE LAWYER DASHBOARD
   def index
-    authorize(@lawyer)
     @consultations = Consultation.where(lawyer: @lawyer)
     @consultations = @consultations.where.not(appointment_time: nil)
   end
@@ -62,7 +61,6 @@ class ConsultationsController < ApplicationController
 
   # PAGE WHERE CLIENT AND USER HAVE A CALL
   def show
-    authorize(@consultation)
     # Assigning token to instance variable that is passed to the view
     token = twilio_token
     @twilio_token = token.to_jwt
