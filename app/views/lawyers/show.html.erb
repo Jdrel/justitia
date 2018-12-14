@@ -21,7 +21,7 @@
   <div class="basic-info">
     <p class="text-position"><i class="fas fa-map-marker-alt"></i>  &nbsp;&nbsp;<%= @lawyer.user.address %>  </p>
     <p class="text-position"><i class="fas fa-gavel"></i>  &nbsp;<%= @lawyer.categories %></p>
-    <p class="text-position"><i class="fas fa-dollar-sign"></i> &nbsp;&nbsp;&nbsp;Price per hour: <%= humanized_money_with_symbol @lawyer.hourly_rate %> </p>
+    <p class="text-position"><i class="fas fa-dollar-sign"></i> &nbsp;&nbsp;&nbsp;<%= humanized_money_with_symbol @lawyer.hourly_rate %> per hour </p>
     <% if @lawyer.is_first_consultation_free %>
       <p class="text-position"><i class="fas fa-check"></i> &nbsp;Book first videochat for free </p>
     <% end %>
@@ -29,11 +29,10 @@
 
   <div class="button-position">
     <% if @lawyer.is_online %>
-    <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-outline-primary", id: "bigger-btn-light"%>
     <%= link_to "Videochat now", new_lawyer_consultation_path(@lawyer), class: "btn btn-primary", id: "bigger-btn-primary"%>
+    <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-outline-primary", id: "bigger-btn-light"%>
     <% else %>
     <%= link_to "Book Videochat", new_appointment_path(@lawyer), class: "btn btn-primary", id: "bigger-btn-light"%>
-    <%= link_to "Videochat now", new_lawyer_consultation_path(@lawyer), class: "btn btn-light disabled", id: "bigger-btn-primary"%>
     <% end  %>
   </div>
 

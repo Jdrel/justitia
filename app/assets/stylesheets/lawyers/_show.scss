@@ -36,8 +36,14 @@
 
 .button-position {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   margin: 20px 0px;
+
+  .btn {
+    margin-bottom: 15px;
+  }
 }
 
 #bigger-btn-light {

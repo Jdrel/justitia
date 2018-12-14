@@ -1,7 +1,7 @@
 .form-size {
-  width: 65px;
-  height: 20px;
-  font-size: 9px;
+  // width: 65px;
+  height: 22px;
+  font-size: 11px;
   padding: 2px;
   margin: 0 2.5px;
 }
@@ -9,8 +9,18 @@
 .filter-lawyers-container {
   position: sticky;
   top: 70px;
-  padding: 10px 0px;
+  left: 0px;
+  padding: 10px 15px;
   background-color: white;
   width: 100%;
   z-index: 1;
+}
+
+
+.filter-column {
+  padding-left: 0px;
+}
+
+.filter-button {
+  width: 100%;
 }
