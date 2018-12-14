@@ -1,9 +1,20 @@
-<div class="filter-lawyers-container">
+
+
+<div class="filter-lawyers-container row">
   <%= form_tag lawyers_path, method: :get, class: "form-inline" do %>
-  <%= select_tag :is_online, options_for_select([["online",true],["offline",false]], params[:is_online]), prompt: "status", class: "form-control form-control-sm form-size" %>
-  <%= text_field_tag :min_price, params[:min_price], placeholder: "min price", class: "form-control form-size" %>
-  <%= text_field_tag :max_price, params[:max_price], placeholder: "max price", class: "form-control form-size" %>
-  <%= select_tag :category, options_for_select(@category_names, params[:category]), prompt: "category", class: "form-control form-control-sm form-size" %>
-  <%= submit_tag("Filter", :class=>"btn btn-primary btn-sm form-size", :name=>"submit") %>
+  <div class="col-5 filter-column">
+
+    <%= text_field_tag :min_price, params[:min_price], placeholder: "min price", class: "form-control form-size" %>
+    <%= text_field_tag :max_price, params[:max_price], placeholder: "max price", class: "form-control form-size" %>
+  </div>
+
+  <div class="col-5 filter-column">
+    <%= select_tag :is_online, options_for_select([["online",true],["offline",false]], params[:is_online]), prompt: "status", class: "form-control form-control-sm form-size" %>
+    <%= select_tag :category, options_for_select(@category_names, params[:category]), prompt: "category", class: "form-control form-control-sm form-size" %>
+  </div>
+  <div class="col-2 filter-column">
+    <%= submit_tag("Filter", :class=>"btn btn-primary btn-sm form-size filter-button", :name=>"submit") %>
+
+    </div>
   <% end %>
 </div>
