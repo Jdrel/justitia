@@ -12,6 +12,15 @@
   left: 120px;
 }
 
+.video-placeholder {
+  position: absolute;
+  top: 200px;
+  margin: 0 30px;
+  color: rgba(0,0,0,0.5);
+  text-align: center;
+  z-index: -1;
+}
+
 
 #disconnect {
   border-radius: 205px;
